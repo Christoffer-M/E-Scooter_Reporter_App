@@ -17,8 +17,11 @@ function App() {
           <Route path="/login">
             <Login/>
           </Route>
+          <Route path="/header">
+            <Header/>
+          </Route>
           <Route path="/">
-          <h1>I AM HOMEPAGE</h1>
+            <h1>I AM HOMEPAGE</h1>
           </Route>
           
         </Switch>
