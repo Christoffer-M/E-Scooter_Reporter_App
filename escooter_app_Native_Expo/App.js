@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View} from 'react-native';
-import Button from './components/OrangeButton';
+import Buttons from './components/Buttons';
 import Headline from './components/Headline';
 
 export default function App() {
@@ -10,7 +10,7 @@ export default function App() {
       <View style={{marginRight: 15, marginLeft: 15}}>
             <Headline/>
             <Text style={styles.fontStyle}>Would you like to sign up or continue as a guest?</Text>
-            <Button/>
+            <Buttons/>
             <StatusBar style="auto" />
       </View>
     </View>

@@ -37,18 +37,18 @@ const styles = StyleSheet.create({
       borderRadius: 90,
       backgroundColor: '#E77F64',
       width: 200,
-    height: 48,
-    alignItems: 'center',
-    padding: 8,
+      height: 48,
+      alignItems: 'center',
+      padding: 8,
     },
 
     greyButton: {
       borderRadius: 90,
       backgroundColor: '#FFFFFF',
       width: 200,
-    height: 48,
-    alignItems: 'center',
-    padding: 8,
+      height: 48,
+      alignItems: 'center',
+      padding: 8,
     },
 
     buttonContainer: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     container: {
       alignItems: 'center',     
       justifyContent: "center",
-      paddingTop: 55,
+      paddingTop: 15,
     },
 
     whiteFont: {
