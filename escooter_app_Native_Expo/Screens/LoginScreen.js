@@ -4,14 +4,14 @@ import { StatusBar } from 'expo-status-bar';
 import OrangeButton from '../components/OrangeButtons';
 import Headline from '../components/Headline';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     return (
     <View style={styles.container}>
         <View style={{marginRight: 15, marginLeft: 15}}>
             <Headline/>
             <TextInput style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}} />
             <TextInput style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}} />
-            <OrangeButton/>
+            <OrangeButton nav={navigation} navDir='Login'/>
             <StatusBar style="auto" />
         </View>
     </View>

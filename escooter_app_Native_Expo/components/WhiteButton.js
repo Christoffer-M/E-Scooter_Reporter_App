@@ -18,7 +18,7 @@ const WhiteButton = () => {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity title="Press me" style={styles.greyButton}>
+          <TouchableOpacity style={styles.greyButton}>
             <Text style={styles.greyFont}>Guest</Text>
           </TouchableOpacity>
         </View>

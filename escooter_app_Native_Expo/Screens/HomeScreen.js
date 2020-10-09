@@ -15,7 +15,7 @@ const HomeScreen = ({navigation}) => {
         <View style={{marginRight: 15, marginLeft: 15}}>
             <Headline/>
             <Text style={styles.fontStyle}>Would you like to sign up or continue as a guest?</Text>
-            <OrangeButton nav={navigation} />
+            <OrangeButton nav={navigation} navDir='Login'/>
             <WhiteButton/>
             <StatusBar style="auto" />
         </View>
