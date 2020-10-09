@@ -1,41 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View} from 'react-native';
-import OrangeButton from './components/OrangeButtons';
-import Headline from './components/Headline';
-import WhiteButton from './components/WhiteButton';
+import { StyleSheet, View} from 'react-native';
+import HomeScreen from './Screens/HomeScreen';
+import LoginScreen from './Screens/LoginScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View style={styles.container}> 
-      <View style={{marginRight: 15, marginLeft: 15}}>
-            <Headline/>
-            <Text style={styles.fontStyle}>Would you like to sign up or continue as a guest?</Text>
-            <OrangeButton/>
-            <WhiteButton/>
-            <StatusBar style="auto" />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#2F4357',
-    alignItems: 'center',
-    justifyContent: 'center', 
-  },
-
-  textContainer: {
-    color: '#C0C0C0',
-    width:'500px',
-  }, 
-  
-  fontStyle: {
-    color: '#FBEFE8',
-    fontSize: 18,
-    lineHeight: 36,
-    textAlign: 'center',
-  },
-});

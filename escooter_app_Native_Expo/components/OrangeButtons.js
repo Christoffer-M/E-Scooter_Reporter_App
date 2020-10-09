@@ -6,7 +6,7 @@ import {
 } from '@expo-google-fonts/roboto-mono';
 import { AppLoading } from 'expo';
 
-const OrangeButton = () => {
+const OrangeButton = (props) => {
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -18,8 +18,8 @@ const OrangeButton = () => {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity title="Press me" style={styles.orangeButton}>
-            <Text style={styles.whiteFont}>Log in</Text>
+          <TouchableOpacity title="Press me" style={styles.orangeButton}  onPress={() => props.nav.push('Login')}>
+             <Text style={styles.whiteFont}>Log in</Text>
           </TouchableOpacity>
         </View>
       </View>
