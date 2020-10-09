@@ -13,7 +13,7 @@ import {
     RobotoMono_700Bold,
     RobotoMono_700Bold_Italic,
   } from '@expo-google-fonts/roboto-mono';
-import { AppLoading } from 'expo';
+    import { AppLoading } from 'expo';
 
 const Headline = () => {
     let [fontsLoaded] = useFonts({
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
         fontFamily: 'RobotoMono_700Bold',
         color: '#EBC2AD'
     },
+
     container: {
         flex: 0.5,
         justifyContent: 'center',
