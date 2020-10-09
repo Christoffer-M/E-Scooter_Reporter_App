@@ -1,0 +1,12 @@
+{
+  "name": "escooter_app_Native_Expo",
+  "displayName": "escooter_app_Native_Expo",
+  "expo": {
+    "name": "escooter_app_Native_Expo",
+    "slug": "escooter_app_Native_Expo",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
