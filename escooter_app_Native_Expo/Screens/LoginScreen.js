@@ -1,22 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, TextInput} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+
 import OrangeButton from '../components/OrangeButtons';
 import Headline from '../components/Headline';
 import WhiteButton from '../components/WhiteButton';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
-
-const HomeScreen = ({navigation}) => {
-
+const HomeScreen = () => {
     return (
     <View style={styles.container}>
         <View style={{marginRight: 15, marginLeft: 15}}>
             <Headline/>
-            <Text style={styles.fontStyle}>Would you like to sign up or continue as a guest?</Text>
-            <OrangeButton nav={navigation} />
-            <WhiteButton/>
+            <TextInput style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}} />
+            <TextInput style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}} />
+            <OrangeButton/>
             <StatusBar style="auto" />
         </View>
     </View>
@@ -30,6 +27,7 @@ const styles = StyleSheet.create({
       lineHeight: 36,
       textAlign: 'center',
     },
+
     container: {
         flex: 1,
         backgroundColor: '#2F4357',
