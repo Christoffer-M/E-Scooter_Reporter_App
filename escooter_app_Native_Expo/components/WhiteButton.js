@@ -6,7 +6,7 @@ import {
 } from '@expo-google-fonts/roboto-mono';
 import { AppLoading } from 'expo';
 
-const OrangeButton = () => {
+const WhiteButton = () => {
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -49,12 +49,6 @@ const styles = StyleSheet.create({
       paddingTop: 15,
     },
 
-    whiteFont: {
-      fontFamily: 'RobotoMono_500Medium',
-      fontSize: 24,
-      color: '#fff',
-    },
-
     greyFont: {
       fontFamily: 'RobotoMono_500Medium',
       fontSize: 24,
@@ -62,4 +56,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OrangeButton;
+export default WhiteButton;
