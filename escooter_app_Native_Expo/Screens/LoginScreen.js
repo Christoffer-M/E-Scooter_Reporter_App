@@ -1,10 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-
 import OrangeButton from '../components/OrangeButtons';
 import Headline from '../components/Headline';
-import WhiteButton from '../components/WhiteButton';
 
 const HomeScreen = () => {
     return (
