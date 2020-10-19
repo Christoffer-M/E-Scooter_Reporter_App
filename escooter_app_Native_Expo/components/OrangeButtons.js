@@ -12,7 +12,7 @@ const OrangeButton = (props) => {
   });
 
   if (!fontsLoaded) {
-      return <AppLoading />;
+      return <AppLoading/>;
   }
 
     return (

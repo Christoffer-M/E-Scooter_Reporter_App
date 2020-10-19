@@ -6,7 +6,7 @@ import {
 } from '@expo-google-fonts/roboto-mono';
 import { AppLoading } from 'expo';
 
-const WhiteButton = () => {
+const WhiteButton = (props) => {
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -18,7 +18,7 @@ const WhiteButton = () => {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.greyButton}>
+          <TouchableOpacity style={styles.greyButton} onPress={() => props.nav.push(props.navDir)}>
             <Text style={styles.greyFont}>Guest</Text>
           </TouchableOpacity>
         </View>

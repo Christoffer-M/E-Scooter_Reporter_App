@@ -2,16 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import {
     useFonts,
-    RobotoMono_100Thin,
-    RobotoMono_100Thin_Italic,
-    RobotoMono_300Light,
-    RobotoMono_300Light_Italic,
-    RobotoMono_400Regular,
-    RobotoMono_400Regular_Italic,
-    RobotoMono_500Medium,
-    RobotoMono_500Medium_Italic,
     RobotoMono_700Bold,
-    RobotoMono_700Bold_Italic,
   } from '@expo-google-fonts/roboto-mono';
     import { AppLoading } from 'expo';
 
@@ -31,7 +22,6 @@ const Headline = () => {
        
     ); 
 }
-
 
 const styles = StyleSheet.create({
     header: {
