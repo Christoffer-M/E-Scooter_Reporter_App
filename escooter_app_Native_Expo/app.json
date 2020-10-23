@@ -7,6 +7,7 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "icon": "./assets/app_icon/icon_rounded_square.png"
   }
 }
