@@ -28,10 +28,14 @@ Make sure you have [Expo](https://expo.io) installed
 
 Change directory to the project folder
 
-```cd /escooter_app_Native_Expo/```
+```Shell
+cd /escooter_app_Native_Expo/
+```
 
 Run Expo
 
-```expo start```
+```Shell
+expo start
+```
 
 Use the QR code displayed in the terminal to view the app
