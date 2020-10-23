@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import OrangeButton from '../components/OrangeButtons';
+import {
+    useFonts,
+    RobotoMono_700Bold,
+  } from '@expo-google-fonts/roboto-mono';
+import Button from '../components/Button';
 import Headline from '../components/Headline';
-import WhiteButton from '../components/WhiteButton';
+
 
 
 
@@ -14,8 +18,8 @@ const WelcomeScreen = ({navigation}) => {
         <View style={{marginRight: 15, marginLeft: 15}}>
             <Headline/>
             <Text style={styles.fontStyle}>Would you like to sign up or continue as a guest?</Text>
-            <OrangeButton nav={navigation} navDir='Login' title='Log in'/>
-            <WhiteButton nav={navigation} navDir='Home'/>
+            <Button nav={navigation} navDir='Login' text='Log in' color='orange' />
+            <Button nav={navigation} navDir='Home' text='Guest' color='grey'/>
             <StatusBar style="auto" />
         </View>
     </View>
@@ -24,6 +28,7 @@ const WelcomeScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
     fontStyle: {
+      fontFamily: "RobotoMono_500Medium",
       color: '#FBEFE8',
       fontSize: 18,
       lineHeight: 36,
