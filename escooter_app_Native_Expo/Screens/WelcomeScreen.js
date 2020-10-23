@@ -14,7 +14,7 @@ const WelcomeScreen = ({navigation}) => {
         <View style={{marginRight: 15, marginLeft: 15}}>
             <Headline/>
             <Text style={styles.fontStyle}>Would you like to sign up or continue as a guest?</Text>
-            <OrangeButton nav={navigation} navDir='Login'/>
+            <OrangeButton nav={navigation} navDir='Login' title='Log in'/>
             <WhiteButton nav={navigation} navDir='Home'/>
             <StatusBar style="auto" />
         </View>

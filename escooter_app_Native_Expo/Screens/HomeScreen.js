@@ -5,7 +5,6 @@ import MapView from "react-native-maps";
 import {
   ActivityIndicator,
   StyleSheet,
-  Text,
   View,
   Dimensions,
 } from "react-native";
@@ -22,19 +21,12 @@ const HomeScreen = ({navigation}) => {
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         navigation.goBack();
+      } else {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
     })();
   }, []);
-
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
 
   if (location == null) {
     return (

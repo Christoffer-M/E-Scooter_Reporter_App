@@ -19,7 +19,7 @@ const OrangeButton = (props) => {
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.orangeButton}  onPress={() => props.nav.push(props.navDir)}>
-             <Text style={styles.whiteFont}>Log in</Text>
+            <Text style={styles.whiteFont}>{props.title}</Text>
           </TouchableOpacity>
         </View>
       </View>
