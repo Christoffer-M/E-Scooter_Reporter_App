@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import OrangeButton from '../components/OrangeButtons';
+import Button from '../components/Button';
 import Headline from '../components/Headline';
 
 const HomeScreen = ({navigation}) => {
@@ -11,7 +11,7 @@ const HomeScreen = ({navigation}) => {
             <Headline/>
             <TextInput style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}} />
             <TextInput style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: '#fff'}} />
-            <OrangeButton nav={navigation} navDir='Login'/>
+            <Button nav={navigation} navDir='Login' text='Log in' color='orange'/>
             <StatusBar style="auto" />
         </View>
     </View>
