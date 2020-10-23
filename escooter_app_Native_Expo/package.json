@@ -28,7 +28,8 @@
     "react-native-unimodules": "~0.11.0",
     "react-native-web": "~0.13.12",
     "react-router-native": "^5.2.0",
-    "react-native-maps": "0.27.1"
+    "react-native-maps": "0.27.1",
+    "expo-location": "~9.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
