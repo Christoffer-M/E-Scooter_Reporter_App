@@ -3,15 +3,25 @@ import { StyleSheet, Text, View} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
     useFonts,
-    RobotoMono_700Bold,
+    RobotoMono_500Medium,
   } from '@expo-google-fonts/roboto-mono';
 import Button from '../components/Button';
 import Headline from '../components/Headline';
+import { AppLoading } from 'expo';
 
 
 
 
 const WelcomeScreen = ({navigation}) => {
+    let [fontsLoaded] = useFonts({
+        RobotoMono_500Medium,
+      });
+
+      if (!fontsLoaded) {
+        return <AppLoading />;
+    }
+    
+    
 
     return (
     <View style={styles.container}>
