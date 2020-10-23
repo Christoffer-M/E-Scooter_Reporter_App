@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.reportButton}>
         <Button
           nav={navigation}
-          navDir="Welcome"
+          navDir="Camera" 
           text="Report"
           color="orange"
         />
