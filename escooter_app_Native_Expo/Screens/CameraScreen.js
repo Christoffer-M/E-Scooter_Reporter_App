@@ -1,13 +1,11 @@
 import React from 'react';
 import Camera from '../components/Camera.js';
+import { SafeAreaView } from 'react-native';
 
 const CameraScreen = () => {
     return (
-        <>
-        <SafeAreaView styles={{flex:1}}>‍
-        <Camera />‍
-      </SafeAreaView>‍
-    </>
-   );};
+      <SafeAreaView style={{flex: 1}}><Camera/></SafeAreaView>
+   )
+}
 export default CameraScreen;
 

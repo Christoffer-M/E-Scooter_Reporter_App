@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, View} from 'react-native';
 import WelcomeScreen from './Screens/WelcomeScreen';
 import LoginScreen from './Screens/LoginScreen';
 import HomeScreen from './Screens/HomeScreen';
-import CameraScreen from './Screens/HomeScreen';
+import CameraScreen from './Screens/CameraScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
