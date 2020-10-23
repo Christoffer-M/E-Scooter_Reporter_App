@@ -3,6 +3,7 @@ import { StyleSheet, View} from 'react-native';
 import WelcomeScreen from './Screens/WelcomeScreen';
 import LoginScreen from './Screens/LoginScreen';
 import HomeScreen from './Screens/HomeScreen';
+import CameraScreen from './Screens/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 

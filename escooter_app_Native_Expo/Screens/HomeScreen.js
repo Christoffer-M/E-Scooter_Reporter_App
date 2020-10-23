@@ -47,6 +47,14 @@ const HomeScreen = ({ navigation }) => {
           longitudeDelta: 0.0421,
         }}
       />
+      
+
+      <View style={styles.menuButton}>
+        <TouchableOpacity>
+          <SvgUri width="60" height="60" source={require("../assets/Icons/profile_icon.svg")} />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.reportButton}>
         <Button
           nav={navigation}
@@ -56,12 +64,9 @@ const HomeScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={styles.menuButton}>
-        <TouchableOpacity>
-          <SvgUri width="60" height="60" source={require("../assets/Icons/profile_icon.svg")} />
-        </TouchableOpacity>
-      </View>
     </View>
+
+    
   );
 };
 
