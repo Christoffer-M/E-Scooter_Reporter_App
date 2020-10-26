@@ -2,7 +2,7 @@ const { exp } = require("react-native-reanimated");
 
 import React, { useEffect, useState } from "react";
 import MapView from "react-native-maps";
-import { ActivityIndicator, StyleSheet, View, Dimensions, Image } from "react-native";
+import {StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
 import * as Location from "expo-location";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
