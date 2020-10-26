@@ -1,4 +1,4 @@
- {
+{
   "main": "index.js",
   "scripts": {
     "android": "react-native run-android",
@@ -15,6 +15,7 @@
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
     "expo-updates": "~0.3.2",
+    "pod-install": "^0.1.12",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.3",
