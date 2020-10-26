@@ -12,14 +12,12 @@ const HomeScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const navI = navigation;
-
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
-        navI.goBack();
+        navigation.goBack();
       } else {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
@@ -59,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.reportButton}>
         <Button
-          nav={navI}
+          nav={navigation}
           navDir="Camera" 
           text="Report"
           color="orange"

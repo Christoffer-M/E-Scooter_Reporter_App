@@ -26,7 +26,7 @@ const Camera = (props) => {
 
   return(
     <View style={{ flex: 1 }}>
-    <Camera style={{ flex: 1 }} type={type}>
+    <Camera style={{ flex: 1  }} type={type}>
       <View
         style={{
           flex: 1,
