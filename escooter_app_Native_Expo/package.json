@@ -35,7 +35,8 @@
     "react-native-unimodules": "~0.11.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
-    "react-router-native": "^5.2.0"
+    "react-router-native": "^5.2.0",
+    "expo-camera": "~9.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
