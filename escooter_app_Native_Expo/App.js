@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import WelcomeScreen from './Screens/WelcomeScreen';
 import LoginScreen from './Screens/LoginScreen';
 import HomeScreen from './Screens/HomeScreen';

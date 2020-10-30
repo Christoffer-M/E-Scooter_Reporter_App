@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.1.0",
     "@expo-google-fonts/roboto-mono": "^0.1.0",
+    "@react-native-firebase/app": "^8.4.6",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
@@ -20,6 +21,7 @@
     "expo-status-bar": "~1.0.2",
     "expo-svg-uri": "^1.2.0",
     "expo-updates": "~0.3.2",
+    "pod-install": "^0.1.12",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.3",
