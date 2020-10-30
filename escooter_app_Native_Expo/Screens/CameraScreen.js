@@ -8,9 +8,15 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
+import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
+import { AppLoading } from "expo";
 
 const CameraSceen = ({ navigation }) => {
-    const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null);
+
+  let [fontsLoaded] = useFonts({
+    RobotoMono_500Medium,
+  });
 
   useEffect(() => {
     (async () => {
@@ -21,6 +27,10 @@ const CameraSceen = ({ navigation }) => {
 
   function goBack() {
     navigation.goBack();
+  }
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
 
   if (hasPermission === null) {
@@ -46,6 +56,7 @@ const CameraSceen = ({ navigation }) => {
       <Camera style={{ flex: 1 }}>
         <View
           style={{
+            display: "flex",
             flex: 1,
             backgroundColor: "transparent",
             flexDirection: "column",
@@ -60,10 +71,28 @@ const CameraSceen = ({ navigation }) => {
               paddingTop: 30,
             }}
           >
-            <Text style={{ color: "white" }}>
-              Take a picture of the incident
-            </Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#E77F64",
+                width: 274,
+                height: 32,
+                borderRadius: 16,
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontFamily: "RobotoMono_500Medium",
+                  fontSize: 14,
+                }}
+              >
+                Take a picture of the incident
+              </Text>
+            </TouchableOpacity>
           </View>
+          <View></View>
           <TouchableOpacity
             style={{
               flex: 0.25,
