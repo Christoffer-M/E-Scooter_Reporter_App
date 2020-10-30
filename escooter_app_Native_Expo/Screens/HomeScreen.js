@@ -47,21 +47,26 @@ const HomeScreen = ({ navigation }) => {
           longitudeDelta: 0.0421,
         }}
       />
-      <View style={styles.reportButton}>
-        <Button
-          nav={navigation}
-          navDir="Welcome"
-          text="Report"
-          color="orange"
-        />
-      </View>
+      
 
       <View style={styles.menuButton}>
         <TouchableOpacity>
           <SvgUri width="60" height="60" source={require("../assets/Icons/profile_icon.svg")} />
         </TouchableOpacity>
       </View>
+
+      <View style={styles.reportButton}>
+        <Button
+          nav={navigation}
+          navDir="Camera" 
+          text="Report"
+          color="orange"
+        />
+      </View>
+
     </View>
+
+    
   );
 };
 
