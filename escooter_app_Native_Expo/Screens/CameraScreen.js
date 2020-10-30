@@ -42,46 +42,44 @@ const CameraSceen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }}>
+    <Camera ratio="16:9" style={StyleSheet.absoluteFill}>
+      <View
+        style={{
+          display: "flex",
+          flex: 1,
+          backgroundColor: "transparent",
+          flexDirection: "column",
+          paddingTop: 50,
+        }}
+      >
         <View
           style={{
-            display: "flex",
             flex: 1,
-            backgroundColor: "transparent",
-            flexDirection: "column",
-            paddingTop: 50,
+            alignSelf: "center",
+            alignItems: "center",
+            paddingTop: 30,
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              alignSelf: "center",
-              alignItems: "center",
-              paddingTop: 30,
-            }}
-          >
-            <CameraText text="Take a picture of the incident" />
-          </View>
-
-          <TouchableOpacity
-            style={{
-              flex: 0.25,
-              alignSelf: "center",
-              alignItems: "flex-start",
-              paddingBottom: 0,
-            }}
-            onPress={() => navigation.push("QRScreen")}
-          >
-            <SvgUri
-              width="76"
-              height="76"
-              source={require("../assets/Icons/take_photo.svg")}
-            />
-          </TouchableOpacity>
+          <CameraText text="Take a picture of the incident" />
         </View>
-      </Camera>
-    </View>
+
+        <TouchableOpacity
+          style={{
+            flex: 0.25,
+            alignSelf: "center",
+            alignItems: "flex-start",
+            paddingBottom: 0,
+          }}
+          onPress={() => navigation.push("QRScreen")}
+        >
+          <SvgUri
+            width="76"
+            height="76"
+            source={require("../assets/Icons/take_photo.svg")}
+          />
+        </TouchableOpacity>
+      </View>
+    </Camera>
   );
 };
 

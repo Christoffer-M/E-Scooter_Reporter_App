@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import CameraText from "../components/CameraText";
+import { Camera } from "expo-camera";
 
 const QRScreen = ({ navigaton }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -35,18 +36,10 @@ const QRScreen = ({ navigaton }) => {
         padding: 0,
       }}
     >
-      <BarCodeScanner
+      <Camera
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={{
-          marginHorizontal: 0,
-          marginLeft: 0,
-          marginStart: 0,
-          paddingHorizontal: 0,
-          paddingLeft: 0,
-          paddingStart: 0,
-          height: "100%",
-          padding: 0,
-        }}
+        ratio="16:9"
+        style={StyleSheet.absoluteFill}
       >
         <View
           style={{
@@ -64,7 +57,7 @@ const QRScreen = ({ navigaton }) => {
             onPress={() => setScanned(false)}
           />
         )}
-      </BarCodeScanner>
+      </Camera>
     </View>
   );
 };
