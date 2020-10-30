@@ -10,7 +10,7 @@ import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
 
 const CameraSceen = ({ navigation }) => {
-  const [hasPermission, setHasPermission] = useState(null);
+    const [hasPermission, setHasPermission] = useState(null);
 
   useEffect(() => {
     (async () => {
