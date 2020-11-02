@@ -6,6 +6,7 @@ import CameraScreen from "./Screens/CameraScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import QRScreen from "./Screens/QRScreen";
+import CategoryScreen from "./Screens/CategoryScreen";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -13,7 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Category"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Camera" component={CameraScreen} />
         <Stack.Screen name="QRScreen" component={QRScreen} />
+        <Stack.Screen name="Category" component={CategoryScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

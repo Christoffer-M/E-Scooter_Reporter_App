@@ -4,7 +4,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import CameraText from "../components/CameraText";
 import { Camera } from "expo-camera";
 
-const QRScreen = ({ navigaton }) => {
+const QRScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -32,7 +32,6 @@ const QRScreen = ({ navigaton }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "pink",
         padding: 0,
       }}
     >
@@ -53,8 +52,8 @@ const QRScreen = ({ navigaton }) => {
         </View>
         {scanned && (
           <Button
-            title={"Tap to Scan Again"}
-            onPress={() => setScanned(false)}
+            title={"Continue"}
+            onPress={() => navigation.push("Category")}
           />
         )}
       </Camera>
