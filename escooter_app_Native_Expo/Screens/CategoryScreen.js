@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TextInput } from "react-native";
 import Headline from "../components/Headline";
 import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
+import Button from "../components/Button";
 
 const CategoryScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -27,6 +28,17 @@ const CategoryScreen = ({ navigation }) => {
         <CategoryButton text="Broken" />
         <CategoryButton text="Other" />
       </View>
+      <TextInput
+          style={{
+            width: 250,
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            backgroundColor: "#fff",
+          }}
+          placeholder = "If Other, please describe"
+        />
+      <Button nav={navigation} navDir="Report" color="grey" text="Proceed"/>
       <Text style={styles.infoText}>* Select one or more options</Text>
     </View>
   );

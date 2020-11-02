@@ -52,6 +52,7 @@ const QRScreen = ({ navigation }) => {
         </View>
         {scanned && (
           <Button
+            color = "orange"
             title={"Continue"}
             onPress={() => navigation.push("Category")}
           />
