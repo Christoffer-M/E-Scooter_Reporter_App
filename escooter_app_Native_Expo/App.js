@@ -8,6 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import QRScreen from "./Screens/QRScreen";
 import CategoryScreen from "./Screens/CategoryScreen";
 import ReportScreen from "./Screens/ReportScreen";
+import SuccessScreen from "./Screens/SuccessScreen";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="QRScreen" component={QRScreen} />
         <Stack.Screen name="Category" component={CategoryScreen} />
         <Stack.Screen name="Report" component={ReportScreen} />
+        <Stack.Screen name="Success" component={SuccessScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

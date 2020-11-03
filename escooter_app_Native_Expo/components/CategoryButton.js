@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
@@ -17,12 +18,24 @@ const CategoryButton = (props) => {
       setColor("#fff");
       setFontColor("#2F4357");
       SetIsClicked(true);
+      console.log("adding key: " + props.id);
+      storeData(props.text);
     } else {
       setColor("#E77F64");
       setFontColor("#fff");
       SetIsClicked(false);
+      console.log("removing key: " + props.id);
+      AsyncStorage.removeItem(props.id);
     }
   }
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem(props.id, value);
+    } catch (e) {
+      alert("Something went wrong");
+    }
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
