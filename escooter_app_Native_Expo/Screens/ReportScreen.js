@@ -13,8 +13,6 @@ const ReportScreen = ({ navigation }) => {
   const [categoryArray, setArray] = useState(allcategories);
 
   useEffect(() => {
-    console.log(allcategories.length);
-    categoryArray.log(categoryArray.length);
     if (allcategories.length !== categoryArray.length) {
       setArray(allcategories);
     }
