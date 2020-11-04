@@ -2,7 +2,7 @@
 
 **Built in [React Native](https://reactnative.dev) using [Expo](https://expo.io)**
 
-![app icon](escooter_app_Native_Expo/assets/app_icon/app_icon_rounded.png)
+![app icon](e-scooter_app/assets/app_icon/app_icon_rounded.png)
 
 ## By Group 1
 
