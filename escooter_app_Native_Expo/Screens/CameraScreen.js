@@ -3,20 +3,14 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   View,
-  Text,
   StyleSheet,
 } from "react-native";
 import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
+import CameraText from "../components/CameraText";
 
 const CameraSceen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
-
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
 
   useEffect(() => {
     (async () => {
@@ -27,10 +21,6 @@ const CameraSceen = ({ navigation }) => {
 
   function goBack() {
     navigation.goBack();
-  }
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
   }
 
   if (hasPermission === null) {
@@ -52,64 +42,44 @@ const CameraSceen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }}>
+    <Camera ratio="16:9" style={StyleSheet.absoluteFill}>
+      <View
+        style={{
+          display: "flex",
+          flex: 1,
+          backgroundColor: "transparent",
+          flexDirection: "column",
+          paddingTop: 50,
+        }}
+      >
         <View
           style={{
-            display: "flex",
             flex: 1,
-            backgroundColor: "transparent",
-            flexDirection: "column",
-            paddingTop: 50,
+            alignSelf: "center",
+            alignItems: "center",
+            paddingTop: 30,
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              alignSelf: "center",
-              alignItems: "center",
-              paddingTop: 30,
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#E77F64",
-                width: 274,
-                height: 32,
-                borderRadius: 16,
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  textAlign: "center",
-                  fontFamily: "RobotoMono_500Medium",
-                  fontSize: 14,
-                }}
-              >
-                Take a picture of the incident
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View></View>
-          <TouchableOpacity
-            style={{
-              flex: 0.25,
-              alignSelf: "center",
-              alignItems: "flex-start",
-              paddingBottom: 0,
-            }}
-          >
-            <SvgUri
-              width="76"
-              height="76"
-              source={require("../assets/Icons/take_photo.svg")}
-            />
-          </TouchableOpacity>
+          <CameraText text="Take a picture of the incident" />
         </View>
-      </Camera>
-    </View>
+
+        <TouchableOpacity
+          style={{
+            flex: 0.25,
+            alignSelf: "center",
+            alignItems: "flex-start",
+            paddingBottom: 0,
+          }}
+          onPress={() => navigation.push("QRScreen")}
+        >
+          <SvgUri
+            width="76"
+            height="76"
+            source={require("../assets/Icons/take_photo.svg")}
+          />
+        </TouchableOpacity>
+      </View>
+    </Camera>
   );
 };
 

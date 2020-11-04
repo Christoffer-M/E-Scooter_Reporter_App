@@ -12,7 +12,25 @@ const Button = (props) => {
     return <AppLoading />;
   }
 
-  if (props.color == "orange") {
+  if (props.resetStorage) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.orangeButton}
+            onPress={() => {
+              props.resetStorage();
+              props.nav.push(props.navDir);
+            }}
+          >
+            <Text style={styles.whiteFont}>{props.text}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  if (props.color === "orange") {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
@@ -25,7 +43,7 @@ const Button = (props) => {
         </View>
       </View>
     );
-  } else if (props.color == "grey") {
+  } else if (props.color === "grey") {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>

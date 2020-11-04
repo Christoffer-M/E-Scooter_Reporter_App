@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Headline from "../components/Headline";
 import { AppLoading } from "expo";
 
-const WelcomeScreen = ({ navigation }) => {
+const SuccessScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -18,12 +18,11 @@ const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={{ marginRight: 15, marginLeft: 15 }}>
-        <Headline text="Welcome!" />
+        <Headline text="Success!" />
         <Text style={styles.fontStyle}>
-          Would you like to sign up or continue as a guest?
+          Thank you for helping out your city and your e-scooter pals!
         </Text>
-        <Button nav={navigation} navDir="Login" text="Log in" color="orange" />
-        <Button nav={navigation} navDir="Home" text="Guest" color="grey" />
+        <Button nav={navigation} navDir="Home" text="Done" color="orange" />
         <StatusBar style="auto" />
       </View>
     </View>
@@ -46,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default SuccessScreen;
