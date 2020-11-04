@@ -13,10 +13,16 @@ const ReportScreen = ({ navigation }) => {
   const [categoryArray, setArray] = useState(allcategories);
 
   useEffect(() => {
+    console.log(allcategories.length);
+    categoryArray.log(categoryArray.length);
     if (allcategories.length !== categoryArray.length) {
       setArray(allcategories);
     }
   });
+
+  const resetStorage = () => {
+    AsyncStorage.clear();
+  };
 
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
@@ -30,12 +36,19 @@ const ReportScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Headline text="Your report" flex={{ flex: 0.2 }} />
       <Text style={styles.infoText}>Violations</Text>
+
       <View style={styles.categoriesContainer}>
         {allcategories.map((item, key) => {
           return <Button text={item} color="orange" key={key} />;
         })}
       </View>
-      <Button text="Submit" color="orange" nav={navigation} navDir="Success" />
+      <Button
+        text="Submit"
+        color="orange"
+        nav={navigation}
+        navDir="Success"
+        resetStorage={resetStorage}
+      />
     </View>
   );
 };
