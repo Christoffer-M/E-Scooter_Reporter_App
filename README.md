@@ -32,6 +32,12 @@ Change directory to the project folder
 cd /escooter_app_Native_Expo/
 ```
 
+Install Modules
+
+```Shell
+npm install
+```
+
 Run Expo
 
 ```Shell
