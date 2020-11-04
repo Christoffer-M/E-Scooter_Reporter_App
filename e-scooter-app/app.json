@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "e-scooter-app",
+    "slug": "e-scooter-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/app_icon/icon_rounded_square.png",
+    "splash": {
+      "image": "./assets/app_icon/icon_rounded_square.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2F4357"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app_icon/icon_rounded_square.png",
+        "backgroundColor": "#2F4357"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
