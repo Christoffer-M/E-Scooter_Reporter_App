@@ -2,6 +2,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/reactnative
 # Edit at https://www.toptal.com/developers/gitignore?templates=reactnative
 
+### vscode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
 ### ReactNative ###
 # React Native Stack Base
 
