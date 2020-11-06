@@ -2,8 +2,10 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
+import * as firebase from "../data_model/Firebase";
 
 const Button = (props) => {
+  
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -36,7 +38,7 @@ const Button = (props) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.orangeButton}
-            onPress={() => props.nav.push(props.navDir)}
+            onPress={() => props.nav.push(props.navDir, {class: firebase.newReport("default")})}
           >
             <Text style={styles.whiteFont}>{props.text}</Text>
           </TouchableOpacity>

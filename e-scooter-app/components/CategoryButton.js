@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
+import * as globals from "./Global";
 
 const CategoryButton = (props) => {
   const [isClicked, SetIsClicked] = useState(false);
@@ -18,24 +18,40 @@ const CategoryButton = (props) => {
       setColor("#fff");
       setFontColor("#2F4357");
       SetIsClicked(true);
-      console.log("adding key: " + props.id);
-      storeData(props.text);
+      switch (props.text) {
+        case "Misplaced":
+          globals.report.toggleMisplaced();
+          break;
+        case "Laying Down":
+          globals.report.toggleLaying();
+          break;
+        case "Broken":
+          globals.report.toggleBroken();
+          break;
+        case "Other":
+          globals.report.toggleOther();
+          break;
+      }
     } else {
       setColor("#E77F64");
       setFontColor("#fff");
       SetIsClicked(false);
-      console.log("removing key: " + props.id);
-      AsyncStorage.removeItem(props.id);
+      switch (props.text) {
+        case "Misplaced":
+          globals.report.toggleMisplaced();
+          break;
+        case "Laying Down":
+          globals.report.toggleLaying();
+          break;
+        case "Broken":
+          globals.report.toggleBroken();
+          break;
+        case "Other":
+          globals.report.toggleOther();
+          break;
+      }
     }
   }
-
-  const storeData = async (value) => {
-    try {
-      await AsyncStorage.setItem(props.id, value);
-    } catch (e) {
-      alert("Something went wrong");
-    }
-  };
 
   if (!fontsLoaded) {
     return <AppLoading />;

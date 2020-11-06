@@ -1,3 +1,4 @@
+import './components/Global'
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -19,7 +20,7 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
-				initialRouteName="Welcome"
+				initialRouteName="Category"
 				screenOptions={{ headerShown: false }}
 			>
 				<Stack.Screen name="Welcome" component={WelcomeScreen} />
