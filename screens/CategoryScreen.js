@@ -24,7 +24,10 @@ const CategoryScreen = ({ navigation }) => {
     return <AppLoading />;
   }
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={styles.container}
+    >
       <Headline text="What is wrong?" flex={{ flex: 0.1 }} />
       <Text style={styles.description}>
         Please choose one or more categories that fits the violation you wish to
@@ -53,6 +56,9 @@ const CategoryScreen = ({ navigation }) => {
   );
 };
 const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: "#2F4357",
+  },
   container: {
     paddingLeft: 15,
     paddingRight: 15,
@@ -78,6 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 36,
     textAlign: "center",
+    paddingBottom: 15,
   },
   buttons: {
     paddingTop: 20,
