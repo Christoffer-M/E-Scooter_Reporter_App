@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   TextInput,
-  Button,
   ScrollView,
   Dimensions,
+  KeyboardAware,
 } from "react-native";
 import Headline from "../components/Headline";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
@@ -25,9 +26,11 @@ const CategoryScreen = ({ navigation }) => {
     return <AppLoading />;
   }
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
       style={styles.scrollView}
       contentContainerStyle={styles.container}
+      scrollEnabled={true}
     >
       <Headline text="What is wrong?" flex={{ flex: 0.2 }} />
       <Text style={styles.description}>
@@ -47,14 +50,18 @@ const CategoryScreen = ({ navigation }) => {
                 width: 250,
                 height: 40,
                 borderColor: "gray",
+                borderRadius: 90,
                 borderWidth: 1,
                 backgroundColor: "#fff",
+                textAlign: "center",
+                fontSize: 16,
+                fontFamily: "RobotoMono_500Medium",
               }}
               placeholder="Type here"
             />
           </View>
         ) : (
-          <View />
+          <View style={{ flex: 1 }} />
         )}
       </View>
       <View style={{ justifyContent: "flex-end" }}>
@@ -66,12 +73,12 @@ const CategoryScreen = ({ navigation }) => {
         />
         <Text style={styles.infoText}>* Select one or more options</Text>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: "pink",
+    backgroundColor: "#2F4357",
     flex: 1,
   },
 
