@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TextInput, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Button,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Headline from "../components/Headline";
 import CategoryButton from "../components/CategoryButton";
@@ -16,7 +24,7 @@ const CategoryScreen = ({ navigation }) => {
     return <AppLoading />;
   }
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Headline text="What is wrong?" flex={{ flex: 0.1 }} />
       <Text style={styles.description}>
         Please choose one or more categories that fits the violation you wish to
@@ -41,7 +49,7 @@ const CategoryScreen = ({ navigation }) => {
       </View>
       <Buttons nav={navigation} navDir="Report" color="orange" text="Proceed" />
       <Text style={styles.infoText}>* Select one or more options</Text>
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
@@ -53,7 +61,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingTop: 50,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
+
   description: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
