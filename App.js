@@ -12,7 +12,6 @@ import QRScreen from "./screens/QRScreen";
 import CategoryScreen from "./screens/CategoryScreen";
 import ReportScreen from "./screens/ReportScreen";
 import SuccessScreen from "./screens/SuccessScreen";
-import * as firebase from "./data_model/Firebase.js";
 
 /*
 THIS "main" method takes care of the navigation bewteen the different screens 
@@ -24,7 +23,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Category"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />

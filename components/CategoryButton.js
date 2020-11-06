@@ -30,6 +30,7 @@ const CategoryButton = (props) => {
           break;
         case "Other":
           globals.report.toggleOther();
+          props.setOther(true);
           break;
       }
     } else {
@@ -48,6 +49,7 @@ const CategoryButton = (props) => {
           break;
         case "Other":
           globals.report.toggleOther();
+          props.setOther(false);
           break;
       }
     }
