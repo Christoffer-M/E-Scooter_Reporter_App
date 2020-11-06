@@ -25,7 +25,7 @@ Make sure you have [Expo](https://expo.io) installed
 Change directory to the project folder
 
 ```Shell
-cd /escooter_app_Native_Expo/
+cd /e-scooter-app/
 ```
 
 Install Modules
@@ -44,43 +44,43 @@ Use the QR code displayed in the terminal to view the app
 
 ## Data Model
 
-### Firebase Firestore – *(NoSQL)*
+### Firebase Firestore – _(NoSQL)_
 
 `reports`
 
 - `broken` **boolean**
-  - *example: false*
+  - _example: false_
 - `comment` **string**
-  - *example: "I see a pile of scooters!"*
+  - _example: "I see a pile of scooters!"_
 - `geolocation` **geolocation**
-  - *example [55.660572° N, 12.590942° E]*
+  - _example [55.660572° N, 12.590942° E]_
 - `image` **string**
-  - *example: "image1"*
+  - _example: "image1"_
 - `laying` **boolean**
-  - *example: true*
+  - _example: true_
 - `misplaced` **boolean**
-  - *example: false*
+  - _example: false_
 - `other` **boolean**
-  - *example: true*
+  - _example: true_
 - `qr` **string**
-  - *example: "<https://lime.bike/bc/v1/VYCHMVA=>"*
+  - _example: "<https://lime.bike/bc/v1/VYCHMVA=>"_
 - `timestamp`(timestamp)
-  - *example: October 31, 2020 at 12:59:59 PM UTC+1*
+  - _example: October 31, 2020 at 12:59:59 PM UTC+1_
 - `user` **string**
-  - *example: "gbro@itu.dk"*
+  - _example: "gbro@itu.dk"_
 
 `users`
 
 - `email` **string**
-  - *example: "gbro@itu.dk"*
+  - _example: "gbro@itu.dk"_
 - `password` **string**
-  - *example: abcd1234!*
+  - _example: abcd1234!_
 - `profile_image` **string**
-  - *example: "profileimage1.png"*
+  - _example: "profileimage1.png"_
 
-### Firebase Storage – *file storage*
+### Firebase Storage – _file storage_
 
 - `/scooter_photos` **files**
-  - *example: image1.png*
+  - _example: image1.png_
 - `/profile_images` **files**
-  - *example: profileimage1.png*
+  - _example: profileimage1.png_
