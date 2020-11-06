@@ -1,8 +1,15 @@
+node_modules/**/*
+.expo/*
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
 
-# Created by https://www.toptal.com/developers/gitignore/api/reactnative
-# Edit at https://www.toptal.com/developers/gitignore?templates=reactnative
-
-### vscode ###
+# vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -306,4 +313,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# End of https://www.toptal.com/developers/gitignore/api/reactnative
+# macOS
+.DS_Store
