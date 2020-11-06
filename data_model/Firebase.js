@@ -102,6 +102,8 @@ class Report {
   geolocation = []; //[55.660572° N, 12.590942° E]
   qr = ""; // qr code url
 
+  brand = "Unknown"
+
   laying = false;
   broken = false;
   misplaced = false;
@@ -153,13 +155,34 @@ class Report {
   }
 
   setQR(qrCode) {
-    this.qr = qrCode;
-    return this.qr;
-  }
+		this.qr = qrCode;
+		this.setBrand(qrCode)
+		return this.qr;
+	}
 
-  hasQR() {
-    return this.qr.length > 0;
-  }
+	hasQR() {
+		return this.qr.length > 0;
+	}
+
+	setBrand(qrCode) {
+		if (qrCode.includes("lime")) {
+			this.brand = "Lime";
+		} else if (qrCode.includes("tier")) {
+			this.brand = "Tier";
+		} else if (qrCode.includes("bird")) {
+			this.brand = "Bird";
+		} else if (qrCode.includes("wind")) {
+			this.brand = "Wind";
+		} else if (qrCode.includes("circ")) {
+			this.brand = "Circ";
+		} else {
+			this.brand = "Unknown";
+		}
+	}
+
+	getBrand() {
+		return this.brand
+	}
 
   isLaying() {
     return this.laying;
@@ -239,29 +262,32 @@ class Report {
     return false;
   }
 
-  submit() {
-    if (this.isSubmittable()) {
-      db.collection("reports")
-        .add({
-          user: this.user,
-          image: this.image,
-          timestamp: this.timestamp,
-          geolocation: this.geolocation,
-          qr: this.qr,
-          laying: this.laying,
-          broken: this.broken,
-          misplaced: this.misplaced,
-          other: this.other,
-          comment: this.comment,
-        })
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function (error) {
-          console.error("Error adding report: ", error);
-        });
-    } else {
-      throw "Error: Report missing information! use .isSubmittable() first";
-    }
-  }
+  submit(doIfSuccessful) {
+		if (this.isSubmittable()) {
+			db.collection("reports")
+				.add({
+					user: this.user,
+					image: this.image,
+					timestamp: this.timestamp,
+					geolocation: this.geolocation,
+					qr: this.qr,
+					laying: this.laying,
+					broken: this.broken,
+					misplaced: this.misplaced,
+					other: this.other,
+					comment: this.comment,
+				})
+				.then(function (docRef) {
+					console.log("Document written with ID: ", docRef.id);
+				})
+				.catch(function (error) {
+					console.error("Error adding report: ", error);
+				});
+			doIfSuccessful();
+			return true;
+		} else {
+			throw "Error: Report missing information! check .isSubmittable() first";
+			//return false;
+		}
+	}
 }
