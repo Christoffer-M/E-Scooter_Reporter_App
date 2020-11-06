@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   KeyboardAware,
+  Animated,
 } from "react-native";
 import Headline from "../components/Headline";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -16,7 +17,29 @@ import { AppLoading } from "expo";
 import Buttons from "../components/Button";
 
 const CategoryScreen = ({ navigation }) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const [isOtherPress, setOther] = useState(false);
+  const [hideInput, setHideInput] = useState(false);
+
+  useEffect(() => {
+    if (isOtherPress) {
+      setHideInput(true);
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+      setTimeout(() => {
+        setHideInput(false);
+      }, 200);
+    }
+  });
 
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
@@ -42,27 +65,31 @@ const CategoryScreen = ({ navigation }) => {
         <CategoryButton text="Laying Down" id="1" />
         <CategoryButton text="Broken" id="2" />
         <CategoryButton text="Other" id="3" setOther={setOther} />
-        {isOtherPress ? (
-          <View>
-            <Text style={styles.description}>Please Describe</Text>
-            <TextInput
-              style={{
-                width: 250,
-                height: 40,
-                borderColor: "gray",
-                borderRadius: 90,
-                borderWidth: 1,
-                backgroundColor: "#fff",
-                textAlign: "center",
-                fontSize: 16,
-                fontFamily: "RobotoMono_500Medium",
-              }}
-              placeholder="Type here"
-            />
-          </View>
-        ) : (
-          <View style={{ flex: 1 }} />
-        )}
+        <Animated.View style={{ opacity: fadeAnim }}>
+          {hideInput ? (
+            <>
+              <Text style={styles.description}>Please Describe</Text>
+              <TextInput
+                style={{
+                  width: Dimensions.get("window").width / 1.3,
+                  height: 45,
+                  borderColor: "gray",
+                  borderRadius: 90,
+                  borderWidth: 1,
+                  backgroundColor: "#fff",
+                  textAlign: "left",
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  fontSize: 18,
+                  fontFamily: "RobotoMono_500Medium",
+                }}
+                placeholder="Type here"
+              />
+            </>
+          ) : (
+            <></>
+          )}
+        </Animated.View>
       </View>
       <View style={{ justifyContent: "flex-end" }}>
         <Buttons
