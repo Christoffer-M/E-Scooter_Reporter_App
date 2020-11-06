@@ -1,4 +1,4 @@
-import './components/Global'
+import "./components/Global";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -14,24 +14,28 @@ import ReportScreen from "./screens/ReportScreen";
 import SuccessScreen from "./screens/SuccessScreen";
 import * as firebase from "./data_model/Firebase.js";
 
+/*
+THIS "main" method takes care of the navigation bewteen the different screens 
+in our app. For this purpose we use StackNavigator 🛴 
+*/
 export default function App() {
-	const Stack = createStackNavigator();
+  const Stack = createStackNavigator();
 
-	return (
-		<NavigationContainer>
-			<Stack.Navigator
-				initialRouteName="Category"
-				screenOptions={{ headerShown: false }}
-			>
-				<Stack.Screen name="Welcome" component={WelcomeScreen} />
-				<Stack.Screen name="Login" component={LoginScreen} />
-				<Stack.Screen name="Home" component={HomeScreen} />
-				<Stack.Screen name="Camera" component={CameraScreen} />
-				<Stack.Screen name="QRScreen" component={QRScreen} />
-				<Stack.Screen name="Category" component={CategoryScreen} />
-				<Stack.Screen name="Report" component={ReportScreen} />
-				<Stack.Screen name="Success" component={SuccessScreen} />
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Category"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Camera" component={CameraScreen} />
+        <Stack.Screen name="QRScreen" component={QRScreen} />
+        <Stack.Screen name="Category" component={CategoryScreen} />
+        <Stack.Screen name="Report" component={ReportScreen} />
+        <Stack.Screen name="Success" component={SuccessScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }

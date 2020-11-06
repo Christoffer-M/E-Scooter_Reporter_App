@@ -228,6 +228,7 @@ class Report {
     return this.other && this.comment;
   }
 
+  // Get method to display types of violations in the report overview before submitting.
   getCategories() {
     const misplaced = "Misplaced";
     const laying = "Laying Down";
@@ -286,6 +287,7 @@ class Report {
 			doIfSuccessful();
 			return true;
 		} else {
+      alert("The report is missing important information.");
 			throw "Error: Report missing information! check .isSubmittable() first";
 			//return false;
 		}
