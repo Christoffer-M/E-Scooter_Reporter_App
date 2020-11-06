@@ -8,7 +8,6 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Headline from "../components/Headline";
 import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
@@ -16,6 +15,8 @@ import { AppLoading } from "expo";
 import Buttons from "../components/Button";
 
 const CategoryScreen = ({ navigation }) => {
+  const [isOtherPress, setOther] = useState(false);
+
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -28,7 +29,7 @@ const CategoryScreen = ({ navigation }) => {
       style={styles.scrollView}
       contentContainerStyle={styles.container}
     >
-      <Headline text="What is wrong?" flex={{ flex: 0.1 }} />
+      <Headline text="What is wrong?" flex={{ flex: 0.2 }} />
       <Text style={styles.description}>
         Please choose one or more categories that fits the violation you wish to
         report
@@ -37,38 +38,50 @@ const CategoryScreen = ({ navigation }) => {
         <CategoryButton text="Misplaced" id="0" />
         <CategoryButton text="Laying Down" id="1" />
         <CategoryButton text="Broken" id="2" />
-        <CategoryButton text="Other" id="3" />
-        <Text style={styles.description}>Please Describe</Text>
-        <TextInput
-          style={{
-            width: 250,
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            backgroundColor: "#fff",
-          }}
-          placeholder="Type here"
-        />
+        <CategoryButton text="Other" id="3" setOther={setOther} />
+        {isOtherPress ? (
+          <View>
+            <Text style={styles.description}>Please Describe</Text>
+            <TextInput
+              style={{
+                width: 250,
+                height: 40,
+                borderColor: "gray",
+                borderWidth: 1,
+                backgroundColor: "#fff",
+              }}
+              placeholder="Type here"
+            />
+          </View>
+        ) : (
+          <View />
+        )}
       </View>
-      <Buttons nav={navigation} navDir="Report" color="orange" text="Proceed" />
-      <Text style={styles.infoText}>* Select one or more options</Text>
+      <View style={{ justifyContent: "flex-end" }}>
+        <Buttons
+          nav={navigation}
+          navDir="Report"
+          color="orange"
+          text="Proceed"
+        />
+        <Text style={styles.infoText}>* Select one or more options</Text>
+      </View>
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: "#2F4357",
+    backgroundColor: "pink",
+    flex: 1,
   },
+
   container: {
     paddingLeft: 15,
     paddingRight: 15,
-    flex: 1,
     backgroundColor: "#2F4357",
-    alignItems: "center",
-    justifyContent: "flex-start",
     paddingTop: 50,
-    width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 
   description: {
@@ -87,6 +100,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   buttons: {
+    alignItems: "center",
     paddingTop: 20,
     flex: 1,
   },
