@@ -205,6 +205,7 @@ class Report {
     return this.other && this.comment;
   }
 
+  // Get method to display types of violations in the report overview before submitting.
   getCategories() {
     const misplaced = "Misplaced";
     const laying = "Laying Down";
@@ -239,6 +240,7 @@ class Report {
     return false;
   }
 
+  // Checks if the reports contains the information needed in order to create a valid report.
   submit() {
     if (this.isSubmittable()) {
       db.collection("reports")
@@ -261,6 +263,7 @@ class Report {
           console.error("Error adding report: ", error);
         });
     } else {
+      alert("The report is missing important information.");
       throw "Error: Report missing information! use .isSubmittable() first";
     }
   }
