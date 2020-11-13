@@ -1,3 +1,5 @@
-import * as firebase from '../data_model/Firebase';
+import * as firebase from "../data_model/Firebase";
 
 export const report = firebase.newReport("defaultreport");
+
+export let pictureURI = null;
