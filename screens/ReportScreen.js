@@ -4,6 +4,7 @@ import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
 import Headline from "../components/Headline.js";
 import Button from "../components/Button.js";
+import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";
 
 const ReportScreen = ({ navigation }) => {
@@ -23,6 +24,7 @@ const ReportScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <BackButton nav={navigation}></BackButton>
       <Headline text="Your report" flex={{ flex: 0.2 }} />
       <Text style={styles.infoText}>Violations</Text>
 
