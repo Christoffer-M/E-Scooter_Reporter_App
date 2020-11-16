@@ -16,6 +16,7 @@ import * as globals from "../components/Global";
 import * as FileSystem from "expo-file-system";
 import * as imagehandler from "../data_model/ImageHandler";
 import { cos } from "react-native-reanimated";
+import Headline from "../components/Headline";
 
 const report = globals.report;
 
@@ -26,6 +27,7 @@ const CameraSceen = ({ navigation }) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [imageTaken, setImageTaken] = useState(false);
   const [loadingPicture, setLoading] = useState(false);
+  const [pictureURI, setURI] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -81,6 +83,7 @@ const CameraSceen = ({ navigation }) => {
             backgroundColor: "#2F4357",
           }}
         >
+          <Headline text="Picture" />
           <CameraText text="Take a picture of the incident" />
         </View>
         {!loadingPicture ? (
@@ -128,6 +131,7 @@ const CameraSceen = ({ navigation }) => {
                 let photo = await cameraRef.takePictureAsync();
 
                 cameraRef.pausePreview();
+                setURI(photo.uri);
 
                 //console.log(photo);
                 const newimage = await imagehandler.cropImageToSquare(
@@ -165,7 +169,8 @@ const CameraSceen = ({ navigation }) => {
           backgroundColor: "#2F4357",
         }}
       >
-        <CameraText text="Take a picture of the incident" />
+        <Headline text="Picture" />
+        <CameraText text="Review the picture" />
       </View>
       <Image
         source={{ uri: report.getImage().uri }}
@@ -183,8 +188,9 @@ const CameraSceen = ({ navigation }) => {
         }}
       >
         <TouchableOpacity
-          style={styles.pictureButtons}
-          onPress={() => {
+          style={styles.pictureButton}
+          onPress={async () => {
+            await FileSystem.deleteAsync(pictureURI);
             globals.report.setImage("");
             setImageTaken(false);
           }}
@@ -192,7 +198,7 @@ const CameraSceen = ({ navigation }) => {
           <Text style={{ color: "white" }}>Take new Picture</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.pictureButtons}
+          style={styles.pictureButton}
           onPress={() => {
             navigation.push("QRScreen");
           }}
@@ -219,15 +225,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  pictureButtons: {
-    backgroundColor: "black",
-    marginTop: 10,
-    padding: 10,
-    borderRadius: 10,
-    width: 150,
+  pictureButton: {
     display: "flex",
-    justifyContent: "center",
+    borderRadius: 90,
+    width: 150,
+    height: 48,
+    margin: 10,
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#E77F64",
   },
 });
 
