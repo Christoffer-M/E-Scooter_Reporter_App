@@ -15,14 +15,17 @@ import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
 import Buttons from "../components/Button";
+import * as globals from "../components/Global";
 import BackButton from "../components/BackButton";
 
 const CategoryScreen = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [isOtherPress, setOther] = useState(false);
   const [hideInput, setHideInput] = useState(false);
+  const [value, onChangeText] = useState('');
 
   useEffect(() => {
+    globals.report.setComment(value);
     if (isOtherPress) {
       setHideInput(true);
       Animated.timing(fadeAnim, {
@@ -86,6 +89,8 @@ const CategoryScreen = ({ navigation }) => {
                   fontFamily: "RobotoMono_500Medium",
                 }}
                 placeholder="Type here"
+                onChangeText={text => onChangeText(text)}
+                value={value}
               />
             </>
           ) : (

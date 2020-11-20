@@ -165,10 +165,11 @@ class Report {
 		return this.timestamp.valueOf();
 	}
 
-	setGeoLocation(latitude, longitude) {
+	async setGeoLocation(latitude, longitude) {
+		console.log(latitude + " " + longitude)
 		this.geolocation = firebase.firestore.GeoPoint(latitude, longitude);
 		this.setAddress(latitude, longitude);
-		return this.geolocation.toLocaleString();
+		//return this.geolocation.toLocaleString();
 	}
 
 	getGeoLocationLatitude() {
@@ -194,8 +195,12 @@ class Report {
 		)
 			.then((response) => response.json())
 			.then((responseJson) => {
-				let response = JSON.stringify(responseJson);
-				this.address = response["formatted_address"];
+				for (i = 0; i < responseJson.results.length; i++) {
+					if(responseJson.results[i].formatted_address != null){
+						this.address = responseJson.results[i].formatted_address;
+						break;
+					}
+				}
 				console.log("GoogleAPI Reverse geolocation response: " + this.address);
 			})
 			.catch((error) => {
@@ -217,7 +222,7 @@ class Report {
 		if (address.length > maxLength) {
 			// Only cut address if it is too long
 			const length = Math.max(maxLength, 3); // Avoid sub 3 length values
-			return (trimmedString = getAddress().substring(0, length - 3) + "...");
+			return (trimmedString = address.substring(0, length - 3) + "...");
 		} else {
 			return address;
 		}
