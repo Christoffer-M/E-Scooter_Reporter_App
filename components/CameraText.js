@@ -15,8 +15,9 @@ const CameraText = (props) => {
   return (
     <View
       style={{
-        backgroundColor: "#E77F64",
-        width: 274,
+        backgroundColor: props.color,
+        paddingLeft: 20,
+        paddingRight: 20,
         height: 32,
         borderRadius: 16,
         justifyContent: "center",
