@@ -4,6 +4,7 @@ import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
 import Headline from "../components/Headline.js";
 import Button from "../components/Button.js";
+import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";
 
 const ReportScreen = ({ navigation }) => {
@@ -23,15 +24,23 @@ const ReportScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <BackButton nav={navigation}></BackButton>
       <Headline text="Your report" flex={{ flex: 0.2 }} />
       <Text style={styles.infoText}>Violations</Text>
 
       <View style={styles.categoriesContainer}>
         {categoryArray.map((item, key) => {
-          return <Button text={item} color="orange" key={key} />;
+          return <Button text={item} color="grey" key={key} disabled={true} />;
         })}
       </View>
-      <Button text="Submit" color="orange" nav={navigation} navDir="Success" />
+      <View style={styles.buttonContainer}>
+        <Button
+          text="Submit"
+          color="orange"
+          nav={navigation}
+          navDir="Success"
+        />
+      </View>
     </View>
   );
 };
@@ -56,6 +65,9 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     flex: 1,
+  },
+  buttonContainer: {
+    paddingBottom: 40,
   },
 });
 

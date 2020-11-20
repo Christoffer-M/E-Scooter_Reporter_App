@@ -15,6 +15,7 @@ import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
 import Buttons from "../components/Button";
+import BackButton from "../components/BackButton";
 
 const CategoryScreen = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -55,6 +56,7 @@ const CategoryScreen = ({ navigation }) => {
       contentContainerStyle={styles.container}
       scrollEnabled={true}
     >
+      <BackButton nav={navigation}></BackButton>
       <Headline text="What is wrong?" flex={{ flex: 0.2 }} />
       <Text style={styles.description}>
         Please choose one or more categories that fits the violation you wish to

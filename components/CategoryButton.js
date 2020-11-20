@@ -15,7 +15,7 @@ const CategoryButton = (props) => {
 
   function changeBackground() {
     if (!isClicked) {
-      setColor("#fff");
+      setColor("#EBC2AD");
       setFontColor("#2F4357");
       SetIsClicked(true);
       switch (props.text) {

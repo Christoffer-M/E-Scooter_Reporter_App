@@ -5,7 +5,6 @@ import { AppLoading } from "expo";
 import * as firebase from "../data_model/Firebase";
 
 const Button = (props) => {
-  
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -38,7 +37,11 @@ const Button = (props) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.orangeButton}
-            onPress={() => props.nav.push(props.navDir, {class: firebase.newReport("default")})}
+            onPress={() =>
+              props.nav.push(props.navDir, {
+                class: firebase.newReport("default"),
+              })
+            }
           >
             <Text style={styles.whiteFont}>{props.text}</Text>
           </TouchableOpacity>
@@ -51,7 +54,7 @@ const Button = (props) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.greyButton}
-            onPress={() => props.nav.push(props.navDir)}
+            onPress={props.disabled ? null : () => props.nav.push(props.navDir)}
           >
             <Text style={styles.greyFont}>{props.text}</Text>
           </TouchableOpacity>

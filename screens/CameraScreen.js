@@ -217,7 +217,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   noCamera: {
     flex: 1,
     backgroundColor: "#fff",
