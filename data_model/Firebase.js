@@ -246,7 +246,8 @@ class Report {
 			this.brand = "Circ";
 		} else {
 			this.brand = "Unknown";
-		}
+    }
+    return this.brand
 	}
 
 	getBrand() {
