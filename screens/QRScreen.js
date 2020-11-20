@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import CameraText from "../components/CameraText";
 import { Camera } from "expo-camera";
+import BackButton from "../components/BackButton";
 
 const QRScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -58,6 +59,7 @@ const QRScreen = ({ navigation }) => {
         ratio="16:9"
         style={StyleSheet.absoluteFill}
       >
+        <BackButton nav={navigation}></BackButton>
         <View style={{ flex: 0.25 }}>
           <View
             style={{

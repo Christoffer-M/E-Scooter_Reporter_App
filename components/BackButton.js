@@ -1,9 +1,8 @@
 import React from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import SvgUri from "expo-svg-uri";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
-import * as globals from "./Global";
 
 const BackButton = (props) => {
   let [fontsLoaded] = useFonts({

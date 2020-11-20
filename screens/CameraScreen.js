@@ -17,6 +17,7 @@ import * as FileSystem from "expo-file-system";
 import * as imagehandler from "../data_model/ImageHandler";
 import { cos } from "react-native-reanimated";
 import Headline from "../components/Headline";
+import BackButton from "../components/BackButton";
 
 const report = globals.report;
 
@@ -83,6 +84,7 @@ const CameraSceen = ({ navigation }) => {
             backgroundColor: "#2F4357",
           }}
         >
+          <BackButton nav={navigation}></BackButton>
           <Headline text="Picture" />
           <CameraText text="Take a picture of the incident" />
         </View>
