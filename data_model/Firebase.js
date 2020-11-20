@@ -112,7 +112,7 @@ class Report {
 		uri: "",
 	};
 
-	brand = "Unknown";
+	brand = "unknown";
 
 	laying = false;
 	broken = false;
@@ -246,9 +246,7 @@ class Report {
 			this.brand = "wind";
 		} else if (qrCode.includes("circ")) {
 			this.brand = "circ";
-		} else {
-			this.brand = "unknown";
-    }
+		}
     return this.brand
 	}
 
