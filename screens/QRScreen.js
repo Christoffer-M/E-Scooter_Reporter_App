@@ -13,7 +13,7 @@ const QRScreen = ({ navigation }) => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-    console.log("Running");
+    console.log("Running 12");
   }, []);
 
   //Data variable is what needs to be stored in FireBase
