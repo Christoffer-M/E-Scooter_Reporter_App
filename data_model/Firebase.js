@@ -235,15 +235,17 @@ class Report {
 
 	setBrand(qrCode) {
 		if (qrCode.includes("lime")) {
-			this.brand = "Lime";
+      this.brand = "lime";
+    } else if (qrCode.includes("voi")) {
+			this.brand = "voi";
 		} else if (qrCode.includes("tier")) {
-			this.brand = "Tier";
+			this.brand = "tier";
 		} else if (qrCode.includes("bird")) {
-			this.brand = "Bird";
+			this.brand = "bird";
 		} else if (qrCode.includes("wind")) {
-			this.brand = "Wind";
+			this.brand = "wind";
 		} else if (qrCode.includes("circ")) {
-			this.brand = "Circ";
+			this.brand = "circ";
 		} else {
 			this.brand = "Unknown";
     }
