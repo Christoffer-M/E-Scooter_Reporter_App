@@ -33,6 +33,9 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.10.1",
     "react-native-web": "~0.13.12"
+    "expo-file-system": "~9.2.0",
+    "react-native-web": "~0.13.12",
+    "expo-image-manipulator": "~8.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
