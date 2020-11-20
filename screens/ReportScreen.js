@@ -30,10 +30,17 @@ const ReportScreen = ({ navigation }) => {
 
       <View style={styles.categoriesContainer}>
         {categoryArray.map((item, key) => {
-          return <Button text={item} color="orange" key={key} />;
+          return <Button text={item} color="grey" key={key} disabled={true} />;
         })}
       </View>
-      <Button text="Submit" color="orange" nav={navigation} navDir="Success" />
+      <View style={styles.buttonContainer}>
+        <Button
+          text="Submit"
+          color="orange"
+          nav={navigation}
+          navDir="Success"
+        />
+      </View>
     </View>
   );
 };
@@ -58,6 +65,9 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     flex: 1,
+  },
+  buttonContainer: {
+    paddingBottom: 40,
   },
 });
 
