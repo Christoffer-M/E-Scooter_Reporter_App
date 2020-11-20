@@ -27,7 +27,6 @@ const ReportScreen = ({ navigation }) => {
       <BackButton nav={navigation}></BackButton>
       <Headline text="Your report" flex={{ flex: 0.2 }} />
       <Text style={styles.infoText}>Violations</Text>
-
       <View style={styles.categoriesContainer}>
         {categoryArray.map((item, key) => {
           return (

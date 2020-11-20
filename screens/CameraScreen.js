@@ -191,6 +191,15 @@ const CameraSceen = ({ navigation }) => {
       >
         <TouchableOpacity
           style={styles.pictureButton}
+          onPress={() => {
+            navigation.push("QRScreen");
+          }}
+        >
+          <Text style={{ color: "white" }}>Confirm</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.pictureButton}
           onPress={async () => {
             await FileSystem.deleteAsync(pictureURI);
             globals.report.setImage("");
@@ -198,14 +207,6 @@ const CameraSceen = ({ navigation }) => {
           }}
         >
           <Text style={{ color: "white" }}>Take new Picture</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.pictureButton}
-          onPress={() => {
-            navigation.push("QRScreen");
-          }}
-        >
-          <Text style={{ color: "white" }}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </View>

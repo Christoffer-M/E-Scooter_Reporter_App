@@ -29,7 +29,14 @@ const HomeScreen = ({ navigation }) => {
             backgroundColor: "#fff",
           }}
         />
-        <Button nav={navigation} navDir="Login" text="Log in" color="orange" />
+        <View style={styles.buttonContainer}>
+          <Button
+            nav={navigation}
+            navDir="Login"
+            text="Log in"
+            color="orange"
+          />
+        </View>
         <StatusBar style="auto" />
       </View>
     </View>
@@ -57,6 +64,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: "#fff",
+  },
+  buttonContainer: {
+    paddingTop: 20,
   },
 });
 
