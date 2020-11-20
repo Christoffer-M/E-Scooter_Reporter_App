@@ -112,7 +112,7 @@ class Report {
 		uri: "",
 	};
 
-	brand = "Unknown";
+	brand = "unknown";
 
 	laying = false;
 	broken = false;
@@ -325,7 +325,7 @@ class Report {
 		if (this.isOther()) {
 			categories.push(other);
 		}
-
+		console.log(categories);
 		return categories;
 	}
 

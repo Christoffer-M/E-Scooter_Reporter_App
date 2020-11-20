@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
@@ -8,10 +8,30 @@ const CategoryButton = (props) => {
   const [isClicked, SetIsClicked] = useState(false);
   const [currentButtonColor, setColor] = useState("#E77F64");
   const [fontColor, setFontColor] = useState("#fff");
+  const [firstRun, setFirstRun] = useState(false);
 
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
+
+  useEffect(() => {
+    //console.log(firstRun);
+    if(!firstRun) {
+      console.log("Running: " + props.text + " first time")
+      const categoryArray = globals.report.getCategories();
+      if(categoryArray.length > 0){
+        categoryArray.forEach(element => {
+          if(element === props.text){
+            setColor("#EBC2AD");
+            setFontColor("#2F4357");
+            SetIsClicked(true);
+          }
+        });
+        
+      }
+      setFirstRun(true);
+    }
+  }, []);
 
   function changeBackground() {
     if (!isClicked) {
