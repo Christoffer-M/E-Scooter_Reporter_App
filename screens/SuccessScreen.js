@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 36,
     textAlign: "center",
+    paddingBottom: 20,
   },
   container: {
     flex: 1,
