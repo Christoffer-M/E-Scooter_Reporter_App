@@ -85,7 +85,6 @@ const QRScreen = ({ navigation }) => {
           />
           <View style={{ flex: 0.05 }} />
         </View>
-
         <View
           style={{
             flex: 0.25,
