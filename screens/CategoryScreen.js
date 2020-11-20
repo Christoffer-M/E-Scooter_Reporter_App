@@ -22,7 +22,7 @@ const CategoryScreen = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [isOtherPress, setOther] = useState(false);
   const [hideInput, setHideInput] = useState(false);
-  const [value, onChangeText] = useState('');
+  const [value, onChangeText] = useState("");
 
   useEffect(() => {
     globals.report.setComment(value);
@@ -89,7 +89,7 @@ const CategoryScreen = ({ navigation }) => {
                   fontFamily: "RobotoMono_500Medium",
                 }}
                 placeholder="Type here"
-                onChangeText={text => onChangeText(text)}
+                onChangeText={(text) => onChangeText(text)}
                 value={value}
               />
             </>
