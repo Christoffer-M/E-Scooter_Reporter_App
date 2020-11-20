@@ -30,7 +30,11 @@ const ReportScreen = ({ navigation }) => {
 
       <View style={styles.categoriesContainer}>
         {categoryArray.map((item, key) => {
-          return <Button text={item} color="grey" key={key} disabled={true} />;
+          return (
+            <View style={styles.buttonContainer}>
+              <Button text={item} color="grey" key={key} disabled={true} />
+            </View>
+          );
         })}
       </View>
       <View style={styles.buttonContainer}>
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    paddingBottom: 40,
+    paddingBottom: 20,
   },
 });
 
