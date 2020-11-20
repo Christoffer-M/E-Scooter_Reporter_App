@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
+import BackButton from "../components/BackButton";
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      <BackButton nav={navigation}></BackButton>
       <View style={{ marginRight: 15, marginLeft: 15 }}>
         <Headline text="Welcome!" style={{ color: "#fff" }} />
         <TextInput
@@ -27,7 +29,14 @@ const HomeScreen = ({ navigation }) => {
             backgroundColor: "#fff",
           }}
         />
-        <Button nav={navigation} navDir="Login" text="Log in" color="orange" />
+        <View style={styles.buttonContainer}>
+          <Button
+            nav={navigation}
+            navDir="Login"
+            text="Log in"
+            color="orange"
+          />
+        </View>
         <StatusBar style="auto" />
       </View>
     </View>
@@ -55,6 +64,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: "#fff",
+  },
+  buttonContainer: {
+    paddingTop: 20,
   },
 });
 
