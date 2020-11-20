@@ -239,7 +239,7 @@ class Report {
 	}
 
 	setBrand(qrCode) {
-		if (qrCode.includes("lime")) {
+		if (qrCode.includes("li.me")) {
       this.brand = "lime";
     } else if (qrCode.includes("voi")) {
 			this.brand = "voi";
