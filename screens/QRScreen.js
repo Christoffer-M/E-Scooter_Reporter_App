@@ -4,6 +4,8 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import CameraText from "../components/CameraText";
 import { Camera } from "expo-camera";
 import BackButton from "../components/BackButton";
+import Button from "../components/Button";
+import * as globals from "../components/Global.js";
 
 const QRScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -19,6 +21,7 @@ const QRScreen = ({ navigation }) => {
 
   //Data variable is what needs to be stored in FireBase
   const handleBarCodeScanned = ({ type, data }) => {
+    globals.report.setQR(data);
     setScanned(true);
     Alert.alert(
       "Bar code Scanned!",
@@ -90,22 +93,22 @@ const QRScreen = ({ navigation }) => {
             flex: 0.25,
           }}
         >
-          {/* {scanned && (
-            <View
-              style={{
-                width: 250,
-                paddingTop: 50,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
-              <Button
-                color="orange"
-                title={"Continue"}
-                onPress={() => navigation.push("Category")}
-              />
-            </View>
-          )} */}
+          <View
+            style={{
+              width: 250,
+              paddingTop: 50,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <Button
+              text="Skip"
+              color="orange"
+              title={"Continue"}
+              nav={navigation}
+              navDir="Category"
+            />
+          </View>
         </View>
       </Camera>
     </View>

@@ -3,16 +3,30 @@ import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
-import Headline from "../components/Headline.js";
 import Button from "../components/Button.js";
 import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";
 
 const ReportScreen = ({ navigation }) => {
   const [categoryArray, setArray] = useState([]);
+  const [imageUri, setImage] = useState("")
+  const [brand, setBrand] = useState("../assets/brand_logos/logo_unknown.png");
+  const testbrand = "../assets/brand_logos/logo_unknown.png";
+
 
   useEffect(() => {
+    setBrand("../assets/brand_logos/logo_unknown.png");
+    const braaaaaand = globals.report.getBrand();
+    const reportBrand = "../assets/brand_logos/logo_" + braaaaaand + ".png";
+    console.log("reportbrand is: " + reportBrand);
+    
+    console.log("UseState brand is: " + brand);
     setArray(globals.report.getCategories());
+    if(globals.report.hasImageURI()){
+      setImage(globals.report.getImage().uri);
+    } else {
+      setImage("https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg");
+    }
   }, []);
 
   let [fontsLoaded] = useFonts({
@@ -32,8 +46,6 @@ const ReportScreen = ({ navigation }) => {
     >
       <BackButton nav={navigation} />
       <Text style={styles.headline}>Your report</Text>
-
-      <Text style={styles.infoText}>Violations</Text>
       <View style={styles.pictureContainer}>
         <Image
           style={{
@@ -42,14 +54,17 @@ const ReportScreen = ({ navigation }) => {
             width: "100%",
             height: "100%",
           }}
-          resizeMode="cover"
+          resizeMode="contain"
           source={{
-            uri: globals.report.getImage().uri,
+            uri: imageUri,
           }}
         />
       </View>
       <Text
+      numberOfLines={1}
         style={{
+          textTransform:"capitalize",
+          flexWrap:"nowrap",
           color: "white",
           fontSize: 20,
           flex: 0.1,
@@ -63,7 +78,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>Brand:</Text>
           <Image
-            source={require("../assets/brand_logos/logo_bird.png")}
+            source={require(globals.report.getBrand())}
             resizeMode="cover"
             style={{
               height: 35,
@@ -97,13 +112,14 @@ const ReportScreen = ({ navigation }) => {
             })}
           </View>
         </View>
-        <View style={{ flex: 0.3 }}>
+        {categoryArray.includes('Other') ? <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>Description:</Text>
           <Text style={{ fontSize: 16, color: "white" }}>
-            Other Description
+            {globals.report.comment}
           </Text>
-        </View>
+        </View> : <View/>}
       </View>
+
 
       <View style={styles.buttonContainer}>
         <Button
@@ -131,7 +147,7 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: Dimensions.get("window").height * 1.2,
+    height: Dimensions.get("window").height * 1.3,
     width: Dimensions.get("window").width,
     backgroundColor: "#2F4357",
     flexDirection: "column",
@@ -168,7 +184,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   buttonContainer: {
-    flex: 0.15,
+    flex: 0.1,
     alignSelf: "center",
     justifyContent: "center",
     paddingBottom: 30,

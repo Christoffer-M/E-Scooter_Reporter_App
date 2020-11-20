@@ -8,14 +8,13 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { Permissions } from "expo";
 import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
 import CameraText from "../components/CameraText";
 import * as globals from "../components/Global";
 import * as FileSystem from "expo-file-system";
 import * as imagehandler from "../data_model/ImageHandler";
-import { cos } from "react-native-reanimated";
+import * as Location from "expo-location";
 import Headline from "../components/Headline";
 import BackButton from "../components/BackButton";
 
@@ -36,6 +35,11 @@ const CameraSceen = ({ navigation }) => {
       setHasPermission(status === "granted");
     })();
   }, []);
+
+  async function setLocation() {
+        const location = await Location.getCurrentPositionAsync({});
+        globals.report.setGeoLocation(location.coords.latitude, location.coords.longitude);
+  }
 
   function goBack() {
     navigation.goBack();
@@ -193,6 +197,8 @@ const CameraSceen = ({ navigation }) => {
           style={styles.pictureButton}
           onPress={() => {
             navigation.push("QRScreen");
+            setLocation();
+           
           }}
         >
           <Text style={{ color: "white" }}>Confirm</Text>
