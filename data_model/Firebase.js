@@ -212,7 +212,7 @@ class Report {
 		return this.hasAddress() ? this.address : "Unknown location"
 	}
 
-	getAddress(maxLength) {
+	getAddressCropped(maxLength) {
 		const address = this.getAddress();
 		if (address.length > maxLength) {
 			// Only cut address if it is too long

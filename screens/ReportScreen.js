@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
 import Headline from "../components/Headline.js";
@@ -23,47 +24,85 @@ const ReportScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      style={styles.scrollView}
+      contentContainerStyle={styles.container}
+      scrollEnabled={true}
+    >
       <BackButton nav={navigation} />
-      <Headline text="Your report" flex={{ flex: 0.1 }} />
+      <Text style={styles.headline}>Your report</Text>
+
       <Text style={styles.infoText}>Violations</Text>
       <View style={styles.pictureContainer}>
         <Image
           style={{
-            position: "absolute",
-            height: '100%',
-            width: '81%',
-            borderColor:"orange",
+            borderColor: "orange",
             borderWidth: 1,
-
+            width: "100%",
+            height: "100%",
           }}
           resizeMode="cover"
           source={{
-            uri:
-              "https://www.tynker.com/projects/screenshot/5be44859c762c1449610d20b/derp-derpy-derp-derp-derp-derp-derpy-deeerrrrrpppp.png",
+            uri: globals.report.getImage().uri,
           }}
         />
-        
       </View>
-        <Text style={{color:"white", fontSize: 20}}>📌 Location</Text>
-      
-          <View style={{flex: 0.1, width:'90%'}}>
+      <Text
+        style={{
+          color: "white",
+          fontSize: 20,
+          flex: 0.1,
+          alignSelf: "center",
+          marginTop: -15,
+        }}
+      >
+        📌 {globals.report.getAddress()}
+      </Text>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>Brand:</Text>
-      </View>
-      <View style={{flex: 0.2, width:'90%', display:"flex"}}>
-        <Text style={styles.headerFont}>Violations:</Text>
-          <View style={styles.categoriesContainer}>
-          
-            {categoryArray.map((item, key) => {
-              return <View   key={key} style={{backgroundColor:"#ffff", padding: 5, margin: 3, borderRadius: 5}} >
-                <Text style={{fontSize:18, fontFamily:"RobotoMono_500Medium"}}>{item}</Text>
-              </View>;
-            })}
+          <Image
+            source={require("../assets/brand_logos/logo_bird.png")}
+            resizeMode="cover"
+            style={{
+              height: 35,
+              width: 90,
+              borderRadius: 8,
+            }}
+          />
         </View>
-      </View>
-      <View style={{flex: 0.1, width:'90%'}}>
+        <View style={{ flex: 0.4, display: "flex" }}>
+          <Text style={styles.headerFont}>Violations:</Text>
+          <View style={styles.categoriesContainer}>
+            {categoryArray.map((item, key) => {
+              return (
+                <View
+                  key={key}
+                  style={{
+                    backgroundColor: "#FBEFE8",
+                    padding: 6,
+                    marginRight: 6,
+                    marginBottom: 6,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontFamily: "RobotoMono_500Medium" }}
+                  >
+                    {item}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+        <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>Description:</Text>
-          <Text style={{fontSize:16, color:"white"}}>Other Description</Text>
+          <Text style={{ fontSize: 16, color: "white" }}>
+            Other Description
+          </Text>
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -74,33 +113,45 @@ const ReportScreen = ({ navigation }) => {
           navDir="Success"
         />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    paddingLeft: 15,
-    paddingRight: 15,
-    width:Dimensions.get('window').width,
+  scrollView: {
+    backgroundColor: "pink",
     flex: 1,
+  },
+  headline: {
+    fontSize: 35,
+    fontFamily: "RobotoMono_700Bold",
+    color: "#EBC2AD",
+    textAlign: "center",
+    alignSelf: "center",
+  },
+  container: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    height: Dimensions.get("window").height * 1.2,
+    width: Dimensions.get("window").width,
     backgroundColor: "#2F4357",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "flex-start",
-    paddingTop: 50,
+    paddingTop: 35,
   },
   headerFont: {
-    alignSelf:"flex-start", 
-    color:"#EBC2AD", 
-    fontSize:20, 
-    fontFamily:"RobotoMono_500Medium",
+    paddingBottom: 2,
+    alignSelf: "flex-start",
+    color: "#EBC2AD",
+    fontSize: 20,
+    fontFamily: "RobotoMono_500Medium",
   },
   pictureContainer: {
-    flex: 0.5,
-    position:"relative",
-    width: Dimensions.get('window').width,
-    alignItems:"center",
-
+    padding: 20,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width,
+    alignSelf: "center",
+    alignItems: "center",
   },
   infoText: {
     fontFamily: "RobotoMono_500Medium",
@@ -108,17 +159,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 36,
     textAlign: "center",
+    alignSelf: "center",
     flex: 0.1,
   },
   categoriesContainer: {
-    height: 200,
     flex: 1,
     flexDirection: "row",
-    flexWrap:"wrap",
+    flexWrap: "wrap",
   },
   buttonContainer: {
-    paddingBottom: 40,
-    flex: 0.1,
+    flex: 0.15,
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingBottom: 30,
   },
 });
 
