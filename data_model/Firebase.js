@@ -323,7 +323,7 @@ class Report {
 		if (this.isOther()) {
 			categories.push(other);
 		}
-
+		console.log(categories);
 		return categories;
 	}
 
