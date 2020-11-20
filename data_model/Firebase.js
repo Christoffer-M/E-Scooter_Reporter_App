@@ -204,16 +204,18 @@ class Report {
 		return this.getAddress();
 	}
 
+	hasAddress() {
+		return this.address.length > 0;
+	}
+
 	getAddress() {
-		if (this.address.length > 0) {
-			return this.address;
-		}
-		return "Unknown location";
+		return this.hasAddress() ? this.address : "Unknown location"
 	}
 
 	getAddress(maxLength) {
 		const address = this.getAddress();
-		if (address.length > maxLength) { // Only cut address if it is too long
+		if (address.length > maxLength) {
+			// Only cut address if it is too long
 			const length = Math.max(maxLength, 3); // Avoid sub 3 length values
 			return (trimmedString = getAddress().substring(0, length - 3) + "...");
 		} else {
