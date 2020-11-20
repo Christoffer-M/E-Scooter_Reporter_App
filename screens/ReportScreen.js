@@ -7,25 +7,16 @@ import Button from "../components/Button.js";
 import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";
 
-const ReportScreen = ({ navigation }) => {
-  const [categoryArray, setArray] = useState([]);
-  const [imageUri, setImage] = useState("")
-  const [brand, setBrand] = useState("../assets/brand_logos/logo_unknown.png");
-  const testbrand = "../assets/brand_logos/logo_unknown.png";
-
+const ReportScreen = ({ navigation } ) => {
+  const [imageUri, setImage] = useState("");
 
   useEffect(() => {
-    setBrand("../assets/brand_logos/logo_unknown.png");
-    const braaaaaand = globals.report.getBrand();
-    const reportBrand = "../assets/brand_logos/logo_" + braaaaaand + ".png";
-    console.log("reportbrand is: " + reportBrand);
-    
-    console.log("UseState brand is: " + brand);
-    setArray(globals.report.getCategories());
-    if(globals.report.hasImageURI()){
+    if (globals.report.hasImageURI()) {
       setImage(globals.report.getImage().uri);
     } else {
-      setImage("https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg");
+      setImage(
+        "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
+      );
     }
   }, []);
 
@@ -61,10 +52,10 @@ const ReportScreen = ({ navigation }) => {
         />
       </View>
       <Text
-      numberOfLines={1}
+        numberOfLines={1}
         style={{
-          textTransform:"capitalize",
-          flexWrap:"nowrap",
+          textTransform: "capitalize",
+          flexWrap: "nowrap",
           color: "white",
           fontSize: 20,
           flex: 0.1,
@@ -78,7 +69,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>Brand:</Text>
           <Image
-            source={require(globals.report.getBrand())}
+            source={require("../assets/brand_logos/logo_unknown.png")}
             resizeMode="cover"
             style={{
               height: 35,
@@ -90,7 +81,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
           <View style={styles.categoriesContainer}>
-            {categoryArray.map((item, key) => {
+            {globals.report.getCategories().map((item, key) => {
               return (
                 <View
                   key={key}
@@ -112,14 +103,17 @@ const ReportScreen = ({ navigation }) => {
             })}
           </View>
         </View>
-        {categoryArray.includes('Other') ? <View style={{ flex: 0.3 }}>
-          <Text style={styles.headerFont}>Description:</Text>
-          <Text style={{ fontSize: 16, color: "white" }}>
-            {globals.report.comment}
-          </Text>
-        </View> : <View/>}
+        {globals.report.getCategories().includes("Other") ? (
+          <View style={{ flex: 0.3 }}>
+            <Text style={styles.headerFont}>Description:</Text>
+            <Text style={{ fontSize: 16, color: "white" }}>
+              {globals.report.comment}
+            </Text>
+          </View>
+        ) : (
+          <View />
+        )}
       </View>
-
 
       <View style={styles.buttonContainer}>
         <Button
