@@ -212,7 +212,7 @@ class Report {
 	}
 
 	getAddress(maxLength) {
-		const address = getAddress();
+		const address = this.getAddress();
 		if (address.length > maxLength) { // Only cut address if it is too long
 			const length = Math.max(maxLength, 3); // Avoid sub 3 length values
 			return (trimmedString = getAddress().substring(0, length - 3) + "...");
