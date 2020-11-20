@@ -247,7 +247,7 @@ class Report {
 		} else if (qrCode.includes("circ")) {
 			this.brand = "circ";
 		} else {
-			this.brand = "Unknown";
+			this.brand = "unknown";
     }
     return this.brand
 	}
