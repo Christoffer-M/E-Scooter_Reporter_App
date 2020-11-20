@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     display: "flex",
     top: 50,
-    left: 10,
+    left: 20,
   },
 });
 
