@@ -15,7 +15,6 @@ const CategoryButton = (props) => {
   });
 
   useEffect(() => {
-    //console.log(firstRun);
     if(!firstRun) {
       console.log("Running: " + props.text + " first time")
       const categoryArray = globals.report.getCategories();

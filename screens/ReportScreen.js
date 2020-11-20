@@ -9,7 +9,6 @@ import * as globals from "../components/Global.js";
 
 const ReportScreen = ({ navigation } ) => {
   const [imageUri, setImage] = useState("");
-  const [firstRun, setFirstRun] = useState(false);
 
   useEffect(() => {
     if (globals.report.hasImageURI()) {
