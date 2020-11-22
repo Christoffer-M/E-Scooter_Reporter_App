@@ -84,8 +84,7 @@ const styles = StyleSheet.create({
 
   reportButton: {
     position: "absolute",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    bottom: 0,
     paddingBottom: 35,
     alignItems: "center",
     justifyContent: "flex-end",
@@ -93,10 +92,10 @@ const styles = StyleSheet.create({
 
   menuButton: {
     position: "absolute",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    top: 0,
+    left:0,
     paddingTop: 40,
-    paddingRight: 25,
+    paddingLeft: 25,
     alignItems: "flex-end",
     justifyContent: "flex-start",
   },
