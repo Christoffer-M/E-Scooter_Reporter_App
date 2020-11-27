@@ -9,24 +9,24 @@ const CategoryButton = (props) => {
   const [currentButtonColor, setColor] = useState("#E77F64");
   const [fontColor, setFontColor] = useState("#fff");
   const [firstRun, setFirstRun] = useState(false);
+  const [text, setText] = useState(props.text);
 
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
 
   useEffect(() => {
-    if(!firstRun) {
-      console.log("Running: " + props.text + " first time")
+    if (!firstRun) {
+      console.log("Running: " + text + " first time");
       const categoryArray = globals.report.getCategories();
-      if(categoryArray.length > 0){
-        categoryArray.forEach(element => {
-          if(element === props.text){
+      if (categoryArray.length > 0) {
+        categoryArray.forEach((element) => {
+          if (element === props.text) {
             setColor("#EBC2AD");
             setFontColor("#2F4357");
             SetIsClicked(true);
           }
         });
-        
       }
       setFirstRun(true);
     }
@@ -40,16 +40,21 @@ const CategoryButton = (props) => {
       switch (props.text) {
         case "Misplaced":
           globals.report.toggleMisplaced();
+          setText(props.text + "  🛴 ");
           break;
         case "Laying Down":
           globals.report.toggleLaying();
+          setText(props.text + "  🛴 ");
           break;
         case "Broken":
           globals.report.toggleBroken();
+          setText(props.text + "  🛴 ");
+
           break;
         case "Other":
           globals.report.toggleOther();
           props.setOther(true);
+          setText(props.text + "  🛴 ");
           break;
       }
     } else {
@@ -59,15 +64,19 @@ const CategoryButton = (props) => {
       switch (props.text) {
         case "Misplaced":
           globals.report.toggleMisplaced();
+          setText(props.text);
           break;
         case "Laying Down":
           globals.report.toggleLaying();
+          setText(props.text);
           break;
         case "Broken":
           globals.report.toggleBroken();
+          setText(props.text);
           break;
         case "Other":
           globals.report.toggleOther();
+          setText(props.text);
           props.setOther(false);
           break;
       }
@@ -84,7 +93,7 @@ const CategoryButton = (props) => {
         style={[styles.orangeButton, { backgroundColor: currentButtonColor }]}
         onPress={() => changeBackground()}
       >
-        <Text style={[styles.font, { color: fontColor }]}>{props.text}</Text>
+        <Text style={[styles.font, { color: fontColor }]}>{text}</Text>
       </TouchableOpacity>
     </View>
   );
