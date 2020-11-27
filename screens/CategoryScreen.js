@@ -4,9 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  ScrollView,
   Dimensions,
-  KeyboardAware,
   Animated,
 } from "react-native";
 import Headline from "../components/Headline";
@@ -23,6 +21,11 @@ const CategoryScreen = ({ navigation }) => {
   const [isOtherPress, setOther] = useState(false);
   const [hideInput, setHideInput] = useState(false);
   const [value, onChangeText] = useState("");
+  const [hideProcess, setHideProceed] = useState(false);
+  const [toggles, setToggles] = useState([]);
+  const categories = ["Misplaced", "Laying Down", "Broken", "Other"];
+  const categoryButtons = [];
+  fillCategoryArray();
 
   useEffect(() => {
     globals.report.setComment(value);
@@ -45,6 +48,55 @@ const CategoryScreen = ({ navigation }) => {
     }
   });
 
+  function add(categori) {
+    const arr = toggles;
+    arr.push(categori);
+    setToggles(arr);
+    if (hideProcess === false && arr.length > 0) {
+      setHideProceed(true);
+    }
+  }
+
+  function remove(categori) {
+    const arr = toggles;
+    arr.push(categori);
+    const index = arr.indexOf(categori);
+    if (index > -1) {
+      arr.splice(index);
+      setToggles(arr);
+    }
+    if (hideProcess === true && arr.length < 1) {
+      setHideProceed(false);
+    }
+  }
+
+  function fillCategoryArray() {
+    for (let index = 0; index < categories.length; index++) {
+      if (categories[index] !== "Other") {
+        categoryButtons.push(
+          <CategoryButton
+            text={categories[index]}
+            id={index}
+            add={add}
+            remove={remove}
+            key={index}
+          />
+        );
+      } else {
+        categoryButtons.push(
+          <CategoryButton
+            text={categories[index]}
+            id={index}
+            setOther={setOther}
+            add={add}
+            remove={remove}
+            key={index}
+          />
+        );
+      }
+    }
+  }
+
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
@@ -66,10 +118,7 @@ const CategoryScreen = ({ navigation }) => {
         report
       </Text>
       <View style={styles.buttons}>
-        <CategoryButton text="Misplaced" id="0" />
-        <CategoryButton text="Laying Down" id="1" />
-        <CategoryButton text="Broken" id="2" />
-        <CategoryButton text="Other" id="3" setOther={setOther} />
+        {categoryButtons}
         <Animated.View style={{ opacity: fadeAnim }}>
           {hideInput ? (
             <>
@@ -98,13 +147,19 @@ const CategoryScreen = ({ navigation }) => {
           )}
         </Animated.View>
       </View>
+
       <View style={{ justifyContent: "flex-end" }}>
-        <Buttons
-          nav={navigation}
-          navDir="Report"
-          color="orange"
-          text="Proceed"
-        />
+        {hideProcess ? (
+          <Buttons
+            nav={navigation}
+            navDir="Report"
+            color="orange"
+            text="Proceed"
+          />
+        ) : (
+          <></>
+        )}
+
         <Text style={styles.infoText}>* Select one or more options</Text>
       </View>
     </KeyboardAwareScrollView>

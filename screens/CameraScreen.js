@@ -37,8 +37,11 @@ const CameraSceen = ({ navigation }) => {
   }, []);
 
   async function setLocation() {
-        const location = await Location.getCurrentPositionAsync({});
-        globals.report.setGeoLocation(location.coords.latitude, location.coords.longitude);
+    const location = await Location.getCurrentPositionAsync({});
+    globals.report.setGeoLocation(
+      location.coords.latitude,
+      location.coords.longitude
+    );
   }
 
   function goBack() {
@@ -139,13 +142,11 @@ const CameraSceen = ({ navigation }) => {
                 cameraRef.pausePreview();
                 setURI(photo.uri);
 
-                //console.log(photo);
                 const newimage = await imagehandler.cropImageToSquare(
                   photo.uri,
                   photo.width,
                   photo.height
                 );
-                //console.log(newimage);
                 report.setImage(newimage.uri, newimage.width, newimage.height);
                 setLoading(false);
                 setImageTaken(true);
@@ -198,7 +199,6 @@ const CameraSceen = ({ navigation }) => {
           onPress={() => {
             navigation.push("QRScreen");
             setLocation();
-           
           }}
         >
           <Text style={{ color: "white" }}>Confirm</Text>

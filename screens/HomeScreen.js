@@ -10,7 +10,6 @@ import SvgUri from "expo-svg-uri";
 import * as firebase from "../data_model/Firebase";
 
 const HomeScreen = ({ navigation }) => {
-  global.myVar = "HI THERE";
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
