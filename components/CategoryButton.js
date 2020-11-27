@@ -17,11 +17,12 @@ const CategoryButton = (props) => {
 
   useEffect(() => {
     if (!firstRun) {
-      console.log("Running: " + text + " first time");
       const categoryArray = globals.report.getCategories();
       if (categoryArray.length > 0) {
         categoryArray.forEach((element) => {
           if (element === props.text) {
+            setText(props.text);
+            props.add(props.text);
             setColor("#EBC2AD");
             setFontColor("#2F4357");
             SetIsClicked(true);
@@ -40,20 +41,24 @@ const CategoryButton = (props) => {
       switch (props.text) {
         case "Misplaced":
           globals.report.toggleMisplaced();
+          props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
         case "Laying Down":
           globals.report.toggleLaying();
+          props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
         case "Broken":
           globals.report.toggleBroken();
+          props.add(props.text);
           setText(props.text + "  🛴 ");
 
           break;
         case "Other":
           globals.report.toggleOther();
           props.setOther(true);
+          props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
       }
@@ -64,20 +69,25 @@ const CategoryButton = (props) => {
       switch (props.text) {
         case "Misplaced":
           globals.report.toggleMisplaced();
+          props.remove(props.text);
           setText(props.text);
           break;
         case "Laying Down":
           globals.report.toggleLaying();
+          props.remove(props.text);
           setText(props.text);
           break;
         case "Broken":
           globals.report.toggleBroken();
+          props.remove(props.text);
           setText(props.text);
           break;
         case "Other":
           globals.report.toggleOther();
-          setText(props.text);
+          props.remove(props.text);
           props.setOther(false);
+          setText(props.text);
+
           break;
       }
     }
