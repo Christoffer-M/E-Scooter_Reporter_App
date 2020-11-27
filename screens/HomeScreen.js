@@ -7,7 +7,6 @@ import * as Location from "expo-location";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
-import * as firebase from "../data_model/Firebase";
 
 const HomeScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
