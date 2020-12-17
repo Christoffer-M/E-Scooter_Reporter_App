@@ -1,16 +1,27 @@
-const { exp } = require("react-native-reanimated");
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MapView from "react-native-maps";
-import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  ActivityIndicator,
+  Text,
+  Animated,
+  BackHandler,
+  Alert,
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
+import Headline from "../components/Headline";
 
 const HomeScreen = ({ navigation }) => {
+  const transform = useRef(new Animated.Value(-280)).current;
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isPress, setIsPress] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -24,6 +35,43 @@ const HomeScreen = ({ navigation }) => {
       }
     })();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", onbackpress);
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onbackpress);
+      };
+    }, [])
+  );
+  function onbackpress() {
+    Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  }
+  function animate() {
+    if (isPress) {
+      setIsPress(false);
+      Animated.timing(transform, {
+        toValue: -280,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      setIsPress(true);
+      Animated.timing(transform, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }
+  }
 
   if (location == null) {
     return (
@@ -46,10 +94,19 @@ const HomeScreen = ({ navigation }) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        onTouchStart={() => {
+          if (isPress) {
+            animate();
+          }
+        }}
       />
 
       <View style={styles.menuButton}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            animate();
+          }}
+        >
           <SvgUri
             width="60"
             height="60"
@@ -61,6 +118,38 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.reportButton}>
         <Button nav={navigation} navDir="Camera" text="Report" color="orange" />
       </View>
+      <Animated.View
+        style={{
+          position: "absolute",
+          height: Dimensions.get("window").height,
+          width: 280,
+          backgroundColor: "rgba(47, 67, 87, 0.9)",
+          left: 0,
+          flex: 1,
+          transform: [{ translateX: transform }],
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            alignSelf: "flex-end",
+            borderRadius: 20,
+            paddingRight: 20,
+            paddingTop: 20,
+          }}
+          onPress={() => {
+            animate();
+          }}
+        >
+          <SvgUri
+            width="35"
+            height="35"
+            source={require("../assets/Icons/Group.svg")}
+          ></SvgUri>
+        </TouchableOpacity>
+        <Headline text="Reports" flex={{ flex: 0.1 }} />
+      </Animated.View>
     </View>
   );
 };
@@ -101,6 +190,17 @@ const styles = StyleSheet.create({
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  overlay: {
+    position: "absolute",
+    height: Dimensions.get("window").height,
+    width: 280,
+    backgroundColor: "#000",
+  },
+  overlayShow: {
+    height: Dimensions.get("window").height,
+    width: 280,
+    backgroundColor: "#000",
   },
 });
 
