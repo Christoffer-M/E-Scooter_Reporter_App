@@ -5,6 +5,8 @@ import "firebase/firestore"; // Optionally import the additiona firebase service
 //import "firebase/functions"; // Optionally import the additiona firebase services
 import "firebase/storage"; // Optionally import the additiona firebase services
 
+import { v4 as uuidv4 } from 'uuid';
+
 // Our Firebase configuration
 var firebaseConfig = {
 	apiKey: "AIzaSyDnAWCVQYyaJlSDVvPYDM8zGxmmHK10xM4",
@@ -45,6 +47,7 @@ export const getScooterImage = (scooterImageName) => {
 			console.log("Error getting file image file from url");
 			return null;
 		});
+	
 };
 
 // REPORTS
@@ -99,9 +102,13 @@ export const getReportByID = (reportID) => {
 	return reportData;
 };
 
+
+
+// Our Report class
 class Report {
+	id = ""
 	user = ""; // userid
-	image = ""; // scooter image name
+	imageFileName = ""; // scooter image name
 	timestamp = "";
 	geolocation = []; //[55.660572° N, 12.590942° E]
 	address = "";
@@ -121,7 +128,27 @@ class Report {
 	comment = "";
 
 	constructor(user) {
+		this.id = uuidv4();
 		user ? (this.user = user) : (this.user = "guest"); //default
+		console.log("New report created, with id:", id);
+	}
+
+	constructor(id, user, imageFileName, timestamp, geolocation, address, qr,brand, laying, broken, misplaced, other, comment) {	
+		console.log("New report by",user,"created with id:", id);	
+		this.id = id;
+		this.user = user;
+		this.imageFileName = imageFileName;
+		this.timestamp = timestamp;
+		this.geolocation[0] = geolocation[0]; //Latitude
+		this.geolocation[1] = geolocation[1]; //Longitude
+  		this.address,
+		this.qr = qr,
+		this.brand = brand;
+		this.laying = laying;
+		this.broken = broken;
+		this.misplaced = misplaced;
+		this.other = other;
+		this.comment = comment;
 	}
 
 	setImageFile(file) {
@@ -137,8 +164,8 @@ class Report {
 			console.log("Uploaded an image!");
 		});
 
-		this.image = file.name;
-		return this.image;
+		this.imageFileName = file.name;
+		return this.imageFileName;
 	}
 
 	setImage(uri, width, height) {
@@ -329,7 +356,7 @@ class Report {
 
 	isSubmittable() {
 		// Report must cotain a userid, image, timestamp and geolocation
-		if (this.user && this.image && this.timestamp && this.geolocation) {
+		if (this.user && this.imageFileName && this.timestamp && this.geolocation) {
 			// One description must be selected
 			if (this.laying || this.broken || this.misplaced || this.other) {
 				return true;
@@ -343,7 +370,7 @@ class Report {
 			db.collection("reports")
 				.add({
 					user: this.user,
-					image: this.image,
+					image: this.imageFileName,
 					timestamp: this.timestamp,
           geolocation: this.geolocation,
           address: this.address,
