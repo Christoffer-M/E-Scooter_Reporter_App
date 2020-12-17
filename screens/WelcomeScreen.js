@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
 import { AppLoading } from "expo";
+import * as globals from "../components/Global.js";
+import * as firebase from "../data_model/Firebase";
 
 const WelcomeScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -22,7 +24,29 @@ const WelcomeScreen = ({ navigation }) => {
         <Text style={styles.fontStyle}>
           Would you like to sign up or continue as a guest?
         </Text>
-        <Button nav={navigation} navDir="Login" text="Log in" color="orange" />
+        <TouchableOpacity
+          onPress={async () => {
+            const feedback = await firebase.signInWithGoogleAsync(navigation);
+            if (feedback.type === "success") {
+              console.log(feedback);
+              navigation.push("Home");
+            }
+          }}
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={require("../assets/Icons/btn_google_signin.png")}
+            style={{
+              height: 70,
+              width: 300,
+              borderRadius: 90,
+            }}
+          />
+        </TouchableOpacity>
+
         <Text style={styles.fontStyleforOr}>or</Text>
         <View style={styles.buttonview}>
           <Button nav={navigation} navDir="Home" text="Guest" color="orange" />
