@@ -13,6 +13,4 @@ const overlayReport = (props) => {
     </View>
   );
 };
-
-StyleSheet = {};
 export default overlayReport;
