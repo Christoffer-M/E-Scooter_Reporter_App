@@ -83,15 +83,27 @@ export async function signInWithGoogleAsync() {
       return result.type;
     } else {
       console.log("fail!!!!");
-
-      navDir = "Welcome";
       alert("Google authentication failed");
       return { cancelled: true };
     }
   } catch (e) {
     console.log("ERROR!!!!");
-    navDir = "Welcome";
     alert("Sorry. An error has occurred while trying to log in");
+    return { error: true };
+  }
+}
+
+export async function isUserLoggedIn() {
+  try {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+      } else {
+        // IF THERE IS NO USER LOGGED IN  ---> currentUser = null;
+      }
+    });
+  } catch (e) {
+    console.log("Something is off!");
+    alert("Sorry. An error has occurred while trying to authenticate user");
     return { error: true };
   }
 }
