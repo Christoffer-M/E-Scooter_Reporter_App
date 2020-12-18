@@ -26,9 +26,10 @@ const WelcomeScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           onPress={async () => {
-            const feedback = await firebase.signInWithGoogleAsync(navigation);
-            if (feedback.type === "success") {
-              console.log(feedback);
+            const res = await firebase.signInWithGoogleAsync();
+            // const feedback = await firebase.signInWithGoogleAsync(navigation);
+            if (res === "success") {
+              console.log(res);
               navigation.push("Home");
             }
           }}

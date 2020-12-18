@@ -61,14 +61,26 @@ export async function signInWithGoogleAsync(nav) {
     });
 
     if (result.type === "success") {
-      firebase.auth();
-      console.log("success:");
-      const feedback = {
-        user: result.user,
-        token: result.accessToken,
-        type: result.type,
-      };
-      return feedback;
+      // Build Firebase credential with the Google ID token.
+      var credentials = firebase.auth.GoogleAuthProvider.credential(
+        result.idToken
+      );
+
+      // Sign in with credential from the Google user.
+      firebase
+        .auth()
+        .signInWithCredential(credentials)
+        .catch(function (error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        });
+      return result.type;
     } else {
       console.log("fail!!!!");
 
