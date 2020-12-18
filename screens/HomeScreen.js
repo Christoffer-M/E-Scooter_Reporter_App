@@ -35,7 +35,6 @@ const HomeScreen = ({ navigation }) => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
-        console.log(errorMsg);
         navigation.goBack();
       } else {
         let location = await Location.getCurrentPositionAsync({});
@@ -47,7 +46,6 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     if (isGuest === false) {
       if (user === null) {
-        console.log("Running");
         firebases.auth().onAuthStateChanged((user) => {
           if (user) {
             setUser(user);
