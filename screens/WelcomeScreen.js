@@ -1,17 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
 import { AppLoading } from "expo";
 import * as globals from "../components/Global.js";
-import * as firebase from "../data_model/Firebase";
+import * as firebaseDataBase from "../data_model/Firebase";
+import * as firebase from "firebase/app";
+import { useFocusEffect } from "@react-navigation/native";
 
 const WelcomeScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     RobotoMono_500Medium,
   });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      firebase.auth().onAuthStateChanged((res) => {
+        if (res) {
+          globals.setGues(false);
+          navigation.push("Home");
+        }
+      });
+    })
+  );
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -26,18 +46,12 @@ const WelcomeScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           onPress={async () => {
-            const user = firebase.getUser();
-            if (user) {
-              console.log("User already exists!");
+            const result = await firebaseDataBase.signInWithGoogleAsync();
+            if (result.type === "success") {
+              globals.setGues(false);
               navigation.push("Home");
             } else {
-              const result = await firebase.signInWithGoogleAsync();
-              if (result.type === "success") {
-                globals.setGues(false);
-                navigation.push("Home");
-              } else {
-                console.log("something went wrong!!!!");
-              }
+              console.log("something went wrong!!!!");
             }
           }}
           style={{
@@ -62,17 +76,6 @@ const WelcomeScreen = ({ navigation }) => {
 
         <StatusBar style="auto" />
       </View>
-      <TouchableOpacity
-        style={{
-          width: 150,
-          height: 50,
-          backgroundColor: "red",
-          marginTop: 50,
-        }}
-        onPress={() => {
-          firebase.logout();
-        }}
-      />
     </View>
   );
 };

@@ -9,6 +9,7 @@ import {
   Alert,
   Animated,
   Image,
+  Text,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
@@ -18,6 +19,7 @@ import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
 import * as globals from "../components/Global.js";
 import * as firebase from "../data_model/Firebase";
+import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(new Animated.Value(-280)).current;
@@ -26,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
+  const isGuest = useRef(globals.getGues()).current;
 
   useEffect(() => {
     (async () => {
@@ -42,18 +45,20 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (user === null) {
-      console.log("Running");
-      const userfrombase = firebase.getUser();
-      console.log(userfrombase);
-      setUser(userfrombase);
+    if (isGuest === false) {
+      if (user === null) {
+        console.log("Running");
+        firebases.auth().onAuthStateChanged((user) => {
+          if (user) {
+            setUser(user);
+            if (iconURL === null) {
+              setIconURL(user.photoURL);
+            }
+          }
+        });
+      }
     }
-    console.log("user is: " + user);
-    //console.log("URL IS: " + user.photoURL);
-    if (iconURL === null && user !== null) {
-      setIconURL(user.photoURL);
-    }
-  });
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -77,9 +82,6 @@ const HomeScreen = ({ navigation }) => {
   }
 
   function animate() {
-    //console.log(user);
-    // console.log("URL IS FROM ANIMATE: " + iconURL);
-    // console.log(iconURL);
     if (isPress) {
       setIsPress(false);
       Animated.timing(transform, {
@@ -97,9 +99,29 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  if (location == null || user == null) {
+  if (location == null) {
     return (
       <View style={[styles.loading]}>
+        <Text
+          style={{
+            fontFamily: "RobotoMono_500Medium",
+            fontSize: 18,
+            paddingBottom: 10,
+          }}
+        >
+          Getting Current Location
+        </Text>
+        <ActivityIndicator size="large" color="#E77F64" />
+      </View>
+    );
+  }
+
+  if (user === null && isGuest === false) {
+    return (
+      <View style={[styles.loading]}>
+        <Text style={{ fontFamily: "RobotoMono_500Medium" }}>
+          User detected, please wait
+        </Text>
         <ActivityIndicator size="large" color="#E77F64" />
       </View>
     );
@@ -127,14 +149,19 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.menuButton}>
         <TouchableOpacity
-          style={{ borderWidth: 2, borderRadius: 90, borderColor: "#E77F64" }}
           onPress={() => {
             animate();
           }}
         >
           {iconURL !== null ? (
             <Image
-              style={{ width: 50, height: 50, borderRadius: 90 }}
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 90,
+                borderWidth: 2,
+                borderColor: "#E77F64",
+              }}
               source={{
                 uri: iconURL,
               }}
@@ -152,7 +179,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.reportButton}>
         <Button nav={navigation} navDir="Camera" text="Report" color="orange" />
       </View>
-      <OverlayHome animate={animate} transform={transform} />
+      <OverlayHome animate={animate} transform={transform} nav={navigation} />
     </View>
   );
 };

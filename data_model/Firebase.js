@@ -97,12 +97,11 @@ export async function signInWithGoogleAsync() {
   }
 }
 
-export function getUser() {
-  const user = firebase.auth().currentUser;
+export async function getUser() {
+  const user = firebase.auth();
   if (user) {
     console.log("User from firebase: " + user.email);
   }
-
   return user;
 }
 
@@ -116,25 +115,6 @@ export function logout() {
     .catch(function (error) {
       console.log(error);
     });
-}
-
-export async function isUserLoggedIn() {
-  try {
-    firebase.auth().onAuthStateChanged(async function (user) {
-      if (user) {
-        console.log("Already logged in as: " + user.email);
-        return "Already logged in!";
-      } else {
-        console.log("Logging in again...");
-        const newUser = await signInWithGoogleAsync();
-        return "hi there!";
-      }
-    });
-  } catch (e) {
-    console.log("Something is off!");
-    alert("Sorry. An error has occurred while trying to authenticate user");
-    return { error: true };
-  }
 }
 
 // REPORTS
