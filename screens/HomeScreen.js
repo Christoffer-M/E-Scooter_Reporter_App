@@ -5,17 +5,16 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
-  Text,
-  Animated,
   BackHandler,
   Alert,
+  Animated,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
-import Headline from "../components/Headline";
+import OverlayHome from "../components/OverlayHome";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(new Animated.Value(-280)).current;
@@ -28,6 +27,7 @@ const HomeScreen = ({ navigation }) => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
+        console.log(errorMsg);
         navigation.goBack();
       } else {
         let location = await Location.getCurrentPositionAsync({});
@@ -44,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
       };
     }, [])
   );
+
   function onbackpress() {
     Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
       {
@@ -55,6 +56,7 @@ const HomeScreen = ({ navigation }) => {
     ]);
     return true;
   }
+
   function animate() {
     if (isPress) {
       setIsPress(false);
@@ -118,38 +120,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.reportButton}>
         <Button nav={navigation} navDir="Camera" text="Report" color="orange" />
       </View>
-      <Animated.View
-        style={{
-          position: "absolute",
-          height: Dimensions.get("window").height,
-          width: 280,
-          backgroundColor: "rgba(47, 67, 87, 0.9)",
-          left: 0,
-          flex: 1,
-          transform: [{ translateX: transform }],
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            alignSelf: "flex-end",
-            borderRadius: 20,
-            paddingRight: 20,
-            paddingTop: 20,
-          }}
-          onPress={() => {
-            animate();
-          }}
-        >
-          <SvgUri
-            width="35"
-            height="35"
-            source={require("../assets/Icons/Group.svg")}
-          ></SvgUri>
-        </TouchableOpacity>
-        <Headline text="Reports" flex={{ flex: 0.1 }} />
-      </Animated.View>
+      <OverlayHome animate={animate} transform={transform} />
     </View>
   );
 };
