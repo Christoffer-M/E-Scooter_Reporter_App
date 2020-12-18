@@ -26,12 +26,18 @@ const WelcomeScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           onPress={async () => {
-            console.log(firebase.isUserLoggedIn());
-            const res = await firebase.signInWithGoogleAsync();
-            // const feedback = await firebase.signInWithGoogleAsync(navigation);
-            if (res === "success") {
-              console.log(res);
+            const user = firebase.getUser();
+            if (user) {
+              console.log("User already exists!");
               navigation.push("Home");
+            } else {
+              const result = await firebase.signInWithGoogleAsync();
+              if (result.type === "success") {
+                globals.setGues(false);
+                navigation.push("Home");
+              } else {
+                console.log("something went wrong!!!!");
+              }
             }
           }}
           style={{
@@ -53,8 +59,20 @@ const WelcomeScreen = ({ navigation }) => {
         <View style={styles.buttonview}>
           <Button nav={navigation} navDir="Home" text="Guest" color="orange" />
         </View>
+
         <StatusBar style="auto" />
       </View>
+      <TouchableOpacity
+        style={{
+          width: 150,
+          height: 50,
+          backgroundColor: "red",
+          marginTop: 50,
+        }}
+        onPress={() => {
+          firebase.logout();
+        }}
+      />
     </View>
   );
 };

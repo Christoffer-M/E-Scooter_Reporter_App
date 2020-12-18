@@ -8,6 +8,7 @@ import {
   BackHandler,
   Alert,
   Animated,
+  Image,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
@@ -15,12 +16,16 @@ import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
+import * as globals from "../components/Global.js";
+import * as firebase from "../data_model/Firebase";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(new Animated.Value(-280)).current;
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isPress, setIsPress] = useState(false);
+  const [iconURL, setIconURL] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -35,6 +40,20 @@ const HomeScreen = ({ navigation }) => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (user === null) {
+      console.log("Running");
+      const userfrombase = firebase.getUser();
+      console.log(userfrombase);
+      setUser(userfrombase);
+    }
+    console.log("user is: " + user);
+    //console.log("URL IS: " + user.photoURL);
+    if (iconURL === null && user !== null) {
+      setIconURL(user.photoURL);
+    }
+  });
 
   useFocusEffect(
     React.useCallback(() => {
@@ -58,6 +77,9 @@ const HomeScreen = ({ navigation }) => {
   }
 
   function animate() {
+    //console.log(user);
+    // console.log("URL IS FROM ANIMATE: " + iconURL);
+    // console.log(iconURL);
     if (isPress) {
       setIsPress(false);
       Animated.timing(transform, {
@@ -75,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  if (location == null) {
+  if (location == null || user == null) {
     return (
       <View style={[styles.loading]}>
         <ActivityIndicator size="large" color="#E77F64" />
@@ -105,15 +127,25 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.menuButton}>
         <TouchableOpacity
+          style={{ borderWidth: 2, borderRadius: 90, borderColor: "#E77F64" }}
           onPress={() => {
             animate();
           }}
         >
-          <SvgUri
-            width="60"
-            height="60"
-            source={require("../assets/Icons/profile_icon.svg")}
-          />
+          {iconURL !== null ? (
+            <Image
+              style={{ width: 50, height: 50, borderRadius: 90 }}
+              source={{
+                uri: iconURL,
+              }}
+            />
+          ) : (
+            <SvgUri
+              width="60"
+              height="60"
+              source={require("../assets/Icons/profile_icon.svg")}
+            />
+          )}
         </TouchableOpacity>
       </View>
 
