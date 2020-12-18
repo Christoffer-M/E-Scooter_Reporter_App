@@ -59,7 +59,6 @@ class Report {
 	misplaced = false;
 	other = false;
     comment = "";
-    progress = 0.0; // Used to track upload or download progress where needed
 
 	constructor(user) {
 		this.uuid = uuidv4();
@@ -74,7 +73,6 @@ class Report {
 
 	setImageUri(uri) {
         this.imageURI = uri;
-        this.uploadProgress = 1.0 // Assume image exists
 	}
 
 	hasImage() {
