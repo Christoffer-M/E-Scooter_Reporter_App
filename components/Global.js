@@ -1,5 +1,5 @@
-import * as firebase from "../data_model/Firebase";
+import * as storage from "../data_model/Storage";
 
-export const report = firebase.newReport("defaultreport");
+export const report = storage.report;
 
 export let pictureURI = null;
