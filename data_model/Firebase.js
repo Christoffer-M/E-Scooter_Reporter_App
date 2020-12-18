@@ -18,10 +18,6 @@ var firebaseConfig = {
   measurementId: "G-R6K9EHWPQB",
 };
 
-// Google API Key (for reverse geolocation)
-// Source: https://developers.google.com/maps/documentation/geocoding/overview#ReverseGeocoding
-const googleAPIKey = "AIzaSyBlIX7AEtFoMzF-bBZgIqRXdiyF7womVOI";
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -32,7 +28,8 @@ var db = firebase.firestore();
 var storage = firebase.storage().ref();
 
 // Create a scooter_photos_path reference
-var scooterImages = storage.child("scooter_photos");
+const scooterFolderPath = "scooter_photos";
+var scooterImages = storage.child(scooterFolderPath);
 
 // SCOOTER_PHOTOS
 export const getScooterImage = (scooterImageName) => {
@@ -116,12 +113,6 @@ export function logout() {
       console.log(error);
     });
 }
-
-// REPORTS
-export const newReport = (user) => {
-  return new Report(user);
-};
-
 export const getUserReports = (user) => {
   let reportsByID = [];
   db.collection("reports")
@@ -141,304 +132,183 @@ export const getUserReports = (user) => {
   return reportsByID;
 };
 
-export const getReportByID = (reportID) => {
-  const report = db.collection("reports").doc(reportID);
-  const reportData = null;
+//Download report by
+export const getReportByUUID = async (uuid) => {
+	const report = db.collection("reports").doc(uuid);
+	const reportData = null;
 
-  // Valid options for source are 'server', 'cache', or
-  // 'default'. See https://firebase.google.com/docs/reference/js/firebase.firestore.GetOptions
-  // for more information.
-  var getOptions = {
-    source: "default",
-  };
+	// Valid options for source are 'server', 'cache', or
+	// 'default'. See https://firebase.google.com/docs/reference/js/firebase.firestore.GetOptions
+	// for more information.
+	var getOptions = {
+		source: "default",
+	};
 
-  // Get a report
-  report
-    .get(getOptions)
-    .then(function (reportDoc) {
-      // Document was found in the cache. If no cached document exists,
-      // an error will be returned to the 'catch' block below.
-      //console.log("Cached document data:", report.data());
-      reportData = reportDoc.data();
-    })
-    .catch(function (error) {
-      console.log("Error getting report:", error);
-    });
+	// Get a report
+	report
+		.get(getOptions)
+		.then(function (reportDoc) {
+			// Document was found in the cache. If no cached document exists,
+			// an error will be returned to the 'catch' block below.
+			//console.log("Cached document data:", report.data());
+			reportData = reportDoc.data();
+		})
+		.catch(function (error) {
+			console.log("Error getting report:", error);
+		});
 
-  // Return report
-  return reportData;
+	// Return report
+	return reportData;
 };
 
-class Report {
-  user = ""; // userid
-  image = ""; // scooter image name
-  timestamp = "";
-  geolocation = []; //[55.660572° N, 12.590942° E]
-  address = "";
-  qr = ""; // qr code url
-  imageObject = {
-    width: "",
-    height: "",
-    uri: "",
-  };
+//Upload report document
+export const uploadReport = async (report) => {
+	db.collection("reports")
+		.doc(report.uuid)
+		.set({
+			uuid: report.uuid,
+			user: report.user,
+			image: report.imageFileName,
+			timestamp: report.timestamp,
+			geolocation: report.geolocation,
+			address: report.address,
+			qr: report.qr,
+			brand: report.brand,
+			laying: report.laying,
+			broken: report.broken,
+			misplaced: report.misplaced,
+			other: report.other,
+			comment: report.comment,
+		})
+		.then(function (docRef) {
+			console.log("Document written with ID: ", docRef.id);
+		})
+		.catch(function (error) {
+			console.error("Error adding report: ", error);
+			return false;
+		});
+	return true;
+};
 
-  brand = "unknown";
+//Delete report document
+export const deleteReport = async (uuid) => {
+	db.collection("reports")
+		.doc(uuid)
+		.delete()
+		.then(function () {
+			console.log("Document successfully deleted with uuid:", uuid);
+		})
+		.catch(function (error) {
+			console.error("Error removing document: ", error);
+			return false;
+		});
+	return true;
+};
 
-  laying = false;
-  broken = false;
-  misplaced = false;
-  other = false;
-  comment = "";
+//Upload report photo to Firebase Storage
+export const uploadReportPhoto = async (report) => {
+	const response = await fetch(report.imageURI);
+	const blob = await response.blob();
 
-  constructor(user) {
-    user ? (this.user = user) : (this.user = "guest"); //default
-  }
+	// File or Blob
+	var file = blob;
 
-  setImageFile(file) {
-    // https://firebase.google.com/docs/storage/web/file-metadata
-    var metadata = {
-      contentType: "image/jpeg",
-    };
+	// Create the file metadata
+	var metadata = {
+		contentType: "image/jpeg",
+	};
 
-    // use the Blob or File API
-    fileName = this.user + "-" + setTimestampToNow() + ".jpg";
-    fileLocation = scooterImages.child(fileName);
-    fileLocation.put(file, metadata).then(function (snapshot) {
-      console.log("Uploaded an image!");
-    });
+	// Upload photo and metadata to the object 'scooter_photos/[uuid].jpg'
+	var uploadTask = scooterImages.put(file, metadata);
 
-    this.image = file.name;
-    return this.image;
-  }
+	// Listen for state changes, errors, and completion of the upload.
+	uploadTask.on(
+		firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+		function (snapshot) {
+			// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			console.log(report.imageName, "upload is " + progress + "% done");
+			report.progress = progress / 100.0;
+			switch (snapshot.state) {
+				case firebase.storage.TaskState.PAUSED: // or 'paused'
+					console.log("Upload is paused");
+					break;
+				case firebase.storage.TaskState.RUNNING: // or 'running'
+					console.log("Upload is running");
+					break;
+			}
+		},
+		function (error) {
+			// A full list of error codes is available at
+			// https://firebase.google.com/docs/storage/web/handle-errors
+			switch (error.code) {
+				case "storage/unauthorized":
+					console.log("Upload Error: Firebase Storage not authorized");
+					// User doesn't have permission to access the object
+					console.log(
+						"Upload Error: User",
+						report.user,
+						"does not have permission!"
+					);
+					break;
 
-  setImage(uri, width, height) {
-    this.imageObject.height = height;
-    this.imageObject.width = width;
-    this.imageObject.uri = uri;
-  }
+				case "storage/unknown":
+					// Unknown error occurred, inspect error.serverResponse
+					console.log("Upload Error: Unknown error occurred!");
+					break;
+			}
+			return false;
+		},
+		function () {
+			// Upload completed successfully, now we can get the download URL
+			uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+				console.log("File available at", downloadURL);
+			});
+		}
+	);
+	report.progress = 1.0;
+	return true;
+};
 
-  getImage() {
-    return this.imageObject;
-  }
+const getDownloadReportPhotoURL = async (report) => {
+	// Create a reference to the file we want to download
+	let imagePath = scooterFolderPath + "/" + report.imageName
+	let starsRef = storageRef.child(imagePath);
+	let downloadURL = ""
 
-  hasImageURI() {
-    return this.imageObject.uri.length > 0;
-  }
+	// Get the download URL
+	starsRef
+		.getDownloadURL()
+		.then(function (url) {
+			downloadURL = url
+			// Insert url into an <img> tag to "download"
+		})
+		.catch(function (error) {
+			// A full list of error codes is available at
+			// https://firebase.google.com/docs/storage/web/handle-errors
+			switch (error.code) {
+				case "storage/object-not-found":
+					// File doesn't exist
+					console.log("Download URL error: File",imagePath,"doesn't exist!")
+					break;
 
-  setTimestampToNow() {
-    this.timestamp = firebase.firestore.Timestamp.now();
-    return this.timestamp.valueOf();
-  }
+				case "storage/unauthorized":
+					// User doesn't have permission to access the object
+					console.log("Download URL error: User doesn't have permission to access the object!")
+					break;
 
-  setTimestampToDate(date) {
-    this.timestamp = firebase.firestore.Timestamp.fromDate(date);
-    return this.timestamp.valueOf();
-  }
+				case "storage/canceled":
+					// User canceled the download
+					console.log("Download URL error: User canceled the download!")
+					break;
 
-  async setGeoLocation(latitude, longitude) {
-    console.log(latitude + " " + longitude);
-    this.geolocation = firebase.firestore.GeoPoint(latitude, longitude);
-    this.setAddress(latitude, longitude);
-    //return this.geolocation.toLocaleString();
-  }
-
-  getGeoLocationLatitude() {
-    return this.geolocation.getLatitude();
-  }
-
-  getGeoLocationLongitude() {
-    return this.geolocation.getLongitude();
-  }
-
-  async setAddress(latitude, longitude) {
-    const myApiKey = googleAPIKey;
-    const myLat = latitude;
-    const myLon = longitude;
-
-    await fetch(
-      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-        myLat +
-        "," +
-        myLon +
-        "&key=" +
-        myApiKey
-    )
-      .then((response) => response.json())
-      .then((responseJson) => {
-        for (i = 0; i < responseJson.results.length; i++) {
-          if (responseJson.results[i].formatted_address != null) {
-            this.address = responseJson.results[i].formatted_address;
-            break;
-          }
-        }
-        console.log("GoogleAPI Reverse geolocation response: " + this.address);
-      })
-      .catch((error) => {
-        console.error("Report .setAddress() Error:", error);
-      });
-    return this.getAddress();
-  }
-
-  hasAddress() {
-    return this.address.length > 0;
-  }
-
-  getAddress() {
-    return this.hasAddress() ? this.address : "Unknown location";
-  }
-
-  getAddressCropped(maxLength) {
-    const address = this.getAddress();
-    if (address.length > maxLength) {
-      // Only cut address if it is too long
-      const length = Math.max(maxLength, 3); // Avoid sub 3 length values
-      return (trimmedString = address.substring(0, length - 3) + "...");
-    } else {
-      return address;
-    }
-  }
-
-  setQR(qrCode) {
-    this.qr = qrCode;
-    this.setBrand(qrCode);
-    return this.qr;
-  }
-
-  hasQR() {
-    return this.qr.length > 0;
-  }
-
-  setBrand(qrCode) {
-    if (qrCode.includes("lime")) {
-      this.brand = "Lime";
-    } else if (qrCode.includes("voi")) {
-      this.brand = "Voi";
-    } else if (qrCode.includes("tier")) {
-      this.brand = "Tier";
-    } else if (qrCode.includes("bird")) {
-      this.brand = "Bird";
-    } else if (qrCode.includes("wind")) {
-      this.brand = "Wind";
-    } else if (qrCode.includes("circ")) {
-      this.brand = "Circ";
-    } else {
-      this.brand = "not reqognized from QR";
-    }
-    return this.brand;
-  }
-
-  getBrand() {
-    return this.brand;
-  }
-
-  isLaying() {
-    return this.laying;
-  }
-
-  toggleLaying() {
-    this.laying = !this.laying;
-    return this.isLaying();
-  }
-
-  isBroken() {
-    return this.broken;
-  }
-
-  toggleBroken() {
-    this.broken = !this.broken;
-    return this.isBroken();
-  }
-
-  isMisplaced() {
-    return this.misplaced;
-  }
-
-  toggleMisplaced() {
-    this.misplaced = !this.misplaced;
-    return this.isMisplaced();
-  }
-
-  isOther() {
-    return this.other;
-  }
-
-  toggleOther() {
-    this.other = !this.other;
-    return this.isOther();
-  }
-
-  setComment(text) {
-    this.comment = text;
-  }
-
-  isCommented() {
-    return this.other && this.comment;
-  }
-
-  // Get method to display types of violations in the report overview before submitting.
-  getCategories() {
-    const misplaced = "Misplaced";
-    const laying = "Laying Down";
-    const broken = "Broken";
-    const other = "Other";
-    let categories = [];
-
-    if (this.isMisplaced()) {
-      categories.push(misplaced);
-    }
-    if (this.isLaying()) {
-      categories.push(laying);
-    }
-    if (this.isBroken()) {
-      categories.push(broken);
-    }
-    if (this.isOther()) {
-      categories.push(other);
-    }
-    console.log(categories);
-    return categories;
-  }
-
-  isSubmittable() {
-    // Report must cotain a userid, image, timestamp and geolocation
-    if (this.user && this.image && this.timestamp && this.geolocation) {
-      // One description must be selected
-      if (this.laying || this.broken || this.misplaced || this.other) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  submit(doIfSuccessful) {
-    if (this.isSubmittable()) {
-      db.collection("reports")
-        .add({
-          user: this.user,
-          image: this.image,
-          timestamp: this.timestamp,
-          geolocation: this.geolocation,
-          address: this.address,
-          qr: this.qr,
-          brand: this.brand,
-          laying: this.laying,
-          broken: this.broken,
-          misplaced: this.misplaced,
-          other: this.other,
-          comment: this.comment,
-        })
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function (error) {
-          console.error("Error adding report: ", error);
-        });
-      doIfSuccessful();
-      return true;
-    } else {
-      alert("The report is missing important information.");
-      throw "Error: Report missing information! check .isSubmittable() first";
-      //return false;
-    }
-  }
+				case "storage/unknown":
+					// Unknown error occurred, inspect the server response
+					console.log("Download URL error: Unknown error occurred, inspect the server response")
+					break;
+			}
+			console.log("Image from",imagePath,"was not downloaded")
+			return "";
+		});
+	return downloadURL;
 }

@@ -1,6 +1,6 @@
-import * as firebase from "../data_model/Firebase";
+import * as storage from "../data_model/Storage";
 
-export const report = firebase.newReport("defaultreport");
+export const report = storage.report;
 
 let isGues = true;
 export function setGues(bool) {
