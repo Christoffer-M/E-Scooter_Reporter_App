@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import Button from "../components/Button.js";
 import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";

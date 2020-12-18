@@ -18,7 +18,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
 import * as globals from "../components/Global.js";
-import * as firebase from "../data_model/Firebase";
+import * as firebase from "../data_model/Storage";
 import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 
 const CameraText = (props) => {
   let [fontsLoaded] = useFonts({

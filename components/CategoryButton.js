@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import * as globals from "./Global";
 
 const CategoryButton = (props) => {

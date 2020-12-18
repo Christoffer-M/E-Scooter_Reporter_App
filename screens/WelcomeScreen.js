@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import * as globals from "../components/Global.js";
-import * as firebaseDataBase from "../data_model/Firebase";
+import * as firebaseDataBase from "../data_model/Storage";
 import * as firebase from "firebase/app";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -73,14 +66,14 @@ const WelcomeScreen = ({ navigation }) => {
         <View style={styles.buttonview}>
           <Button nav={navigation} navDir="Home" text="Guest" color="orange" />
         </View>
-        <View style={styles.buttonview}>
+        {/* <View style={styles.buttonview}>
           <Button
             onPress={onPressLearnMore}
             title="TESTING"
             color="#841584"
             accessibilityLabel=""
           />
-        </View>
+        </View> */}
         <StatusBar style="auto" />
       </View>
     </View>

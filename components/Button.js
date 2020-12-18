@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
-import * as firebase from "../data_model/Firebase";
+import AppLoading from "expo-app-loading";
+import * as firebase from "../data_model/Storage";
 import * as globals from "../components/Global";
 
 const Button = (props) => {

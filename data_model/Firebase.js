@@ -4,7 +4,6 @@ import "firebase/auth"; // Optionally import the additiona firebase services
 import "firebase/firestore"; // Optionally import the additiona firebase services
 //import "firebase/functions"; // Optionally import the additiona firebase services
 import "firebase/storage"; // Optionally import the additiona firebase services
-import * as Google from "expo-google-app-auth";
 
 // Our Firebase configuration
 var firebaseConfig = {

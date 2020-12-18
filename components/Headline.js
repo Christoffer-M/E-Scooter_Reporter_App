@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useFonts, RobotoMono_700Bold } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 
 const Headline = (props) => {
   let [fontsLoaded] = useFonts({

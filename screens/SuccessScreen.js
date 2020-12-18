@@ -5,7 +5,7 @@ import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
 import BackButton from "../components/BackButton";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 
 const SuccessScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({

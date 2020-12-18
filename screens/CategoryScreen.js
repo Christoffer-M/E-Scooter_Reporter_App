@@ -11,7 +11,7 @@ import Headline from "../components/Headline";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import Buttons from "../components/Button";
 import * as globals from "../components/Global";
 import BackButton from "../components/BackButton";

@@ -1,7 +1,9 @@
 // File that stores information in our app, such as reports, user information, etc.
 
-import { Report } from "Report";
-import * as Firebase from "Firebase";
+import Report from "./Report";
+import * as Firebase from "./Firebase";
+import * as google from "expo-google-app-auth";
+import * as firebase from "firebase/app";
 
 export let user = "";
 
@@ -16,19 +18,19 @@ export function isSignedIn() {
   return this.user.length > 0;
 }
 
-export function signOut() {
-  this.user = "";
-}
+// export function signOut() {
+//   this.user = "";
+// }
 
 // Get a new report
 // Remember to call this first when starting on a new report!
-export function newReport() {
-  this.report = Report(user);
-  return this.report;
-}
+// export function newReport() {
+//   this.report = Report(user);
+//   return this.report;
+// }
 
 // Submit by uploading the (new) report to Firebase and add it to local storage
-//TODO NEED UPLOAD PHOTO TO FIREBASE
+//TODO NEED UPLOAD PHOTO TO Firebase
 export function submitReport() {
   if (this.report.isSubmittable()) {
     if (this.addReport(this.report)) {
@@ -115,7 +117,7 @@ function removeReport(report) {
 //TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
 export async function signInWithGoogleAsync() {
   try {
-    const result = await Google.logInAsync({
+    const result = await google.logInAsync({
       androidClientId:
         "423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
       iosClientId:
@@ -125,9 +127,11 @@ export async function signInWithGoogleAsync() {
 
     if (result.type === "success") {
       // Build Firebase credential with the Google ID token.
+      //console.log(result.idToken);
       var credentials = firebase.auth.GoogleAuthProvider.credential(
         result.idToken
       );
+      console.log(credentials);
 
       // Sign in with credential from the Google user.
       const user = firebase
@@ -154,6 +158,7 @@ export async function signInWithGoogleAsync() {
       return { cancelled: true };
     }
   } catch (e) {
+    console.log(e);
     console.log("ERROR!!!!");
     alert("Sorry. An error has occurred while trying to log in");
     return { error: true };
