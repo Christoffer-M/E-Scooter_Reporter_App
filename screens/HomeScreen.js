@@ -1,16 +1,34 @@
-const { exp } = require("react-native-reanimated");
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MapView from "react-native-maps";
-import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  ActivityIndicator,
+  BackHandler,
+  Alert,
+  Animated,
+  Image,
+  Text,
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
+import OverlayHome from "../components/OverlayHome";
+import * as globals from "../components/Global.js";
+import * as firebase from "../data_model/Firebase";
+import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
+  const transform = useRef(new Animated.Value(-280)).current;
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isPress, setIsPress] = useState(false);
+  const [iconURL, setIconURL] = useState(null);
+  const [user, setUser] = useState(null);
+  const isGuest = useRef(globals.getGues()).current;
 
   useEffect(() => {
     (async () => {
@@ -25,9 +43,83 @@ const HomeScreen = ({ navigation }) => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (isGuest === false) {
+      if (user === null) {
+        firebases.auth().onAuthStateChanged((user) => {
+          if (user) {
+            setUser(user);
+            if (iconURL === null) {
+              setIconURL(user.photoURL);
+            }
+          }
+        });
+      }
+    }
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", onbackpress);
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onbackpress);
+      };
+    }, [])
+  );
+
+  function onbackpress() {
+    Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  }
+
+  function animate() {
+    if (isPress) {
+      setIsPress(false);
+      Animated.timing(transform, {
+        toValue: -280,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      setIsPress(true);
+      Animated.timing(transform, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }
+  }
+
   if (location == null) {
     return (
       <View style={[styles.loading]}>
+        <Text
+          style={{
+            fontFamily: "RobotoMono_500Medium",
+            fontSize: 18,
+            paddingBottom: 10,
+          }}
+        >
+          Getting Current Location
+        </Text>
+        <ActivityIndicator size="large" color="#E77F64" />
+      </View>
+    );
+  }
+
+  if (user === null && isGuest === false) {
+    return (
+      <View style={[styles.loading]}>
+        <Text style={{ fontFamily: "RobotoMono_500Medium" }}>
+          User detected, please wait
+        </Text>
         <ActivityIndicator size="large" color="#E77F64" />
       </View>
     );
@@ -46,21 +138,46 @@ const HomeScreen = ({ navigation }) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        onTouchStart={() => {
+          if (isPress) {
+            animate();
+          }
+        }}
       />
 
       <View style={styles.menuButton}>
-        <TouchableOpacity>
-          <SvgUri
-            width="60"
-            height="60"
-            source={require("../assets/Icons/profile_icon.svg")}
-          />
+        <TouchableOpacity
+          onPress={() => {
+            animate();
+          }}
+        >
+          {iconURL !== null ? (
+            <Image
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 90,
+                borderWidth: 2,
+                borderColor: "#E77F64",
+              }}
+              source={{
+                uri: iconURL,
+              }}
+            />
+          ) : (
+            <SvgUri
+              width="60"
+              height="60"
+              source={require("../assets/Icons/profile_icon.svg")}
+            />
+          )}
         </TouchableOpacity>
       </View>
 
       <View style={styles.reportButton}>
         <Button nav={navigation} navDir="Camera" text="Report" color="orange" />
       </View>
+      <OverlayHome animate={animate} transform={transform} nav={navigation} />
     </View>
   );
 };
@@ -101,6 +218,17 @@ const styles = StyleSheet.create({
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  overlay: {
+    position: "absolute",
+    height: Dimensions.get("window").height,
+    width: 280,
+    backgroundColor: "#000",
+  },
+  overlayShow: {
+    height: Dimensions.get("window").height,
+    width: 280,
+    backgroundColor: "#000",
   },
 });
 

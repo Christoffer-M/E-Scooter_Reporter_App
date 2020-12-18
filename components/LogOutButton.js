@@ -1,0 +1,27 @@
+import React from "react";
+import { Text } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import * as firebase from "../data_model/Firebase";
+
+const LogOutButton = (props) => {
+  return (
+    <TouchableOpacity
+      style={{
+        backgroundColor: "#E77F64",
+        width: 150,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 30,
+      }}
+      onPress={() => {
+        props.nav.push("Welcome");
+        firebase.logout();
+      }}
+    >
+      <Text>Log out</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default LogOutButton;

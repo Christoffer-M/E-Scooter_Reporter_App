@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { AppLoading } from "expo";
 import * as firebase from "../data_model/Firebase";
+import * as globals from "../components/Global";
 
 const Button = (props) => {
   let [fontsLoaded] = useFonts({
@@ -37,11 +38,15 @@ const Button = (props) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.orangeButton}
-            onPress={() =>
+            onPress={() => {
+              if (props.text === "Guest" && globals.getGues !== true) {
+                console.log("setting guest to true");
+                globals.setGues(true);
+              }
               props.nav.push(props.navDir, {
                 class: firebase.newReport("default"),
-              })
-            }
+              });
+            }}
           >
             <Text style={styles.whiteFont}>{props.text}</Text>
           </TouchableOpacity>

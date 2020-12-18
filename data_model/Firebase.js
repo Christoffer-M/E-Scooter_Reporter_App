@@ -4,17 +4,18 @@ import "firebase/auth"; // Optionally import the additiona firebase services
 import "firebase/firestore"; // Optionally import the additiona firebase services
 //import "firebase/functions"; // Optionally import the additiona firebase services
 import "firebase/storage"; // Optionally import the additiona firebase services
+import * as Google from "expo-google-app-auth";
 
 // Our Firebase configuration
 var firebaseConfig = {
-	apiKey: "AIzaSyDnAWCVQYyaJlSDVvPYDM8zGxmmHK10xM4",
-	authDomain: "scooter1-b6f56.firebaseapp.com",
-	databaseURL: "https://scooter1-b6f56.firebaseio.com",
-	projectId: "scooter1-b6f56",
-	storageBucket: "scooter1-b6f56.appspot.com",
-	messagingSenderId: "423566385353",
-	appId: "1:423566385353:web:b8f05ea08f4db55ce7ed18",
-	measurementId: "G-R6K9EHWPQB",
+  apiKey: "AIzaSyDnAWCVQYyaJlSDVvPYDM8zGxmmHK10xM4",
+  authDomain: "scooter1-b6f56.firebaseapp.com",
+  databaseURL: "https://scooter1-b6f56.firebaseio.com",
+  projectId: "scooter1-b6f56",
+  storageBucket: "scooter1-b6f56.appspot.com",
+  messagingSenderId: "423566385353",
+  appId: "1:423566385353:web:b8f05ea08f4db55ce7ed18",
+  measurementId: "G-R6K9EHWPQB",
 };
 
 // Initialize Firebase
@@ -32,35 +33,103 @@ var scooterImages = storage.child(scooterFolderPath);
 
 // SCOOTER_PHOTOS
 export const getScooterImage = (scooterImageName) => {
-	imageRef = scooterImages
-		.get(scooterImageName)
-		.getDownloadURL()
-		.then((url) => {
-			return url;
-		})
-		.catch(function (error) {
-			console.log("Error getting file image file from url");
-			return null;
-		});
+  imageRef = scooterImages
+    .get(scooterImageName)
+    .getDownloadURL()
+    .then((url) => {
+      return url;
+    })
+    .catch(function (error) {
+      console.log("Error getting file image file from url");
+      return null;
+    });
 };
 
+//GOOGLE SIGN IN
+//TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
+export async function signInWithGoogleAsync() {
+  try {
+    const result = await Google.logInAsync({
+      androidClientId:
+        "423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
+      iosClientId:
+        "423566385353-kbvdqmr2s6sca20cca1q30sq8ctk7s35.apps.googleusercontent.com",
+      scopes: ["profile", "email"],
+    });
+
+    if (result.type === "success") {
+      // Build Firebase credential with the Google ID token.
+      var credentials = firebase.auth.GoogleAuthProvider.credential(
+        result.idToken
+      );
+
+      // Sign in with credential from the Google user.
+      const user = firebase
+        .auth()
+        .signInWithCredential(credentials)
+        .catch(function (error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        });
+      const res = {
+        user: user,
+        type: result.type,
+      };
+      return res;
+    } else {
+      console.log("fail!!!!");
+      alert("Google authentication failed");
+      return { cancelled: true };
+    }
+  } catch (e) {
+    console.log("ERROR!!!!");
+    alert("Sorry. An error has occurred while trying to log in");
+    return { error: true };
+  }
+}
+
+export async function getUser() {
+  const user = firebase.auth();
+  if (user) {
+    console.log("User from firebase: " + user.email);
+  }
+  return user;
+}
+
+export function logout() {
+  firebase
+    .auth()
+    .signOut()
+    .then(function () {
+      console.log("Signed out");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 export const getUserReports = (user) => {
-	let reportsByID = [];
-	db.collection("reports")
-		.where("user", "==", user)
-		.get()
-		.orderBy("timestamp")
-		.then(function (querySnapshot) {
-			querySnapshot.forEach(function (report) {
-				// report.data() is never undefined for query report snapshots
-				//console.log(report.id, " => ", report.data());
-				reportsByID.push(report.id);
-			});
-		})
-		.catch(function (error) {
-			console.log("Error getting report: ", error);
-		});
-	return reportsByID;
+  let reportsByID = [];
+  db.collection("reports")
+    .where("user", "==", user)
+    .get()
+    .orderBy("timestamp")
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (report) {
+        // report.data() is never undefined for query report snapshots
+        //console.log(report.id, " => ", report.data());
+        reportsByID.push(report.id);
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting report: ", error);
+    });
+  return reportsByID;
 };
 
 //Download report by
