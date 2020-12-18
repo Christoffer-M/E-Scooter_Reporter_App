@@ -8,6 +8,8 @@ import {
   BackHandler,
   Alert,
   Animated,
+  Image,
+  Text,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
@@ -15,25 +17,45 @@ import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
+import * as globals from "../components/Global.js";
+import * as firebase from "../data_model/Firebase";
+import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(new Animated.Value(-280)).current;
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isPress, setIsPress] = useState(false);
+  const [iconURL, setIconURL] = useState(null);
+  const [user, setUser] = useState(null);
+  const isGuest = useRef(globals.getGues()).current;
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
-        console.log(errorMsg);
         navigation.goBack();
       } else {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    if (isGuest === false) {
+      if (user === null) {
+        firebases.auth().onAuthStateChanged((user) => {
+          if (user) {
+            setUser(user);
+            if (iconURL === null) {
+              setIconURL(user.photoURL);
+            }
+          }
+        });
+      }
+    }
   }, []);
 
   useFocusEffect(
@@ -78,6 +100,26 @@ const HomeScreen = ({ navigation }) => {
   if (location == null) {
     return (
       <View style={[styles.loading]}>
+        <Text
+          style={{
+            fontFamily: "RobotoMono_500Medium",
+            fontSize: 18,
+            paddingBottom: 10,
+          }}
+        >
+          Getting Current Location
+        </Text>
+        <ActivityIndicator size="large" color="#E77F64" />
+      </View>
+    );
+  }
+
+  if (user === null && isGuest === false) {
+    return (
+      <View style={[styles.loading]}>
+        <Text style={{ fontFamily: "RobotoMono_500Medium" }}>
+          User detected, please wait
+        </Text>
         <ActivityIndicator size="large" color="#E77F64" />
       </View>
     );
@@ -109,18 +151,33 @@ const HomeScreen = ({ navigation }) => {
             animate();
           }}
         >
-          <SvgUri
-            width="60"
-            height="60"
-            source={require("../assets/Icons/profile_icon.svg")}
-          />
+          {iconURL !== null ? (
+            <Image
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 90,
+                borderWidth: 2,
+                borderColor: "#E77F64",
+              }}
+              source={{
+                uri: iconURL,
+              }}
+            />
+          ) : (
+            <SvgUri
+              width="60"
+              height="60"
+              source={require("../assets/Icons/profile_icon.svg")}
+            />
+          )}
         </TouchableOpacity>
       </View>
 
       <View style={styles.reportButton}>
         <Button nav={navigation} navDir="Camera" text="Report" color="orange" />
       </View>
-      <OverlayHome animate={animate} transform={transform} />
+      <OverlayHome animate={animate} transform={transform} nav={navigation} />
     </View>
   );
 };

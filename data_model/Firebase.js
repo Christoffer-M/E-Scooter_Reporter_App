@@ -67,7 +67,7 @@ export async function signInWithGoogleAsync() {
       );
 
       // Sign in with credential from the Google user.
-      firebase
+      const user = firebase
         .auth()
         .signInWithCredential(credentials)
         .catch(function (error) {
@@ -80,7 +80,11 @@ export async function signInWithGoogleAsync() {
           var credential = error.credential;
           // ...
         });
-      return result.type;
+      const res = {
+        user: user,
+        type: result.type,
+      };
+      return res;
     } else {
       console.log("fail!!!!");
       alert("Google authentication failed");
@@ -93,19 +97,24 @@ export async function signInWithGoogleAsync() {
   }
 }
 
-export async function isUserLoggedIn() {
-  try {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-      } else {
-        // IF THERE IS NO USER LOGGED IN  ---> currentUser = null;
-      }
-    });
-  } catch (e) {
-    console.log("Something is off!");
-    alert("Sorry. An error has occurred while trying to authenticate user");
-    return { error: true };
+export async function getUser() {
+  const user = firebase.auth();
+  if (user) {
+    console.log("User from firebase: " + user.email);
   }
+  return user;
+}
+
+export function logout() {
+  firebase
+    .auth()
+    .signOut()
+    .then(function () {
+      console.log("Signed out");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 // REPORTS
