@@ -7,12 +7,10 @@ const overlayReport = (props) => {
     <View>
       <TouchableHighlight>
         <Image source={require("../assets/Icons/profile_icon.png")} />
-
         <Text>{props.date}</Text>
         <Text>{props.address}</Text>
       </TouchableHighlight>
     </View>
   );
 };
-
 export default overlayReport;
