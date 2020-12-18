@@ -300,18 +300,20 @@ class Report {
   }
 
   setBrand(qrCode) {
-    if (qrCode.includes("li.me")) {
-      this.brand = "lime";
+    if (qrCode.includes("lime")) {
+      this.brand = "Lime";
     } else if (qrCode.includes("voi")) {
-      this.brand = "voi";
+      this.brand = "Voi";
     } else if (qrCode.includes("tier")) {
-      this.brand = "tier";
+      this.brand = "Tier";
     } else if (qrCode.includes("bird")) {
-      this.brand = "bird";
+      this.brand = "Bird";
     } else if (qrCode.includes("wind")) {
-      this.brand = "wind";
+      this.brand = "Wind";
     } else if (qrCode.includes("circ")) {
-      this.brand = "circ";
+      this.brand = "Circ";
+    } else {
+      this.brand = "not reqognized from QR";
     }
     return this.brand;
   }

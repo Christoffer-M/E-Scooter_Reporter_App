@@ -7,7 +7,7 @@ import Button from "../components/Button.js";
 import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";
 
-const ReportScreen = ({ navigation } ) => {
+const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
 
   useEffect(() => {
@@ -67,7 +67,9 @@ const ReportScreen = ({ navigation } ) => {
       </Text>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 0.3 }}>
-          <Text style={styles.headerFont}>Brand:</Text>
+          <Text style={styles.headerFont}>
+            Brand: {globals.report.getBrand()}
+          </Text>
           <Image
             source={require("../assets/brand_logos/logo_unknown.png")}
             resizeMode="cover"
