@@ -50,7 +50,7 @@ export const getScooterImage = (scooterImageName) => {
 
 //GOOGLE SIGN IN
 //TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
-export async function signInWithGoogleAsync(nav) {
+export async function signInWithGoogleAsync() {
   try {
     const result = await Google.logInAsync({
       androidClientId:
