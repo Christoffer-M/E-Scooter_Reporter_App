@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
-import * as globals from "./Global";
+import * as storage from "../data_model/Storage";
 
 const CategoryButton = (props) => {
   const [isClicked, SetIsClicked] = useState(false);
@@ -17,7 +17,7 @@ const CategoryButton = (props) => {
 
   useEffect(() => {
     if (!firstRun) {
-      const categoryArray = globals.report.getCategories();
+      const categoryArray = storage.report.getCategories();
       if (categoryArray.length > 0) {
         categoryArray.forEach((element) => {
           if (element === props.text) {
@@ -40,23 +40,23 @@ const CategoryButton = (props) => {
       SetIsClicked(true);
       switch (props.text) {
         case "Misplaced":
-          globals.report.toggleMisplaced();
+          storage.report.toggleMisplaced();
           props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
         case "Laying Down":
-          globals.report.toggleLaying();
+          storage.report.toggleLaying();
           props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
         case "Broken":
-          globals.report.toggleBroken();
+          storage.report.toggleBroken();
           props.add(props.text);
           setText(props.text + "  🛴 ");
 
           break;
         case "Other":
-          globals.report.toggleOther();
+          storage.report.toggleOther();
           props.setOther(true);
           props.add(props.text);
           setText(props.text + "  🛴 ");
@@ -68,22 +68,22 @@ const CategoryButton = (props) => {
       SetIsClicked(false);
       switch (props.text) {
         case "Misplaced":
-          globals.report.toggleMisplaced();
+          storage.report.toggleMisplaced();
           props.remove(props.text);
           setText(props.text);
           break;
         case "Laying Down":
-          globals.report.toggleLaying();
+          storage.report.toggleLaying();
           props.remove(props.text);
           setText(props.text);
           break;
         case "Broken":
-          globals.report.toggleBroken();
+          storage.report.toggleBroken();
           props.remove(props.text);
           setText(props.text);
           break;
         case "Other":
-          globals.report.toggleOther();
+          storage.report.toggleOther();
           props.remove(props.text);
           props.setOther(false);
           setText(props.text);

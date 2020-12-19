@@ -5,14 +5,14 @@ import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
 import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
-import * as globals from "../components/Global.js";
+import * as storage from "../data_model/Storage";
 
 const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
 
   useEffect(() => {
-    if (globals.report.hasImageURI()) {
-      setImage(globals.report.getImage().uri);
+    if (storage.report.hasImageURI()) {
+      setImage(storage.report.getImage().uri);
     } else {
       setImage(
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
@@ -63,12 +63,12 @@ const ReportScreen = ({ navigation }) => {
           marginTop: -15,
         }}
       >
-        📌 {globals.report.getAddress()}
+        📌 {storage.report.getAddress()}
       </Text>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>
-            Brand: {globals.report.getBrand()}
+            Brand: {storage.report.getBrand()}
           </Text>
           <Image
             source={require("../assets/brand_logos/logo_unknown.png")}
@@ -83,7 +83,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
           <View style={styles.categoriesContainer}>
-            {globals.report.getCategories().map((item, key) => {
+            {storage.report.getCategories().map((item, key) => {
               return (
                 <View
                   key={key}
@@ -105,11 +105,11 @@ const ReportScreen = ({ navigation }) => {
             })}
           </View>
         </View>
-        {globals.report.getCategories().includes("Other") ? (
+        {storage.report.getCategories().includes("Other") ? (
           <View style={{ flex: 0.3 }}>
             <Text style={styles.headerFont}>Description:</Text>
             <Text style={{ fontSize: 16, color: "white" }}>
-              {globals.report.comment}
+              {storage.report.comment}
             </Text>
           </View>
         ) : (

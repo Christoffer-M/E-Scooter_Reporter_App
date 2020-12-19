@@ -5,7 +5,7 @@ import CameraText from "../components/CameraText";
 import { Camera } from "expo-camera";
 import BackButton from "../components/BackButton";
 import CustomButton from "../components/CustomButton";
-import * as globals from "../components/Global.js";
+import * as storage from "../data_model/Storage";
 
 const QRScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -20,7 +20,7 @@ const QRScreen = ({ navigation }) => {
 
   //Data variable is what needs to be stored in FireBase
   const handleBarCodeScanned = ({ type, data }) => {
-    globals.report.setQR(data);
+    storage.report.setQR(data);
     setScanned(true);
     Alert.alert(
       "Bar code Scanned!",

@@ -12,13 +12,12 @@ import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
 import CameraText from "../components/CameraText";
 import * as globals from "../components/Global";
+import * as storage from "../data_model/Storage";
 import * as FileSystem from "expo-file-system";
 import * as imagehandler from "../utility/ImageHandler";
 import * as Location from "expo-location";
 import Headline from "../components/Headline";
 import BackButton from "../components/BackButton";
-
-const report = globals.report;
 
 const CameraSceen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -38,7 +37,8 @@ const CameraSceen = ({ navigation }) => {
 
   async function setLocation() {
     const location = await Location.getCurrentPositionAsync({});
-    globals.report.setGeoLocation(
+    console.log(location);
+    storage.report.setGeoLocation(
       location.coords.latitude,
       location.coords.longitude
     );
@@ -147,10 +147,11 @@ const CameraSceen = ({ navigation }) => {
                   photo.width,
                   photo.height
                 );
-                report.setImage(newimage.uri); // We only need the uri in the report
-                report.setTimestampToNow()
+                storage.report.setImageUri(newimage.uri); // We only need the uri in the report
+                storage.report.setTimestampToNow();
                 setLoading(false);
                 setImageTaken(true);
+                console.log(storage.report);
                 //TODO: Use photo uri path to send to Report.
                 //TODO: ^ NO, get the photo name from report.imageName
                 //TODO: ^ We upload the photo with a name matching the uuid of the report + ".jpg"
@@ -184,7 +185,7 @@ const CameraSceen = ({ navigation }) => {
         <CameraText text="Review the picture" />
       </View>
       <Image
-        source={{ uri: report.getImage().uri }}
+        source={{ uri: storage.report.imageURI }}
         style={{
           width: Dimensions.get("window").width,
           height: Dimensions.get("window").width,
@@ -212,7 +213,7 @@ const CameraSceen = ({ navigation }) => {
           style={styles.pictureButton}
           onPress={async () => {
             await FileSystem.deleteAsync(pictureURI);
-            globals.report.setImage("");
+            storage.report.setImageUri("");
             setImageTaken(false);
           }}
         >

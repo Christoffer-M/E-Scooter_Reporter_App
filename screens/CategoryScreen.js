@@ -13,7 +13,7 @@ import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
 import CustomButton from "../components/CustomButton";
-import * as globals from "../components/Global";
+import * as storage from "../data_model/Storage";
 import BackButton from "../components/BackButton";
 
 const CategoryScreen = ({ navigation }) => {
@@ -28,7 +28,7 @@ const CategoryScreen = ({ navigation }) => {
   fillCategoryArray();
 
   useEffect(() => {
-    globals.report.setComment(value);
+    storage.report.setComment(value);
     if (isOtherPress) {
       setHideInput(true);
       Animated.timing(fadeAnim, {
