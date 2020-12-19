@@ -119,8 +119,6 @@ export async function syncReports() {
 				}
 			}
 		});
-		// console.log("REPORT DATA DEBUG:");
-		// console.log(fetchedReports);
 
 		lastUpdate = new Date(); // Update time since last fetch
 		return true;
