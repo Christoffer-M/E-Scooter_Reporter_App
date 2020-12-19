@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
 import * as storage from "../data_model/Storage";
 
@@ -10,10 +9,6 @@ const CategoryButton = (props) => {
   const [fontColor, setFontColor] = useState("#fff");
   const [firstRun, setFirstRun] = useState(false);
   const [text, setText] = useState(props.text);
-
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
 
   useEffect(() => {
     if (!firstRun) {

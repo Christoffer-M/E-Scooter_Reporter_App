@@ -10,8 +10,6 @@ import {
 import Headline from "../components/Headline";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CategoryButton from "../components/CategoryButton";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import AppLoading from "expo-app-loading";
 import CustomButton from "../components/CustomButton";
 import * as storage from "../data_model/Storage";
 import BackButton from "../components/BackButton";
@@ -28,6 +26,7 @@ const CategoryScreen = ({ navigation }) => {
   fillCategoryArray();
 
   useEffect(() => {
+    console.log(storage.report);
     storage.report.setComment(value);
     if (isOtherPress) {
       setHideInput(true);
@@ -97,13 +96,6 @@ const CategoryScreen = ({ navigation }) => {
     }
   }
 
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
     <KeyboardAwareScrollView
       resetScrollToCoords={{ x: 0, y: 0 }}

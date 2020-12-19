@@ -1,5 +1,5 @@
 import "./components/Global";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -10,19 +10,47 @@ import QRScreen from "./screens/QRScreen";
 import CategoryScreen from "./screens/CategoryScreen";
 import ReportScreen from "./screens/ReportScreen";
 import SuccessScreen from "./screens/SuccessScreen";
-
+import * as firebase from "firebase/app";
+import * as globals from "./components/Global.js";
+import AppLoading from "expo-app-loading";
+import {
+  useFonts,
+  RobotoMono_500Medium,
+  RobotoMono_700Bold,
+} from "@expo-google-fonts/roboto-mono";
 /*
 THIS "main" method takes care of the navigation bewteen the different screens 
 in our app. For this purpose we use StackNavigator 🛴 
 */
 export default function App() {
+  const [routenName, setRouteName] = useState("");
   const Stack = createStackNavigator();
+
+  let [fontsLoaded] = useFonts({
+    RobotoMono_700Bold,
+    RobotoMono_500Medium,
+  });
+
   LogBox.ignoreLogs(["Setting a timer"]);
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((res) => {
+      if (res) {
+        globals.setGues(false);
+        setRouteName("Home");
+      } else {
+        setRouteName("Welcome");
+      }
+    });
+  }, []);
+
+  if (routenName === "" || !fontsLoaded) {
+    return <AppLoading />;
+  }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Category"
+        initialRouteName={routenName}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />

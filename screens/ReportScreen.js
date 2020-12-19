@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import AppLoading from "expo-app-loading";
 import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
 import * as storage from "../data_model/Storage";
@@ -11,22 +9,14 @@ const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
 
   useEffect(() => {
-    if (storage.report.hasImageURI()) {
-      setImage(storage.report.getImage().uri);
+    if (storage.report.hasImage()) {
+      setImage(storage.report.imageURI);
     } else {
       setImage(
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
       );
     }
   }, []);
-
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
 
   return (
     <KeyboardAwareScrollView
@@ -63,7 +53,7 @@ const ReportScreen = ({ navigation }) => {
           marginTop: -15,
         }}
       >
-        📌 {storage.report.getAddress()}
+        📌 {storage.report.getReadableAddress()}
       </Text>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 0.3 }}>

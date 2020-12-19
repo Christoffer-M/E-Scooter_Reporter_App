@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import * as firebase from "../data_model/Storage";
+import * as firebase from "../data_model/Firebase";
 
 const LogOutButton = (props) => {
   return (

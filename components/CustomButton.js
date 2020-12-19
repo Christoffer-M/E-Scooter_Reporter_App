@@ -1,16 +1,7 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import AppLoading from "expo-app-loading";
 
 const CustomButton = ({ onPress, text, style, textStyle }) => {
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>

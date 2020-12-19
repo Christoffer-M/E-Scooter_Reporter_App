@@ -130,7 +130,7 @@ class Report {
   }
 
   getAddressCropped(maxLength) {
-    const address = this.getAddress();
+    const address = this.getReadableAddress();
     if (address.length > maxLength) {
       // Only cut address if it is too long
       const length = Math.max(maxLength, 3); // Avoid sub 3 length values

@@ -1,35 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import CustomButton from "../components/CustomButton";
 import Headline from "../components/Headline";
-import AppLoading from "expo-app-loading";
 import * as globals from "../components/Global.js";
-import * as firebaseDataBase from "../data_model/Storage";
-import * as firebase from "firebase/app";
-import { useFocusEffect } from "@react-navigation/native";
-
+import * as firebaseDataBase from "../data_model/Firebase";
 const WelcomeScreen = ({ navigation }) => {
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
-
-  useFocusEffect(
-    React.useCallback(() => {
-      firebase.auth().onAuthStateChanged((res) => {
-        if (res) {
-          globals.setGues(false);
-          navigation.push("Home");
-        }
-      });
-    })
-  );
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
-
   return (
     <View style={styles.container}>
       <View style={{ marginRight: 15, marginLeft: 15 }}>

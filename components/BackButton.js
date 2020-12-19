@@ -1,17 +1,9 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import SvgUri from "expo-svg-uri";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
 
 const BackButton = (props) => {
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
     <View style={styles.container}>
       <TouchableOpacity
