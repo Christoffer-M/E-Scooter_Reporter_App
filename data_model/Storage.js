@@ -136,23 +136,38 @@ export async function syncReports() {
   }
 }
 
-// TODO
 // GET USERS REPORTS ONLY
 // The array is sorted by time
-function getUserReportsList() {
+export function getUserReportsList() {
 
   const userReports = []
   
-  for (report in reports.values()) {
-    if (report.user == user) {
-      userReports.push(report)
+  reports.forEach( (v,k)=> {
+    console.log("Report key:",k)
+    if (v.user == user) {
+      userReports.push(v)
+      
     }
+  })
+
+  function compareTime(a, b) {
+    const aSec = a.timestamp.seconds
+    const bSec = b.timestamp.seconds
+    if ( aSec > bSec ){
+      return -1;
+    }
+    if ( aSec < bSec ){
+      return 1;
+    }
+    return 0;
   }
 
-  function compareTime( a, b ) {return a.timestamp.compareto(b.timestamp)}; 
-  userReports.sort((a, b) => a.timestamp.compareto(b.timestamp));
-  userReports.forEach(report => console.log("SORTING:",report.uuid, "date is:", report.timestamp))
-  console.log("userReports:", userReports)
+  console.log("\nbefore sort")
+  userReports.forEach(r => console.log("SORTING:",r.user, "date is:", r.timestamp.seconds))
+  userReports.sort(compareTime);
+  console.log("\nafter sort")
+  userReports.forEach(r => console.log("SORTING:",r.user, "date is:", r.timestamp.seconds))
+  //console.log("userReports:", userReports)
   return userReports
 }
 
