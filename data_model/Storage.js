@@ -9,7 +9,7 @@ let lastUpdate = null;
 let firstTimeSyncing = true; //Will only be true once, until after first sync
 let minSecondsBetweenUpdates = 5; // Don't sync with backend more often than every X second
 
-export let user = "";
+export let user = "guest";
 export let guest = true;
 
 export let reports = new Map(); //Empty map to hold reports
@@ -85,7 +85,8 @@ export function deleteReport(report) {
 	return true;
 }
 
-//TODO NOT DONE YET (need to check format of returned data from FireBase)
+// SYNC (DOWNLOAD) REPORTS
+// Sync no more often than minSecondsBetweenUpdates value, and only add new reports not already in array.
 export async function syncReports() {
 	if (lastUpdate == null) lastUpdate = new Date();
 
@@ -120,7 +121,7 @@ export async function syncReports() {
 			}
 		});
 
-		lastUpdate = new Date(); // Update time since last fetch
+    lastUpdate = new Date(); // Update time since last fetch
 		return true;
 	} else {
 		console.log(
@@ -129,8 +130,30 @@ export async function syncReports() {
 			"seconds before syncing again..."
 		);
 		return false;
-	}
+  }
+  return true;
 }
+
+// TODO
+// GET USERS REPORTS ONLY
+// The array is sorted by time
+function getUserReportsList() {
+
+  const userReports = []
+  
+  for (report in reports.values()) {
+    if (report.user == this.user) {
+      userReports.push(report)
+    }
+  }
+
+  function compareTime( a, b ) {return a.timestamp.compareto(b.timestamp)}; 
+  userReports.sort((a, b) => a.timestamp.compareto(b.timestamp));
+  userReports.forEach(report => console.log("SORTING:",report.uuid, "date is:", report.timestamp))
+  console.log("userReports:", userReports)
+  return userReports
+}
+
 
 //PRIVATE FUNCTIONS
 //Add report from local storage
