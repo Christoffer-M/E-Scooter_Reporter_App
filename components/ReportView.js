@@ -7,12 +7,6 @@ import { storage } from "firebase";
 //TODO: IF IT IS USED FOR MODAL VIEW, THERE SHOULD BE AN "X" CLOSE BUTTON
 //TODO: IF IT IS USED FOR SCREEN VIEW, THERE SHOULD BE A BACK BUTTON
 const ReportView = (props) => {
-  let [fontsLoaded] = useFonts({
-    RobotoMono_500Medium,
-  });
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   let testAdress = "Herninggade 9, 2100 København Ø";
   let testBrand = "Lime";
   let testArr = ["Misplaced", "Laying Down", "Broken", "Other"];
@@ -26,7 +20,7 @@ const ReportView = (props) => {
       scrollEnabled={true}
       // MAYBE ADD BACKBUTTON?
     >
-      <Text style={styles.headline}>Report ID:{randomId}</Text>
+      <Text style={styles.headline}>Report ID: {randomId}</Text>
       <View style={styles.pictureContainer}>
         <Image
           style={{
