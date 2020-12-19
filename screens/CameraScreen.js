@@ -150,11 +150,7 @@ const CameraSceen = ({ navigation }) => {
                 storage.report.setTimestampToNow();
                 setLoading(false);
                 setImageTaken(true);
-                console.log(storage.report);
-                //TODO: Use photo uri path to send to Report.
                 //TODO: ^ NO, get the photo name from report.imageName
-                //TODO: ^ We upload the photo with a name matching the uuid of the report + ".jpg"
-                //TODO: ^ We only upload the photo when we submit
               }
             }}
           >

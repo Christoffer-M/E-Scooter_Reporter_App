@@ -145,8 +145,6 @@ const HomeScreen = ({ navigation }) => {
         }}
         onTouchStart={() => {
           if (isPress) {
-            console.log(location);
-            console.log(location);
             animate();
           }
         }}
