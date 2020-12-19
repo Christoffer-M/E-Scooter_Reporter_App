@@ -3,7 +3,7 @@
 
 import * as Backend from "Firebase";
 import * as FileSystem from "expo-file-system";
-import { Report } from "Report";
+import * as Report from "Report";
 
 export let user = "";
 
@@ -12,7 +12,6 @@ export let report = null; //Use newReport() to get a new (clean) report
 
 //In case of failed internet connection:
 export let reportsNotUploaded = [];
-export let reportImagesNotUploaded = [];
 
 export function isSignedIn() {
 	return this.user.length > 0;
@@ -25,70 +24,66 @@ export function signOut() {
 // CREATE NEW REPORT
 // NOTE: Remember to call this first when starting on a new report!
 export function newReport() {
-	this.report = Report(user);
+	this.report = Report.newReport(this.user);
 	return this.report;
 }
 
-//TODO: TOO VERBOSE?
 // SUBMIT NEW REPORT
-// Submit by uploading the (new) report to Firebase and add it to local storage
+// Submit by uploading first the report photo, then get the URL to the uploaded photo into the report, and then upload the report.
 export function submitReport() {
 	if (this.report.isSubmittable()) {
-		if (this.addReport(this.report)) {
-			if (Backend.uploadReport(report)) {
-				console.log(
-					"Report uploaded successfully to FireBase with uuid:",
-					report.uuid
-				);
-				if (Backend.uploadReportPhoto(report)) {
-					console.log(
-						"Photo uploaded successfully to FireBase:",
-						report.imageName
-					);
-				} else {
-                    console.error(
-                        "Failed to upload report photo to FireBase:",
-                        report.imageName
-                    );
-                    return false;
-                }
-				return true;
-			} else {
-				console.error(
-					"Failed to upload report to FireBase with uuid:",
-					report.uuid
-				);
-				// Saving report for later submission when internet has recoved (if not already saved)
-				for (report in this.reportsNotUploaded)
-					if (this.report.uuid == report.uuid) return false;
-				console.log("Saving report for upload later...");
-				this.reportsNotUploaded.push(report);
-				return false;
-			}
-		} else {
-			throw "Error: Report submission cancelled, as it already exists in Storage (somehow)!";
-		}
+
+        //We first upload the report photo...
+        if (!Backend.uploadReportPhoto(this.report)) {
+            console.error("ERROR: Submitting aborted, unable to upload report photo!")
+            return false;
+        } 
+
+        //...Then we get the URL to the just uploaded report photo...
+        this.report = Backend.getPhotoDownloadURL(this.report)
+        if (!this.report.imageURL) {
+            console.error("ERROR: Submitting aborted, unable to get URL for report photo!")
+            return false;
+        }
+
+        //...And then we upload the report now with the photo URL as well
+        if (!Backend.uploadReport(this.report)) {
+            console.error("ERROR: Submitting aborted, unable to upload report to FireStore");
+            return false;
+        }
 	} else {
 		throw "Error: Report missing information! check .isSubmittable() first before trying to submit!";
-	}
+    }
+    return true;
 }
 
 // Delete reports from Firebase and Storage
-export function deleteReport(uuid) {
-	if (Backend.deleteReport(uuid)) {
-		if (this.removeReport(report)) {
-			console.log("Report deleted from both Firebase and Storage");
-		} else {
-			throw "Error: Report deleted from Firebase, but was never found in Storage!!";
-		}
-		return true;
-	} else {
-		console.error("Document was not deleted with uuid:", uuid);
-		return false;
-	}
+export function deleteReport(report) {
+
+    // Delete report photo on backend
+    if (!Backend.deleteReportPhoto(report)) {
+        console.error("ERROR: Report photo was not deleted from backend");
+        return false;
+    }
+
+    // Delete report on backend
+	if (!Backend.deleteReport(report)) {
+        console.error("ERROR: Report was not deleted from backend");
+        return false;
+    }
+
+    // Delete report locally
+    if (!this.removeReport(report)) {
+        console.error("ERROR: Report was not deleted locally");
+        return false;
+    }
+
+    console.log("Report and photo deleted from both backend and local storage");
+    return true;
 }
 
-//TODO NOT DONE YET (need to check what is returned from FireBase)
+
+//TODO NOT DONE YET (need to check format of returned data from FireBase)
 export function syncReports(report) {
 
     let fetchedReports = Backend.downloadAllReports()
@@ -119,11 +114,6 @@ function addReport(report) {
 //Remove report from local storage
 function removeReport(report) {
 	if (this.reports.delete(report.uuid)) {
-		// If to-be-deleted report was in pending upload array, also delete it from there:
-		const filtered = this.reportsNotUploaded.filter(
-			(r) => r.uuid != report.uuid
-		);
-		this.reportsNotUploaded = filtered;
 		console.log("Report deleted from Storage with uuid", report.uuid);
 		return true;
 	} else {
@@ -135,44 +125,46 @@ function removeReport(report) {
 	}
 }
 
-// Download report photo to device filesystem
-function downloadReportPhoto(report) {
-	//Get report photo URL:
-	const url = Backend.getDownloadReportPhotoURL(report);
-	if (url == "") {
-		console.error(
-			"Unable to get URL to download report photo for:",
-			report.imageName
-		);
-		return false;
-	}
-	console.log("Trying to download report photo from:", url);
+//NOTE: COMMENTED OUT SINCE WE DONT NEED TO DOWNLOAD IMAGES FROM URL AND SAVE THEM LOCALLY 
+// // Download report photo to device filesystem
+// function downloadReportPhoto(report) {
+// 	//Get report photo URL:
+// 	const url = Backend.getDownloadReportPhotoURL(report);
+// 	if (url == "") {
+// 		console.error(
+// 			"Unable to get URL to download report photo for:",
+// 			report.imageName
+// 		);
+// 		return false;
+// 	}
+// 	console.log("Trying to download report photo from:", url);
 
-	FileSystem.downloadAsync(url, FileSystem.documentDirectory + report.imageName)
-		.then(({ uri }) => {
-			console.log("Finished downloading to ", uri);
-			report.imageURI = uri;
-		})
-		.catch((error) => {
-			console.error("Was unable to download photo:", error);
-			return false;
-		});
-	return true;
-}
+// 	FileSystem.downloadAsync(url, FileSystem.documentDirectory + report.imageName)
+// 		.then(({ uri }) => {
+// 			console.log("Finished downloading to ", uri);
+// 			report.imageURI = uri;
+// 		})
+// 		.catch((error) => {
+// 			console.error("Was unable to download photo:", error);
+// 			return false;
+// 		});
+// 	return true;
+// }
 
-//Delete report photo from local storage
-function deleteReportPhoto(report) {
-	//Get report photo uri
-	const uri = report.imageURI;
-	if (uri == "") {
-		console.error("No local image found for", report.uuid);
-		return false;
-	}
-	console.log("Deleting report photo from local storage:", uri);
+//NOTE: COMMENTED OUT SINCE WE ALREADY CLEAR THE LOCAL IMAGE AFTER SUBMITTING?
+// //Delete report photo from local storage
+// function deleteReportPhoto(report) {
+// 	//Get report photo uri
+// 	const uri = report.imageURI;
+// 	if (uri == "") {
+// 		console.error("No local image found for", report.uuid);
+// 		return false;
+// 	}
+// 	console.log("Deleting report photo from local storage:", uri);
 
-	FileSystem.deleteAsync(uri).catch((error) => {
-		console.error("Unable to delete local photo file", error);
-		return false;
-	});
-	return true;
-}
+// 	FileSystem.deleteAsync(uri).catch((error) => {
+// 		console.error("Unable to delete local photo file", error);
+// 		return false;
+// 	});
+// 	return true;
+// }

@@ -157,6 +157,7 @@ export function uploadReport(report) {
 			uuid: report.uuid,
 			user: report.user,
 			imageName: report.imageName,
+			imageURL: report.imageURL,
 			timestamp: report.timestamp,
 			geolocation: report.geolocation,
 			address: report.address,
@@ -166,7 +167,7 @@ export function uploadReport(report) {
 			broken: report.broken,
 			misplaced: report.misplaced,
 			other: report.other,
-			comment: report.comment,
+			comment: report.comment
 		})
 		.then(function (docRef) {
 			console.log("Document written with ID: ", docRef.id);
