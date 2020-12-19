@@ -159,12 +159,7 @@ export function getUserReportsList() {
     return 0;
   }
 
-  console.log("\nbefore sort")
-  userReports.forEach(r => console.log("SORTING:",r.user, "date is:", r.timestamp.seconds))
   userReports.sort(compareTime);
-  console.log("\nafter sort")
-  userReports.forEach(r => console.log("SORTING:",r.user, "date is:", r.timestamp.seconds))
-  //console.log("userReports:", userReports)
   return userReports
 }
 
