@@ -1,9 +1,7 @@
 import "./components/Global";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { LogBox } from "react-native";
 import WelcomeScreen from "./screens/WelcomeScreen";
-import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import CameraScreen from "./screens/CameraScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,6 +17,7 @@ in our app. For this purpose we use StackNavigator 🛴
 */
 export default function App() {
   const Stack = createStackNavigator();
+  LogBox.ignoreLogs(["Setting a timer"]);
 
   return (
     <NavigationContainer>
@@ -27,7 +26,6 @@ export default function App() {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Camera" component={CameraScreen} />
         <Stack.Screen name="QRScreen" component={QRScreen} />

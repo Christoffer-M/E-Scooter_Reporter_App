@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import Button from "../components/Button";
+import CustomButton from "../components/CustomButton";
 import Headline from "../components/Headline";
 import BackButton from "../components/BackButton";
 import AppLoading from "expo-app-loading";
@@ -24,7 +24,13 @@ const SuccessScreen = ({ navigation }) => {
         <Text style={styles.fontStyle}>
           Thank you for helping out your city and your e-scooter pals!
         </Text>
-        <Button nav={navigation} navDir="Home" text="Done" color="orange" />
+        <CustomButton
+          onPress={() => {
+            navigation.push("Home");
+          }}
+          text="Done"
+          color="orange"
+        />
         <StatusBar style="auto" />
       </View>
     </View>

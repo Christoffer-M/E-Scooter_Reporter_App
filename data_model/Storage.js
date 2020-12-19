@@ -1,6 +1,6 @@
 // File that stores information in our app, such as reports, user information, etc.
 
-import Report from "./Report";
+import * as Report from "./Report";
 import * as Firebase from "./Firebase";
 import * as google from "expo-google-app-auth";
 import * as firebase from "firebase/app";
@@ -18,16 +18,16 @@ export function isSignedIn() {
   return this.user.length > 0;
 }
 
-// export function signOut() {
-//   this.user = "";
-// }
+export function signOut() {
+  this.user = "";
+}
 
 // Get a new report
 // Remember to call this first when starting on a new report!
-// export function newReport() {
-//   this.report = Report(user);
-//   return this.report;
-// }
+export function newReport() {
+  this.report = Report.newReport(this.user);
+  return this.report;
+}
 
 // Submit by uploading the (new) report to Firebase and add it to local storage
 //TODO NEED UPLOAD PHOTO TO Firebase

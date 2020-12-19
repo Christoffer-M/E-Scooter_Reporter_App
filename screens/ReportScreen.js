@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
-import Button from "../components/Button.js";
+import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
 import * as globals from "../components/Global.js";
 
@@ -118,11 +118,11 @@ const ReportScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
+        <CustomButton
+          onPress={() => {
+            navigation.push("Success");
+          }}
           text="Submit"
-          color="orange"
-          nav={navigation}
-          navDir="Success"
         />
       </View>
     </KeyboardAwareScrollView>

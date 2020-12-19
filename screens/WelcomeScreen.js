@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
-import Button from "../components/Button";
+import CustomButton from "../components/CustomButton";
 import Headline from "../components/Headline";
 import AppLoading from "expo-app-loading";
 import * as globals from "../components/Global.js";
@@ -64,7 +64,14 @@ const WelcomeScreen = ({ navigation }) => {
 
         <Text style={styles.fontStyleforOr}>or</Text>
         <View style={styles.buttonview}>
-          <Button nav={navigation} navDir="Home" text="Guest" color="orange" />
+          <CustomButton
+            onPress={() => {
+              console.log("setting guest to true");
+              globals.setGues(true);
+              navigation.push("Home");
+            }}
+            text="Guest"
+          />
         </View>
         {/* <View style={styles.buttonview}>
           <Button

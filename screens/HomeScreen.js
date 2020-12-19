@@ -13,12 +13,12 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
-import Button from "../components/Button";
+import CustomButton from "../components/CustomButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
 import * as globals from "../components/Global.js";
-import * as firebase from "../data_model/Storage";
+import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
@@ -175,7 +175,13 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.reportButton}>
-        <Button nav={navigation} navDir="Camera" text="Report" color="orange" />
+        <CustomButton
+          onPress={() => {
+            storage.newReport();
+            navigation.push("Camera");
+          }}
+          text="Report"
+        />
       </View>
       <OverlayHome animate={animate} transform={transform} nav={navigation} />
     </View>

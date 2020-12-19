@@ -4,7 +4,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import CameraText from "../components/CameraText";
 import { Camera } from "expo-camera";
 import BackButton from "../components/BackButton";
-import Button from "../components/Button";
+import CustomButton from "../components/CustomButton";
 import * as globals from "../components/Global.js";
 
 const QRScreen = ({ navigation }) => {
@@ -100,12 +100,11 @@ const QRScreen = ({ navigation }) => {
               marginRight: "auto",
             }}
           >
-            <Button
+            <CustomButton
+              onPress={() => {
+                navigation.push("Category");
+              }}
               text="Skip"
-              color="orange"
-              title={"Continue"}
-              nav={navigation}
-              navDir="Category"
             />
           </View>
         </View>

@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import CategoryButton from "../components/CategoryButton";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
-import Buttons from "../components/Button";
+import CustomButton from "../components/CustomButton";
 import * as globals from "../components/Global";
 import BackButton from "../components/BackButton";
 
@@ -150,10 +150,10 @@ const CategoryScreen = ({ navigation }) => {
 
       <View style={{ justifyContent: "flex-end" }}>
         {hideProcess ? (
-          <Buttons
-            nav={navigation}
-            navDir="Report"
-            color="orange"
+          <CustomButton
+            onPress={() => {
+              navigation.push("Report");
+            }}
             text="Proceed"
           />
         ) : (
