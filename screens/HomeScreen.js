@@ -22,7 +22,7 @@ import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(new Animated.Value(-280)).current;
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(storage.location);
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
@@ -30,6 +30,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
+      console.log("running");
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
@@ -37,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
       } else {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
+        storage.location = location;
       }
     })();
   }, []);
@@ -140,8 +142,8 @@ const HomeScreen = ({ navigation }) => {
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}
         onTouchStart={() => {
           if (isPress) {

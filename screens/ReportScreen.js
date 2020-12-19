@@ -11,8 +11,8 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
+import * as FileSystem from "expo-file-system";
 import * as storage from "../data_model/Storage";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
@@ -127,6 +127,12 @@ const ReportScreen = ({ navigation }) => {
               if (res) {
                 navigation.push("Success");
                 setLoading(false);
+                try {
+                  FileSystem.deleteAsync(imageUri);
+                  console.log("Image file Deleted", imageUri);
+                } catch (error) {
+                  console.error(error);
+                }
               } else {
                 setLoading(false);
                 Alert.alert(
