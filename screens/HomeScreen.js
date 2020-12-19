@@ -21,7 +21,9 @@ import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
-  const transform = useRef(new Animated.Value(-280)).current;
+  const transform = useRef(
+    new Animated.Value(-Dimensions.get("window").width * 0.8)
+  ).current;
   const [location, setLocation] = useState(storage.location);
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
@@ -87,10 +89,11 @@ const HomeScreen = ({ navigation }) => {
   }
 
   function animate() {
+    const width = Dimensions.get("window").width;
     if (isPress) {
       setIsPress(false);
       Animated.timing(transform, {
-        toValue: -280,
+        toValue: -width,
         duration: 250,
         useNativeDriver: true,
       }).start();
@@ -208,6 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    height: Dimensions.get("window").height,
   },
 
   reportButton: {
