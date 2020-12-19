@@ -29,7 +29,6 @@ const HomeScreen = ({ navigation }) => {
   const isGuest = useRef(storage.guest).current;
 
   useEffect(() => {
-    console.log("running!");
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
