@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Dimensions,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
 import * as storage from "../data_model/Storage";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (storage.report.hasImage()) {
@@ -16,7 +26,7 @@ const ReportScreen = ({ navigation }) => {
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
       );
     }
-    console.log(imageUri);
+    //console.log(imageUri);
   }, []);
 
   return (
@@ -108,18 +118,45 @@ const ReportScreen = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <CustomButton
-          onPress={() => {
-            console.log(storage.report);
-            const res = storage.submitReport();
-            if (res) {
-              navigation.push("Success");
-            } else {
-              console.log("OH NO!");
-            }
+          onPress={async () => {
+            //Activates loading overlay while report is being submitted
+            setLoading(true);
+
+            //Start report submission process in storage
+            await storage.submitReport().then((res) => {
+              if (res) {
+                navigation.push("Success");
+                setLoading(false);
+              } else {
+                setLoading(false);
+                Alert.alert(
+                  "No connection to server.",
+                  "Please try again later",
+                  [{ text: "OK", onPress: () => console.log("ok") }],
+                  { cancelable: false }
+                );
+              }
+            });
           }}
           text="Submit"
         />
       </View>
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            position: "absolute",
+            height: Dimensions.get("window").height * 1.2,
+            width: Dimensions.get("window").width,
+            backgroundColor: " rgba(0,0,0,0.5)",
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator size="large" color="#E77F64" />
+        </View>
+      ) : (
+        <View></View>
+      )}
     </KeyboardAwareScrollView>
   );
 };
@@ -138,7 +175,7 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: Dimensions.get("window").height * 1.3,
+    height: Dimensions.get("window").height * 1.2,
     width: Dimensions.get("window").width,
     backgroundColor: "#2F4357",
     flexDirection: "column",

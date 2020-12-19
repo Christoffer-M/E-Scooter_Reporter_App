@@ -37,7 +37,6 @@ var storage = firebase.storage().ref();
 // Create a scooter_photos_path reference
 const scooterFolderPath = "scooter_photos";
 const scooterPhotosPath = storage.child(scooterFolderPath);
-console.log("PHOTOSPATH: " + scooterPhotosPath);
 
 //GOOGLE SIGN IN
 //TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
@@ -64,14 +63,7 @@ export async function signInWithGoogleAsync() {
         .auth()
         .signInWithCredential(credentials)
         .catch(function (error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
+          console.error(error);
         });
       const res = {
         user: user,
@@ -154,7 +146,8 @@ export function downloadAllReports() {
 // UPLOAD REPORT
 // Upload report document to Firebase FireStore with uuid as name
 export async function uploadReport(report) {
-  db.collection("reports")
+  return await db
+    .collection("reports")
     .doc(report.uuid)
     .set({
       uuid: report.uuid,
@@ -172,14 +165,16 @@ export async function uploadReport(report) {
       other: report.other,
       comment: report.comment,
     })
-    .then(function () {
+    .then(() => {
+      //Will return true if report has been successfully submitted
       console.log("Report succesfully added!");
+      return true;
     })
-    .catch(function (error) {
+    .catch((error) => {
+      //Will return false if report has not been successfully submitted
       console.error("Error adding report: ", error);
       return false;
     });
-  return true;
 }
 
 // UPLOAD REPORT PHOTO
@@ -201,56 +196,66 @@ export async function uploadReportPhoto(report) {
     .child(report.imageName)
     .put(file, metadata);
 
-  // Listen for state changes, errors, and completion of the upload.
-  await uploadTask.on(
-    firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-    function (snapshot) {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(report.imageName, "upload is " + progress + "% done");
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log("Upload is paused");
-          break;
-        case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log("Upload is running");
-          break;
-      }
-    },
-    function (error) {
-      // A full list of error codes is available at
-      // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case "storage/unauthorized":
-          console.error("Upload Error: Firebase Storage not authorized");
-          // User doesn't have permission to access the object
-          console.error(
-            "Upload Error: User",
-            report.user,
-            "does not have permission!"
-          );
-          break;
+  // Wraps everything in promise to make sure code runs synchronously.
+  const promise = new Promise((resolve, reject) => {
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(
+      firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      function (snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(report.imageName, "upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log("Upload is paused");
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log("Upload is running");
+            break;
+        }
+      },
+      function (error) {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case "storage/unauthorized":
+            console.error("Upload Error: Firebase Storage not authorized");
+            // User doesn't have permission to access the object
+            console.error(
+              "Upload Error: User",
+              report.user,
+              "does not have permission!"
+            );
+            break;
 
-        case "storage/unknown":
-          // Unknown error occurred, inspect error.serverResponse
-          console.error("Upload Error: Unknown error occurred!");
-          break;
-      }
-      return false;
-    },
-    async () => {
-      // Upload completed successfully, now we can get the download URL
-      await uploadTask.snapshot.ref
-        .getDownloadURL()
-        .then(function (downloadURL) {
-          console.log("File available at", downloadURL);
+          case "storage/unknown":
+            // Unknown error occurred, inspect error.serverResponse
+            console.error("Upload Error: Unknown error occurred!");
+            break;
+        }
+        reject(error);
+      },
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           report.imageURL = downloadURL;
-          console.log("Reportimage from function: " + report.imageURL);
-          uploadReport(report);
+          resolve(true);
         });
-    }
-  );
-  return true;
+      }
+    );
+  })
+    .then((res) => {
+      //If res is returned as true, then run the upload report function
+      if (res) {
+        return uploadReport(report);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+
+  return promise;
 }
 
 //DELETE REPORT DOCUMENT

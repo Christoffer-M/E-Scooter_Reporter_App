@@ -36,15 +36,20 @@ export function newReport() {
 // SUBMIT NEW REPORT
 // Submit by uploading first the report photo, then get the URL to the uploaded photo into the report, and then upload the report.
 export async function submitReport() {
+  //Checks if report is submittable
   if (this.report.isSubmittable()) {
-    //We first upload the report photo...
-    const uploadPhotoRes = await Backend.uploadReportPhoto(this.report);
-    if (!uploadPhotoRes) {
+    //Now tries to upload photo to Firebase
+    const res = await Backend.uploadReportPhoto(this.report);
+
+    //If returned error or something bad happened it will return false
+    if (!res) {
       console.error(
         "ERROR: Submitting aborted, unable to upload report photo!"
       );
       return false;
     } else {
+      //Will return true if report has been successfully submitted
+      console.log("Report submitted succesfully!");
       return true;
     }
   } else {
