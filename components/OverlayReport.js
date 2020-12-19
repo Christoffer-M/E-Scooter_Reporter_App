@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, StyleSheet, View, Image } from "react-native";
+import { Text, StyleSheet, View, Image, Dimensions } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
-const OverlayReport = () => {
+const OverlayReport = ({ date, address, imageURI }) => {
   return (
     <TouchableHighlight
       style={styles.highlightContainer}
@@ -15,7 +15,7 @@ const OverlayReport = () => {
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
-            source={require("../assets/brand_logos/logo_unknown.png")}
+            source={{ uri: imageURI }}
             resizeMode="cover"
             style={{
               height: 55,
@@ -26,10 +26,10 @@ const OverlayReport = () => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text} numberOfLines={1}>
-            Friday, 20 November 2020
+            {date}
           </Text>
           <Text style={styles.text} numberOfLines={1}>
-            IT University of Copenhagen
+            {address}
           </Text>
         </View>
       </View>
@@ -40,6 +40,7 @@ const OverlayReport = () => {
 const styles = StyleSheet.create({
   highlightContainer: {
     alignSelf: "stretch",
+    paddingTop: 5,
   },
   imageContainer: { padding: 5 },
 
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: "column",
     justifyContent: "space-between",
-    width: 220,
+    width: Dimensions.get("window").width * 0.65,
   },
 
   text: {
