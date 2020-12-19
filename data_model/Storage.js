@@ -5,11 +5,16 @@ import * as Backend from "./Firebase";
 import * as FileSystem from "expo-file-system";
 import * as Report from "./Report";
 
+let lastUpdate = new Date.now()
+let firstTimeSyncing = true //Will only be true once, until after first sync
+let minSecondsBetweenUpdates = 5 // Don't sync with backend more often than every X second
+
 export let user = "";
+export let guest = true;
 
 export let reports = new Map(); //Empty map to hold reports
 export let report = null; //Use newReport() to get a new (clean) report
-export let guest = true;
+
 
 //In case of failed internet connection:
 export let reportsNotUploaded = [];
@@ -78,11 +83,24 @@ export function deleteReport(report) {
 
 //TODO NOT DONE YET (need to check format of returned data from FireBase)
 export function syncReports(report) {
-  let fetchedReports = Backend.downloadAllReports();
-  console.log("Syncing with", fetchedReports.length, "reports:");
+  const now = new Date();
+  const secondsSinceLastSync = (now.getTime() - lastUpdate.getTime()) / 1000
+  
+  if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
+    firstTimeSyncing = false; // Only allowed once!
 
-  for (report in fetchedReports) {
-    console.log(report);
+    let fetchedReports = Backend.downloadAllReports();
+    console.log("Syncing with", fetchedReports.length, "reports:");
+        
+    for (report in fetchedReports) {
+      console.log(report);
+    }
+
+    lastUpdate = new Date();
+    return true;
+  } else {
+    console.log("Please wait", secondsSinceLastSync, "seconds before syncing again...")
+    return false;
   }
 }
 
