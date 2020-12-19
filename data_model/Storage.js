@@ -93,6 +93,7 @@ export function syncReports(report) {
     console.log("Syncing with", fetchedReports.length, "reports:");
         
     for (report in fetchedReports) {
+      console.log("REPORT DATA DEBUG:");
       console.log(report);
     }
 
