@@ -29,7 +29,7 @@ export function newReport() {
 	return this.report;
 }
 
-//TODO: TOO VERBOSE!
+//TODO: TOO VERBOSE?
 // SUBMIT NEW REPORT
 // Submit by uploading the (new) report to Firebase and add it to local storage
 export function submitReport() {
@@ -88,8 +88,17 @@ export function deleteReport(uuid) {
 	}
 }
 
-//TODO
-export function syncReports(report) {}
+//TODO NOT DONE YET (need to check what is returned from FireBase)
+export function syncReports(report) {
+
+    let fetchedReports = Backend.downloadAllReports()
+    console.log("Syncing with", fetchedReports.length, "reports:")
+
+    for (report in fetchedReports) {
+        console.log(report)
+    }
+
+}
 
 //PRIVATE FUNCTIONS
 //Add report from local storage
@@ -125,9 +134,6 @@ function removeReport(report) {
 		return false;
 	}
 }
-
-//TODO
-function downloadReport() {}
 
 // Download report photo to device filesystem
 function downloadReportPhoto(report) {

@@ -11,7 +11,8 @@ export const newReport = (user) => {
 export const existingReport = (
 	uuid,
 	user,
-	imageName,
+    imageName,
+    imageURL,
 	timestamp,
 	geolocation,
 	address,
@@ -27,7 +28,8 @@ export const existingReport = (
 
 	this.uuid = uuid;
 	this.user = user;
-	this.imageName = imageName;
+    this.imageName = imageName;
+    this.imageURL = imageURL;
 	this.timestamp = timestamp;
 	this.geolocation[0] = geolocation[0]; //Latitude
 	this.geolocation[1] = geolocation[1]; //Longitude
@@ -48,7 +50,8 @@ class Report {
 	uuid = "";
 	user = ""; // userid
 	imageName = ""; // scooter image name
-	imageURI = "";
+    imageURI = ""; // When creating reports, local storage URI
+    imageURL = ""; // When downloading reports, show image using URL
 	timestamp = "";
 	geolocation = []; //[55.660572° N, 12.590942° E]
 	address = "";
@@ -76,7 +79,7 @@ class Report {
 	}
 
 	hasImage() {
-		return this.imageURI.length > 0;
+		return this.imageURL.length > 0 || this.imageURI.length > 0;
 	}
 
 	setTimestampToNow() {
