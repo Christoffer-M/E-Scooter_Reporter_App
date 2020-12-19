@@ -42,6 +42,11 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    console.log("Trying to sync reports...");
+    storage.syncReports();
+  });
+
+  useEffect(() => {
     if (isGuest === false) {
       if (user === null) {
         firebases.auth().onAuthStateChanged((user) => {
@@ -58,6 +63,8 @@ const HomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      storage.syncReports();
+
       BackHandler.addEventListener("hardwareBackPress", onbackpress);
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onbackpress);
