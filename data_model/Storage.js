@@ -82,7 +82,7 @@ export function deleteReport(report) {
 }
 
 //TODO NOT DONE YET (need to check format of returned data from FireBase)
-export function syncReports() {  
+export async function syncReports() {  
   if (lastUpdate == null) lastUpdate = new Date()
   
   const now = new Date();
@@ -91,13 +91,13 @@ export function syncReports() {
   if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
     firstTimeSyncing = false; // Only allowed once!
 
-    let fetchedReports = Backend.downloadAllReports();
+    let fetchedReports = await Backend.downloadAllReports();
     console.log("Syncing with", fetchedReports.length, "reports:");
         
-    for (report in fetchedReports) {
+    //for (report in fetchedReports) {
       console.log("REPORT DATA DEBUG:");
-      console.log(report);
-    }
+      console.log(fetchedReports);
+    //}
 
     lastUpdate = new Date(); // Update time since last fetch
     return true;
