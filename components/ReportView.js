@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
-import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AppLoading from "expo-app-loading";
 import BackButton from "../components/BackButton"; // Maybe delete and don't use?
@@ -27,7 +26,7 @@ const ReportView = (props) => {
       scrollEnabled={true}
       // MAYBE ADD BACKBUTTON?
     >
-      <Text style={styles.headline}>Report id:{randomId}</Text>
+      <Text style={styles.headline}>Report ID:{randomId}</Text>
       <View style={styles.pictureContainer}>
         <Image
           style={{
