@@ -12,6 +12,8 @@ let minSecondsBetweenUpdates = 5; // Don't sync with backend more often than eve
 export let user = "guest";
 export let guest = true;
 
+export let location = null;
+
 export let reports = new Map(); //Empty map to hold reports
 export let report = null; //Use newReport() to get a new (clean) report
 
@@ -19,22 +21,22 @@ export let report = null; //Use newReport() to get a new (clean) report
 export let reportsNotUploaded = [];
 
 export function isSignedIn() {
-	return this.user.length > 0;
+  return this.user.length > 0;
 }
 
 export function signOut() {
-	this.user = "";
+  this.user = "";
 }
 
 export function setGuest(boolean) {
-	guest = boolean;
+  guest = boolean;
 }
 
 // CREATE NEW REPORT
 // NOTE: Remember to call this first when starting on a new report!
 export function newReport() {
-	this.report = Report.newReport(this.user);
-	return this.report;
+  this.report = Report.newReport(this.user);
+  return this.report;
 }
 
 // SUBMIT NEW REPORT
@@ -63,75 +65,75 @@ export async function submitReport() {
 
 // Delete reports from Firebase and Storage
 export function deleteReport(report) {
-	// Delete report photo on backend
-	if (!Backend.deleteReportPhoto(report)) {
-		console.error("ERROR: Report photo was not deleted from backend");
-		return false;
-	}
+  // Delete report photo on backend
+  if (!Backend.deleteReportPhoto(report)) {
+    console.error("ERROR: Report photo was not deleted from backend");
+    return false;
+  }
 
-	// Delete report on backend
-	if (!Backend.deleteReport(report)) {
-		console.error("ERROR: Report was not deleted from backend");
-		return false;
-	}
+  // Delete report on backend
+  if (!Backend.deleteReport(report)) {
+    console.error("ERROR: Report was not deleted from backend");
+    return false;
+  }
 
-	// Delete report locally
-	if (!this.removeReport(report)) {
-		console.error("ERROR: Report was not deleted locally");
-		return false;
-	}
+  // Delete report locally
+  if (!this.removeReport(report)) {
+    console.error("ERROR: Report was not deleted locally");
+    return false;
+  }
 
-	console.log("Report and photo deleted from both backend and local storage");
-	return true;
+  console.log("Report and photo deleted from both backend and local storage");
+  return true;
 }
 
 // SYNC (DOWNLOAD) REPORTS
 // Sync no more often than minSecondsBetweenUpdates value, and only add new reports not already in array.
 export async function syncReports() {
-	if (lastUpdate == null) lastUpdate = new Date();
+  if (lastUpdate == null) lastUpdate = new Date();
 
-	const now = new Date();
-	const secondsSinceLastSync = (now.getTime() - lastUpdate.getTime()) / 1000;
+  const now = new Date();
+  const secondsSinceLastSync = (now.getTime() - lastUpdate.getTime()) / 1000;
 
-	if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
-		firstTimeSyncing = false; // Only allowed once!
+  if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
+    firstTimeSyncing = false; // Only allowed once!
 
-		let fetchedReports = await Backend.downloadAllReports();
-		console.log("Syncing with", fetchedReports.length, "reports:");
+    let fetchedReports = await Backend.downloadAllReports();
+    console.log("Syncing with", fetchedReports.length, "reports:");
 
-		// If we have reports that are no longer on the server, remove all reports before syncing:
-		if (this.reports.length > fetchedReports.length) this.reports.clear();
+    // If we have reports that are no longer on the server, remove all reports before syncing:
+    if (reports.length > fetchedReports.length) this.reports.clear();
 
-		// Put reports in our Map of reports:
-		fetchedReports.forEach((report) => {
-			if (report == null) {
-				console.log("Found null report:", report);
-			} else {
-				if (!this.reports.has(report.uuid)) {
+    // Put reports in our Map of reports:
+    fetchedReports.forEach((obj) => {
+      if (obj == null) {
+        console.log("Found null report:", obj);
+      } else {
+        if (!reports.has(obj.uuid)) {
           // console.log("Adding report:")
           // console.log(report);
 
-          const newReport = Report.newReport(report.user)
-          Object.assign(newReport, report)
+          const newReport = Report.newReport(obj.user);
+          Object.assign(newReport, obj);
 
-					this.reports[report.uuid] = newReport;
-					// console.log("Report added:");
-					// console.log(newReport);
-				}
-			}
-		});
+          //reports[newReport.uuid] = newReport;
+          reports.set(newReport.uuid, newReport);
+          // console.log("Report added:");
+          // console.log(newReport);
+        }
+      }
+    });
 
     lastUpdate = new Date(); // Update time since last fetch
-		return true;
-	} else {
-		console.log(
-			"Please wait",
-			(minSecondsBetweenUpdates - secondsSinceLastSync).toFixed(2),
-			"seconds before syncing again..."
-		);
-		return false;
+    return true;
+  } else {
+    console.log(
+      "Please wait",
+      (minSecondsBetweenUpdates - secondsSinceLastSync).toFixed(2),
+      "seconds before syncing again..."
+    );
+    return false;
   }
-  return true;
 }
 
 // TODO
@@ -158,31 +160,31 @@ function getUserReportsList() {
 //PRIVATE FUNCTIONS
 //Add report from local storage
 function addReport(report) {
-	if (this.reports.has(reports.uuid)) {
-		console.error(
-			"Report could not be added to Storage (already exists) with uuid",
-			report.uuid
-		);
-		return false;
-	} else {
-		this.reports.set(report.uuid, report);
-		console.log("Report added to Storage with uuid", report.uuid);
-		return true;
-	}
+  if (this.reports.has(reports.uuid)) {
+    console.error(
+      "Report could not be added to Storage (already exists) with uuid",
+      report.uuid
+    );
+    return false;
+  } else {
+    this.reports.set(report.uuid, report);
+    console.log("Report added to Storage with uuid", report.uuid);
+    return true;
+  }
 }
 
 //Remove report from local storage
 function removeReport(report) {
-	if (this.reports.delete(report.uuid)) {
-		console.log("Report deleted from Storage with uuid", report.uuid);
-		return true;
-	} else {
-		console.error(
-			"Report could not be found and deleted from Storage with uuid",
-			report.uuid
-		);
-		return false;
-	}
+  if (this.reports.delete(report.uuid)) {
+    console.log("Report deleted from Storage with uuid", report.uuid);
+    return true;
+  } else {
+    console.error(
+      "Report could not be found and deleted from Storage with uuid",
+      report.uuid
+    );
+    return false;
+  }
 }
 
 //NOTE: COMMENTED OUT SINCE WE DONT NEED TO DOWNLOAD IMAGES FROM URL AND SAVE THEM LOCALLY

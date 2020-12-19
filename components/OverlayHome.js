@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Animated, Dimensions, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import Headline from "./Headline";
 import OverlayReport from "./OverlayReport";
 import LogOutButton from "./LogOutButton";
+import * as storage from "../data_model/Storage";
 
 const OverlayHome = (props) => {
   return (
