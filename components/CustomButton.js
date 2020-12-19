@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { useFonts, RobotoMono_500Medium } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
-import * as storage from "../data_model/Storage";
-import * as globals from "./Global";
 
 const CustomButton = ({ onPress, text, style, textStyle }) => {
   let [fontsLoaded] = useFonts({

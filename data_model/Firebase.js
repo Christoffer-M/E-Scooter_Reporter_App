@@ -11,6 +11,8 @@ import "firebase/auth"; // Optionally import the additiona firebase services
 import "firebase/firestore"; // Optionally import the additiona firebase services
 //import "firebase/functions"; // Optionally import the additiona firebase services
 import "firebase/storage"; // Optionally import the additiona firebase services
+import * as google from "expo-google-app-auth";
+
 
 // Our Firebase configuration
 var firebaseConfig = {
@@ -41,71 +43,73 @@ const scooterPhotosPath = storage.child(scooterFolderPath);
 //TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
 export async function signInWithGoogleAsync() {
 	try {
-		const result = await Google.logInAsync({
-			androidClientId:
-				"423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
-			iosClientId:
-				"423566385353-kbvdqmr2s6sca20cca1q30sq8ctk7s35.apps.googleusercontent.com",
-			scopes: ["profile", "email"],
-		});
-
-		if (result.type === "success") {
-			// Build Firebase credential with the Google ID token.
-			var credentials = firebase.auth.GoogleAuthProvider.credential(
-				result.idToken
-			);
-
-			// Sign in with credential from the Google user.
-			const user = firebase
-				.auth()
-				.signInWithCredential(credentials)
-				.catch(function (error) {
-					// Handle Errors here.
-					var errorCode = error.code;
-					var errorMessage = error.message;
-					// The email of the user's account used.
-					var email = error.email;
-					// The firebase.auth.AuthCredential type that was used.
-					var credential = error.credential;
-					// ...
-				});
-			const res = {
-				user: user,
-				type: result.type,
-			};
-			return res;
-		} else {
-			console.error("fail!!!!");
-			alert("Google authentication failed");
-			return { cancelled: true };
-		}
+	  const result = await google.logInAsync({
+		androidClientId:
+		  "423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
+		iosClientId:
+		  "423566385353-kbvdqmr2s6sca20cca1q30sq8ctk7s35.apps.googleusercontent.com",
+		scopes: ["profile", "email"],
+	  });
+  
+	  if (result.type === "success") {
+		// Build Firebase credential with the Google ID token.
+		//console.log(result.idToken);
+		var credentials = firebase.auth.GoogleAuthProvider.credential(
+		  result.idToken
+		);
+		console.log(credentials);
+  
+		// Sign in with credential from the Google user.
+		const user = firebase
+		  .auth()
+		  .signInWithCredential(credentials)
+		  .catch(function (error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// The email of the user's account used.
+			var email = error.email;
+			// The firebase.auth.AuthCredential type that was used.
+			var credential = error.credential;
+			// ...
+		  });
+		const res = {
+		  user: user,
+		  type: result.type,
+		};
+		return res;
+	  } else {
+		console.log("fail!!!!");
+		alert("Google authentication failed");
+		return { cancelled: true };
+	  }
 	} catch (e) {
-		console.error("ERROR!!!!");
-		alert("Sorry. An error has occurred while trying to log in");
-		return { error: true };
+	  console.log(e);
+	  console.log("ERROR!!!!");
+	  alert("Sorry. An error has occurred while trying to log in");
+	  return { error: true };
 	}
-}
-
-export function getUser() {
+  }
+  
+  export async function getUser() {
 	const user = firebase.auth();
 	if (user) {
-		console.log("User from firebase: " + user.email);
+	  console.log("User from firebase: " + user.email);
 	}
 	return user;
-}
-
-export function logout() {
+  }
+  
+  export function logout() {
 	firebase
-		.auth()
-		.signOut()
-		.then(function () {
-			console.log("Signed out");
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-}
-
+	  .auth()
+	  .signOut()
+	  .then(function () {
+		console.log("Signed out");
+	  })
+	  .catch(function (error) {
+		console.log(error);
+	  });
+  }
 // TODO: Down thing we need download by user, if we already need to download all reports for display on the map.
 // TODO: And if we already have all reports locally, it is faster to folter and sort them on device that another query to firebase :)
 // DOWNLOAD REPORT BY USER ID
