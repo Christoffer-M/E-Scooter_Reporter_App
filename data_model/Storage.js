@@ -21,11 +21,11 @@ export let report = null; //Use newReport() to get a new (clean) report
 export let reportsNotUploaded = [];
 
 export function isSignedIn() {
-  return this.user.length > 0;
+  return user.length > 0;
 }
 
 export function signOut() {
-  this.user = "";
+  user = "";
 }
 
 export function setGuest(boolean) {
@@ -35,17 +35,17 @@ export function setGuest(boolean) {
 // CREATE NEW REPORT
 // NOTE: Remember to call this first when starting on a new report!
 export function newReport() {
-  this.report = Report.newReport(this.user);
-  return this.report;
+  report = Report.newReport(user);
+  return report;
 }
 
 // SUBMIT NEW REPORT
 // Submit by uploading first the report photo, then get the URL to the uploaded photo into the report, and then upload the report.
 export async function submitReport() {
   //Checks if report is submittable
-  if (this.report.isSubmittable()) {
+  if (report.isSubmittable()) {
     //Now tries to upload photo to Firebase
-    const res = await Backend.uploadReportPhoto(this.report);
+    const res = await Backend.uploadReportPhoto(report);
 
     //If returned error or something bad happened it will return false
     if (!res) {
@@ -78,7 +78,7 @@ export function deleteReport(report) {
   }
 
   // Delete report locally
-  if (!this.removeReport(report)) {
+  if (!removeReport(report)) {
     console.error("ERROR: Report was not deleted locally");
     return false;
   }
@@ -102,7 +102,7 @@ export async function syncReports() {
     console.log("Syncing with", fetchedReports.length, "reports:");
 
     // If we have reports that are no longer on the server, remove all reports before syncing:
-    if (reports.length > fetchedReports.length) this.reports.clear();
+    if (reports.length > fetchedReports.length) reports.clear();
 
     // Put reports in our Map of reports:
     fetchedReports.forEach((obj) => {
@@ -144,7 +144,7 @@ function getUserReportsList() {
   const userReports = []
   
   for (report in reports.values()) {
-    if (report.user == this.user) {
+    if (report.user == user) {
       userReports.push(report)
     }
   }
@@ -160,14 +160,14 @@ function getUserReportsList() {
 //PRIVATE FUNCTIONS
 //Add report from local storage
 function addReport(report) {
-  if (this.reports.has(reports.uuid)) {
+  if (reports.has(reports.uuid)) {
     console.error(
       "Report could not be added to Storage (already exists) with uuid",
       report.uuid
     );
     return false;
   } else {
-    this.reports.set(report.uuid, report);
+    reports.set(report.uuid, report);
     console.log("Report added to Storage with uuid", report.uuid);
     return true;
   }
@@ -175,7 +175,7 @@ function addReport(report) {
 
 //Remove report from local storage
 function removeReport(report) {
-  if (this.reports.delete(report.uuid)) {
+  if (reports.delete(report.uuid)) {
     console.log("Report deleted from Storage with uuid", report.uuid);
     return true;
   } else {
