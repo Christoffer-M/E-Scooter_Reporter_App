@@ -139,14 +139,11 @@ export async function syncReports() {
 // GET USERS REPORTS ONLY
 // The array is sorted by time
 export function getUserReportsList() {
-
   const userReports = []
   
   reports.forEach( (v,k)=> {
-    console.log("Report key:",k)
     if (v.user == user) {
-      userReports.push(v)
-      
+      userReports.push(v)      
     }
   })
 
