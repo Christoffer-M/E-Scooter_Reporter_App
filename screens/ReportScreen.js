@@ -26,7 +26,6 @@ const ReportScreen = ({ navigation }) => {
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
       );
     }
-    //console.log(imageUri);
   }, []);
 
   return (
@@ -126,12 +125,15 @@ const ReportScreen = ({ navigation }) => {
             await storage.submitReport().then((res) => {
               if (res) {
                 navigation.push("Success");
+
                 setLoading(false);
                 try {
                   FileSystem.deleteAsync(imageUri);
                   console.log("Image file Deleted", imageUri);
                 } catch (error) {
                   console.error(error);
+                } finally {
+                  storage.syncReports();
                 }
               } else {
                 setLoading(false);

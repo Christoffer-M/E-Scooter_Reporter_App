@@ -16,9 +16,12 @@ export let location = null;
 
 export let reports = new Map(); //Empty map to hold reports
 export let report = null; //Use newReport() to get a new (clean) report
+export let rep;
 
 //In case of failed internet connection:
 export let reportsNotUploaded = [];
+
+export function fillArray() {}
 
 export function isSignedIn() {
   return user.length > 0;
@@ -30,6 +33,10 @@ export function signOut() {
 
 export function setGuest(boolean) {
   guest = boolean;
+}
+
+export function setUser(value) {
+  user = value;
 }
 
 // CREATE NEW REPORT
@@ -96,6 +103,8 @@ export async function syncReports() {
   const secondsSinceLastSync = (now.getTime() - lastUpdate.getTime()) / 1000;
 
   if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
+    lastUpdate = new Date(); // Update time since last fetch
+
     firstTimeSyncing = false; // Only allowed once!
 
     let fetchedReports = await Backend.downloadAllReports();
@@ -124,7 +133,6 @@ export async function syncReports() {
       }
     });
 
-    lastUpdate = new Date(); // Update time since last fetch
     return true;
   } else {
     console.log(
@@ -139,30 +147,31 @@ export async function syncReports() {
 // GET USERS REPORTS ONLY
 // The array is sorted by time
 export function getUserReportsList() {
-  const userReports = []
-  
-  reports.forEach( (v,k)=> {
+  console.log("GOING!");
+  const userReports = [];
+  console.log(user);
+  reports.forEach((v, k) => {
     if (v.user == user) {
-      userReports.push(v)      
+      userReports.push(v);
     }
-  })
+  });
 
   function compareTime(a, b) {
-    const aSec = a.timestamp.seconds
-    const bSec = b.timestamp.seconds
-    if ( aSec > bSec ){
+    const aSec = a.timestamp.seconds;
+    const bSec = b.timestamp.seconds;
+    if (aSec > bSec) {
       return -1;
     }
-    if ( aSec < bSec ){
+    if (aSec < bSec) {
       return 1;
     }
     return 0;
   }
 
   userReports.sort(compareTime);
-  return userReports
-}
 
+  return userReports;
+}
 
 //PRIVATE FUNCTIONS
 //Add report from local storage

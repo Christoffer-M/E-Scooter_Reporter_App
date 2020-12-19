@@ -18,6 +18,8 @@ const WelcomeScreen = ({ navigation }) => {
           onPress={async () => {
             const result = await firebaseDataBase.signInWithGoogleAsync();
             if (result.type === "success") {
+              storage.setUser(result.user.email);
+              storage.syncReports();
               storage.setGuest(false);
               navigation.push("Home");
             } else {
@@ -62,6 +64,7 @@ const WelcomeScreen = ({ navigation }) => {
               console.log("setting guest to true");
               storage.setGuest(true);
               navigation.push("Home");
+              storage.syncReports();
             }}
             text="Guest"
             style={{ justifyContent: "center" }}

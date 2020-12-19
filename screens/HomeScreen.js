@@ -32,7 +32,6 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      console.log("running");
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");

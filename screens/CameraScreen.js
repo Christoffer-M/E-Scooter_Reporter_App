@@ -36,7 +36,6 @@ const CameraSceen = ({ navigation }) => {
 
   async function setLocation() {
     const location = await Location.getCurrentPositionAsync({});
-    console.log(location);
     storage.report.setGeoLocation(
       location.coords.latitude,
       location.coords.longitude

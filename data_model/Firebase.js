@@ -129,12 +129,12 @@ export function logout() {
 // Download specific report by uuid
 export async function downloadAllReports() {
   let foundReports = [];
-  await db.collection("reports")
+  await db
+    .collection("reports")
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (report) {
         foundReports.push(report.data());
-        console.log("Downloading report:",report.id)
         //console.log("With data:",report.data())
       });
     })

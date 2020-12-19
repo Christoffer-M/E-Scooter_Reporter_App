@@ -13,37 +13,41 @@ import * as storage from "../data_model/Storage";
 import OverlayReport from "./OverlayReport";
 import LogOutButton from "./LogOutButton";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useFocusEffect } from "@react-navigation/native";
 
 const OverlayHome = (props) => {
   const [reports, setReports] = useState([]);
-  //let reports = [];
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fillreports();
+      console.log("GOGO");
+    }, [])
+  );
 
   useEffect(() => {
+    console.log();
     fillreports();
   }, []);
 
   function fillreports() {
     const temparr = [];
-    let count = 0;
-    storage.reports.forEach((value, key) => {
-      count = count + 1;
-      if (count < 12) {
-        const address = value.address;
-        const imageURI = value.imageURL;
-        const date = value.timestamp.seconds;
+    storage.getUserReportsList().forEach((obj) => {
+      const address = obj.address;
+      const imageURI = obj.imageURL;
+      const date = obj.timestamp.seconds;
 
-        var time = new Date(1970, 0, 1); // Epoch
-        time.setSeconds(date);
-        const keylol = key;
-        temparr.push(
-          <OverlayReport
-            address={address}
-            imageURI={imageURI}
-            key={keylol}
-            date={time.toLocaleString()}
-          />
-        );
-      }
+      var time = new Date(1970, 0, 1); // Epoch
+      time.setSeconds(date);
+      const key = obj.uuid;
+      temparr.push(
+        <OverlayReport
+          address={address}
+          imageURI={imageURI}
+          key={key}
+          date={time.toLocaleString()}
+        />
+      );
     });
     setReports(temparr);
   }

@@ -35,6 +35,7 @@ export default function App() {
     firebase.auth().onAuthStateChanged((res) => {
       if (res) {
         storage.setGuest(false);
+        storage.setUser(res.email);
         setRouteName("Home");
       } else {
         setRouteName("Welcome");

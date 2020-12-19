@@ -2,6 +2,7 @@ import React from "react";
 import { Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as firebase from "../data_model/Firebase";
+import * as storage from "../data_model/Storage";
 
 const LogOutButton = (props) => {
   return (
@@ -17,6 +18,7 @@ const LogOutButton = (props) => {
       onPress={() => {
         props.nav.push("Welcome");
         firebase.logout();
+        storage.setUser("guest");
       }}
     >
       <Text>Log out</Text>
