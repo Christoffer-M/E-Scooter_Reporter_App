@@ -9,6 +9,7 @@ export let user = "";
 
 export let reports = new Map(); //Empty map to hold reports
 export let report = null; //Use newReport() to get a new (clean) report
+export let guest = true;
 
 //In case of failed internet connection:
 export let reportsNotUploaded = [];
@@ -19,6 +20,10 @@ export function isSignedIn() {
 
 export function signOut() {
   this.user = "";
+}
+
+export function setGuest(boolean) {
+  guest = boolean;
 }
 
 // CREATE NEW REPORT

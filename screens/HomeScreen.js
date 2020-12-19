@@ -17,24 +17,22 @@ import CustomButton from "../components/CustomButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
-import * as globals from "../components/Global.js";
 import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(new Animated.Value(-280)).current;
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
-  const isGuest = useRef(globals.getGues()).current;
+  const isGuest = useRef(storage.guest).current;
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        console.log("Permission to access location was denied");
         navigation.goBack();
       } else {
         let location = await Location.getCurrentPositionAsync({});

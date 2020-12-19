@@ -11,7 +11,6 @@ import {
 import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
 import CameraText from "../components/CameraText";
-import * as globals from "../components/Global";
 import * as storage from "../data_model/Storage";
 import * as FileSystem from "expo-file-system";
 import * as imagehandler from "../utility/ImageHandler";

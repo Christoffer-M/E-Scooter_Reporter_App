@@ -26,8 +26,6 @@ const CategoryScreen = ({ navigation }) => {
   fillCategoryArray();
 
   useEffect(() => {
-    console.log(storage.report);
-    storage.report.setComment(value);
     if (isOtherPress) {
       setHideInput(true);
       Animated.timing(fadeAnim, {
@@ -145,6 +143,7 @@ const CategoryScreen = ({ navigation }) => {
           <CustomButton
             onPress={() => {
               navigation.push("Report");
+              storage.report.setComment(value);
             }}
             text="Proceed"
           />

@@ -16,6 +16,7 @@ const ReportScreen = ({ navigation }) => {
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
       );
     }
+    console.log(imageUri);
   }, []);
 
   return (
@@ -36,9 +37,7 @@ const ReportScreen = ({ navigation }) => {
             height: "100%",
           }}
           resizeMode="contain"
-          source={{
-            uri: imageUri,
-          }}
+          source={imageUri ? { uri: imageUri } : null}
         />
       </View>
       <Text
@@ -110,6 +109,7 @@ const ReportScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <CustomButton
           onPress={() => {
+            console.log(storage.report);
             navigation.push("Success");
           }}
           text="Submit"

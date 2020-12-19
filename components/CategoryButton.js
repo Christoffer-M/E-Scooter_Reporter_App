@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import AppLoading from "expo-app-loading";
 import * as storage from "../data_model/Storage";
 
 const CategoryButton = (props) => {
@@ -86,10 +85,6 @@ const CategoryButton = (props) => {
           break;
       }
     }
-  }
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
   }
 
   return (

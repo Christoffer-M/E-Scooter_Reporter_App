@@ -29,13 +29,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 15,
   },
 
   container: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 15,
   },
 
   whiteFont: {

@@ -1,4 +1,3 @@
-import "./components/Global";
 import React, { useEffect, useState } from "react";
 import { LogBox } from "react-native";
 import WelcomeScreen from "./screens/WelcomeScreen";
@@ -11,8 +10,8 @@ import CategoryScreen from "./screens/CategoryScreen";
 import ReportScreen from "./screens/ReportScreen";
 import SuccessScreen from "./screens/SuccessScreen";
 import * as firebase from "firebase/app";
-import * as globals from "./components/Global.js";
 import AppLoading from "expo-app-loading";
+import * as storage from "./data_model/Storage";
 import {
   useFonts,
   RobotoMono_500Medium,
@@ -35,7 +34,7 @@ export default function App() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged((res) => {
       if (res) {
-        globals.setGues(false);
+        storage.setGuest(false);
         setRouteName("Home");
       } else {
         setRouteName("Welcome");
