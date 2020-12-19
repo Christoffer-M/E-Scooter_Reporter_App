@@ -43,8 +43,8 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Trying to sync reports...")
-    storage.syncReports()
+    console.log("Trying to sync reports...");
+    storage.syncReports();
   });
 
   useEffect(() => {
@@ -64,6 +64,8 @@ const HomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      storage.syncReports();
+
       BackHandler.addEventListener("hardwareBackPress", onbackpress);
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onbackpress);
