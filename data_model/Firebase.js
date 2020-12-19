@@ -37,6 +37,7 @@ var storage = firebase.storage().ref();
 // Create a scooter_photos_path reference
 const scooterFolderPath = "scooter_photos";
 const scooterPhotosPath = storage.child(scooterFolderPath);
+console.log("PHOTOSPATH: " + scooterPhotosPath);
 
 //GOOGLE SIGN IN
 //TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
@@ -152,7 +153,7 @@ export function downloadAllReports() {
 
 // UPLOAD REPORT
 // Upload report document to Firebase FireStore with uuid as name
-export function uploadReport(report) {
+export async function uploadReport(report) {
   db.collection("reports")
     .doc(report.uuid)
     .set({
@@ -171,8 +172,8 @@ export function uploadReport(report) {
       other: report.other,
       comment: report.comment,
     })
-    .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
+    .then(function () {
+      console.log("Report succesfully added!");
     })
     .catch(function (error) {
       console.error("Error adding report: ", error);
@@ -183,7 +184,7 @@ export function uploadReport(report) {
 
 // UPLOAD REPORT PHOTO
 // Uploads report photo to Firebase Storage
-async function uploadReportPhoto(report) {
+export async function uploadReportPhoto(report) {
   const response = await fetch(report.imageURI);
   const blob = await response.blob();
 
@@ -196,10 +197,12 @@ async function uploadReportPhoto(report) {
   };
 
   // Upload photo and metadata to the object 'scooter_photos/[uuid].jpg'
-  var uploadTask = scooterPhotosPath.put(file, metadata);
+  var uploadTask = scooterPhotosPath
+    .child(report.imageName)
+    .put(file, metadata);
 
   // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on(
+  await uploadTask.on(
     firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
     function (snapshot) {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -235,67 +238,19 @@ async function uploadReportPhoto(report) {
       }
       return false;
     },
-    function () {
+    async () => {
       // Upload completed successfully, now we can get the download URL
-      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-        console.log("File available at", downloadURL);
-      });
+      await uploadTask.snapshot.ref
+        .getDownloadURL()
+        .then(function (downloadURL) {
+          console.log("File available at", downloadURL);
+          report.imageURL = downloadURL;
+          console.log("Reportimage from function: " + report.imageURL);
+          uploadReport(report);
+        });
     }
   );
   return true;
-}
-
-// GET REPORT PHOTO DOWNLOAD URL
-// Get the download URL to a photo from Firestore Storage
-export function getPhotoDownloadURL(report) {
-  // Create a reference to the file we want to download
-  let photoRef = scooterPhotosPath.get(report.imageName);
-  let downloadURL = "";
-
-  // Get the download URL
-  photoRef
-    .getDownloadURL()
-    .then(function (url) {
-      downloadURL = url;
-    })
-    .catch(function (error) {
-      // A full list of error codes is available at
-      // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case "storage/object-not-found":
-          // File doesn't exist
-          console.error(
-            "Download URL error: File",
-            imagePath,
-            "doesn't exist!"
-          );
-          break;
-
-        case "storage/unauthorized":
-          // User doesn't have permission to access the object
-          console.error(
-            "Download URL error: User doesn't have permission to access the object!"
-          );
-          break;
-
-        case "storage/canceled":
-          // User canceled the download
-          console.error("Download URL error: User canceled the download!");
-          break;
-
-        case "storage/unknown":
-          // Unknown error occurred, inspect the server response
-          console.error(
-            "Download URL error: Unknown error occurred, inspect the server response"
-          );
-          break;
-      }
-      console.error("Image from", imagePath, "returned no download URL.");
-      return "";
-    });
-
-  console.log("Found URL to report image:", downloadURL);
-  return downloadURL;
 }
 
 //DELETE REPORT DOCUMENT

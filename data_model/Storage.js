@@ -35,36 +35,21 @@ export function newReport() {
 
 // SUBMIT NEW REPORT
 // Submit by uploading first the report photo, then get the URL to the uploaded photo into the report, and then upload the report.
-export function submitReport() {
+export async function submitReport() {
   if (this.report.isSubmittable()) {
     //We first upload the report photo...
-    if (!Backend.uploadReportPhoto(this.report)) {
+    const uploadPhotoRes = await Backend.uploadReportPhoto(this.report);
+    if (!uploadPhotoRes) {
       console.error(
         "ERROR: Submitting aborted, unable to upload report photo!"
       );
       return false;
-    }
-
-    //...Then we get the URL to the just uploaded report photo...
-    this.report = Backend.getPhotoDownloadURL(this.report);
-    if (!this.report.imageURL) {
-      console.error(
-        "ERROR: Submitting aborted, unable to get URL for report photo!"
-      );
-      return false;
-    }
-
-    //...And then we upload the report now with the photo URL as well
-    if (!Backend.uploadReport(this.report)) {
-      console.error(
-        "ERROR: Submitting aborted, unable to upload report to FireStore"
-      );
-      return false;
+    } else {
+      return true;
     }
   } else {
     throw "Error: Report missing information! check .isSubmittable() first before trying to submit!";
   }
-  return true;
 }
 
 // Delete reports from Firebase and Storage

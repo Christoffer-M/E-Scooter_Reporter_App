@@ -29,6 +29,7 @@ const HomeScreen = ({ navigation }) => {
   const isGuest = useRef(storage.guest).current;
 
   useEffect(() => {
+    console.log("running!");
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -138,6 +139,8 @@ const HomeScreen = ({ navigation }) => {
         }}
         onTouchStart={() => {
           if (isPress) {
+            console.log(location);
+            console.log(location);
             animate();
           }
         }}

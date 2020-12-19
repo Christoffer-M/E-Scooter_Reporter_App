@@ -110,7 +110,12 @@ const ReportScreen = ({ navigation }) => {
         <CustomButton
           onPress={() => {
             console.log(storage.report);
-            navigation.push("Success");
+            const res = storage.submitReport();
+            if (res) {
+              navigation.push("Success");
+            } else {
+              console.log("OH NO!");
+            }
           }}
           text="Submit"
         />
