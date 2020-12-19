@@ -5,7 +5,7 @@ import * as Backend from "./Firebase";
 import * as FileSystem from "expo-file-system";
 import * as Report from "./Report";
 
-let lastUpdate = new Date.now()
+let lastUpdate = null;
 let firstTimeSyncing = true //Will only be true once, until after first sync
 let minSecondsBetweenUpdates = 5 // Don't sync with backend more often than every X second
 
@@ -82,7 +82,9 @@ export function deleteReport(report) {
 }
 
 //TODO NOT DONE YET (need to check format of returned data from FireBase)
-export function syncReports(report) {
+export function syncReports() {  
+  if (lastUpdate == null) lastUpdate = new Date()
+  
   const now = new Date();
   const secondsSinceLastSync = (now.getTime() - lastUpdate.getTime()) / 1000
   
@@ -97,10 +99,10 @@ export function syncReports(report) {
       console.log(report);
     }
 
-    lastUpdate = new Date();
+    lastUpdate = new Date(); // Update time since last fetch
     return true;
   } else {
-    console.log("Please wait", secondsSinceLastSync, "seconds before syncing again...")
+    console.log("Please wait", (minSecondsBetweenUpdates-secondsSinceLastSync).toFixed(2), "seconds before syncing again...")
     return false;
   }
 }

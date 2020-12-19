@@ -43,6 +43,11 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    console.log("Trying to sync reports...")
+    storage.syncReports()
+  });
+
+  useEffect(() => {
     if (isGuest === false) {
       if (user === null) {
         firebases.auth().onAuthStateChanged((user) => {
