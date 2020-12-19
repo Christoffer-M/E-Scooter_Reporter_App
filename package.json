@@ -39,7 +39,8 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.15.0",
     "react-native-web": "~0.13.12",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "react-native-safe-area-context": "3.1.9"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
