@@ -171,7 +171,7 @@ const CameraSceen = ({ navigation }) => {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          paddingTop: 30,
+          paddingTop: 50,
           backgroundColor: "#2F4357",
         }}
       >
