@@ -2,14 +2,14 @@ import React from "react";
 import { Text, StyleSheet, View, Image, Dimensions } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
-const OverlayReport = ({ report }) => {
+const OverlayReport = ({ report, openModal }) => {
   return (
     <TouchableHighlight
       style={styles.highlightContainer}
       activeOpacity={1}
       underlayColor="#E77F64"
       onPress={() => {
-        console.log("YOU PRESSED ME!");
+        openModal(report);
       }}
     >
       <View style={styles.container}>
