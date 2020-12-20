@@ -16,8 +16,10 @@ const WelcomeScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           onPress={async () => {
+            console.log("RUNNING");
             const result = await firebaseDataBase.signInWithGoogleAsync();
             if (result.type === "success") {
+              console.log("hello?");
               storage.setUser(result.user.email);
               storage.syncReports();
               storage.setGuest(false);

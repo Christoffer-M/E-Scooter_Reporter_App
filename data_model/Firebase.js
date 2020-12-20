@@ -51,15 +51,13 @@ export async function signInWithGoogleAsync() {
     });
 
     if (result.type === "success") {
-      // Build Firebase credential with the Google ID token.
-      //console.log(result.idToken);
       var credentials = firebase.auth.GoogleAuthProvider.credential(
         result.idToken
       );
       console.log(credentials);
 
       // Sign in with credential from the Google user.
-      const user = firebase
+      const user = await firebase
         .auth()
         .signInWithCredential(credentials)
         .catch(function (error) {
