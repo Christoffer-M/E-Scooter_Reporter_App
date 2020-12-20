@@ -13,6 +13,7 @@ import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
 import * as FileSystem from "expo-file-system";
 import * as storage from "../data_model/Storage";
+import BrandLogoImage from "../components/BrandLogoImage";
 
 const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
@@ -59,59 +60,66 @@ const ReportScreen = ({ navigation }) => {
           flex: 0.1,
           alignSelf: "center",
           marginTop: -15,
+          paddingBottom: 10,
         }}
       >
         📌 {storage.getReport().getReadableAddress()}
       </Text>
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 0.3 }}>
-          <Text style={styles.headerFont}>
-            Brand: {storage.getReport().getBrand()}
-          </Text>
-          <Image
-            source={require("../assets/brand_logos/logo_unknown.png")}
-            resizeMode="cover"
-            style={{
-              height: 35,
-              width: 90,
-              borderRadius: 8,
-            }}
+        <View
+          style={{
+            flex: 0.15,
+            flexDirection: "row",
+            paddingTop: 10,
+            paddingBottom: 15,
+          }}
+        >
+          <Text style={styles.headerFont}>Brand:</Text>
+          <BrandLogoImage
+            logo={storage.report.getBrand()}
+            style={{ marginLeft: 10 }}
           />
         </View>
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
           <View style={styles.categoriesContainer}>
-            {storage.getReport().getCategories().map((item, key) => {
-              return (
-                <View
-                  key={key}
-                  style={{
-                    backgroundColor: "#FBEFE8",
-                    padding: 6,
-                    marginRight: 6,
-                    marginBottom: 6,
-                    borderRadius: 8,
-                  }}
-                >
-                  <Text
-                    style={{ fontSize: 18, fontFamily: "RobotoMono_500Medium" }}
+            {storage
+              .getReport()
+              .getCategories()
+              .map((item, key) => {
+                return (
+                  <View
+                    key={key}
+                    style={{
+                      backgroundColor: "#FBEFE8",
+                      padding: 6,
+                      marginRight: 6,
+                      marginBottom: 6,
+                      borderRadius: 8,
+                    }}
                   >
-                    {item}
-                  </Text>
-                </View>
-              );
-            })}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "RobotoMono_500Medium",
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </View>
+                );
+              })}
           </View>
         </View>
         {storage.getReport().getCategories().includes("Other") ? (
-          <View style={{ flex: 0.3 }}>
+          <View style={{ paddingBottom: 15 }}>
             <Text style={styles.headerFont}>Description:</Text>
             <Text style={{ fontSize: 16, color: "white" }}>
               {storage.getReport().comment}
             </Text>
           </View>
         ) : (
-          <View />
+          <></>
         )}
       </View>
 
@@ -170,8 +178,7 @@ const ReportScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: "pink",
-    flex: 1,
+    backgroundColor: "#2F4357",
   },
   headline: {
     fontSize: 35,
@@ -183,8 +190,6 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: Dimensions.get("window").height * 1.2,
-    width: Dimensions.get("window").width,
     backgroundColor: "#2F4357",
     flexDirection: "column",
     alignItems: "flex-start",
@@ -215,7 +220,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
   },
   categoriesContainer: {
-    flex: 1,
+    paddingBottom: 15,
     flexDirection: "row",
     flexWrap: "wrap",
   },

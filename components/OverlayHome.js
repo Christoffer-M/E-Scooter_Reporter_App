@@ -30,6 +30,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
   }, []);
 
   function fillreports() {
+    console.log("GOING!");
     const temparr = [];
     storage.getUserReports().forEach((obj) => {
       const address = obj.address;
