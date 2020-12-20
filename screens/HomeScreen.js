@@ -19,6 +19,7 @@ import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
 import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
+import OverlayReport from "../components/OverlayReport";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(
@@ -29,6 +30,7 @@ const HomeScreen = ({ navigation }) => {
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
   const isGuest = useRef(storage.isGuest()).current;
+  const [reports, setReports] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -50,8 +52,6 @@ const HomeScreen = ({ navigation }) => {
   });
 
   useEffect(() => {
-    console.log("storage.isGuest()", storage.isGuest())
-    console.log("storage.getUser()", storage.getUser())
     if (storage.isGuest() === false) {
       if (user === null) {
         firebases.auth().onAuthStateChanged((user) => {
@@ -68,8 +68,6 @@ const HomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      storage.syncReports();
-
       BackHandler.addEventListener("hardwareBackPress", onbackpress);
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onbackpress);
@@ -105,6 +103,19 @@ const HomeScreen = ({ navigation }) => {
         duration: 250,
         useNativeDriver: true,
       }).start();
+    }
+  }
+
+  function updateList() {
+    console.log("FOCUSING");
+    if (storage.getUserReports().length === reports.length) {
+      console.log("nothing to report...");
+    } else {
+      setReports(
+        storage.userReports.map((obj, i) => {
+          return <OverlayReport key={i} report={obj} />;
+        })
+      );
     }
   }
 
@@ -159,6 +170,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.menuButton}>
         <TouchableOpacity
           onPress={() => {
+            updateList();
             animate();
           }}
         >
@@ -198,6 +210,7 @@ const HomeScreen = ({ navigation }) => {
         animate={animate}
         transform={transform}
         navigation={navigation}
+        report={reports}
       />
     </View>
   );

@@ -10,45 +10,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import Headline from "./Headline";
 import * as storage from "../data_model/Storage";
-import OverlayReport from "./OverlayReport";
-import { useFocusEffect } from "@react-navigation/native";
 import CustomButton from "./CustomButton";
 
-const OverlayHome = ({ transform, navigation, animate }) => {
-  const [reports, setReports] = useState([]);
-
-  // useEffect(() => {
-  //   console.log();
-  //   fillreports();
-  // }, []);
-
-  // function fillreports() {
-  //   console.log("GOING!");
-  //   const temparr = [];
-  //   console.log(storage.userReports);
-  //   storage.getUserReports().forEach((obj) => {
-  //     console.log("GOING123");
-
-  //     );
-  //   });
-  //   setReports(temparr);
-  // }
-
-  useFocusEffect(
-    React.useCallback(() => {
-      console.log("FOCUSING");
-      setReports(
-        storage.userReports.map((obj, i) => {
-          return <OverlayReport key={i} report={obj} />;
-        })
-      );
-    }, [])
-  );
-
-  // useEffect(() => {
-
-  // }, []);
-
+const OverlayHome = ({ transform, navigation, animate, report }) => {
   return (
     <Animated.View
       style={{
@@ -98,7 +62,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
           height: Dimensions.get("window").height * 0.8,
         }}
       >
-        <ScrollView>{reports}</ScrollView>
+        <ScrollView>{report}</ScrollView>
       </SafeAreaView>
 
       <View

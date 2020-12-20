@@ -138,7 +138,6 @@ export async function syncReports() {
 
   if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
     lastUpdate = new Date(); // Update time since last fetch
-    console.log("BEFORE");
     firstTimeSyncing = false; // Only allowed once!
 
     let fetchedReports = await Backend.downloadAllReports();
@@ -158,7 +157,6 @@ export async function syncReports() {
         //console.log("Downloaded report:", newReport.uuid);
       }
     });
-    console.log("AFTER");
     // Finally, we update the users reports after syncing:
   } else {
     console.log(
@@ -175,7 +173,6 @@ export async function syncReports() {
 export function updateUserReportsList() {
   // Filter reports by user:
   //console.log("reports length before:", reports.length);
-  console.log(getUser());
   const updatedUserReports = reports.filter((r) => r.user == getUser());
   //console.log("updatedUserReports length after:", updatedUserReports.length);
 

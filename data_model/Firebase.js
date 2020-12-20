@@ -51,11 +51,9 @@ export async function signInWithGoogleAsync() {
     });
 
     if (result.type === "success") {
-      console.log("GOOGLE SIGN IN WAS A SUCCESS");
       var credentials = firebase.auth.GoogleAuthProvider.credential(
         result.idToken
       );
-      console.log(credentials);
 
       // Sign in with credential from the Google user.
       const user = await firebase
@@ -68,8 +66,6 @@ export async function signInWithGoogleAsync() {
         user: user,
         type: result.type,
       };
-      console.log("Res is: ");
-      console.log(res);
       return res;
     } else {
       console.log("fail!!!!");
