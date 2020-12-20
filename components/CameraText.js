@@ -10,7 +10,7 @@ const CameraText = (props) => {
         paddingLeft: 20,
         paddingRight: 20,
         height: 40,
-        borderRadius: 16,
+        borderRadius: 5,
         justifyContent: "center",
       }}
     >

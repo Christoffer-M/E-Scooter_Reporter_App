@@ -69,7 +69,7 @@ const QRScreen = ({ navigation }) => {
               position: "absolute",
               alignSelf: "center",
               alignItems: "center",
-              top: Dimensions.get("window").height / 10,
+              top: Dimensions.get("window").height / 7,
             }}
           >
             <CameraText text="Point camera at the QR-Code" color="#E77F64" />
