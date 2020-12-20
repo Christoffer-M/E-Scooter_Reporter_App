@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
         console.log("Permission to access location was denied");
         navigation.goBack();
       } else {
-        let location = await Location.getCurrentPositionAsync({});
+        let location = await Location.getLastKnownPositionAsync({});
         setLocation(location); //TODO Duplicates?
         storage.setLocation(location); //TODO Duplicates?
       }
@@ -161,7 +161,6 @@ const HomeScreen = ({ navigation }) => {
         style={styles.mapStyle}
         zoomEnabled={true}
         showsUserLocation={true}
-        provider={PROVIDER_GOOGLE}
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
