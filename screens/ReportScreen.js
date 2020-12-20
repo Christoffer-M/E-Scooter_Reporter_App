@@ -178,7 +178,7 @@ const ReportScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: "pink",
+    backgroundColor: "#2F4357",
   },
   headline: {
     fontSize: 35,
