@@ -6,7 +6,7 @@ import BackButton from "../components/BackButton"; // Maybe delete and don't use
 import { storage } from "firebase";
 //TODO: IF IT IS USED FOR MODAL VIEW, THERE SHOULD BE AN "X" CLOSE BUTTON
 //TODO: IF IT IS USED FOR SCREEN VIEW, THERE SHOULD BE A BACK BUTTON
-const ReportView = (props) => {
+const ReportView = ({ randomId, address }) => {
   let testAdress = "Herninggade 9, 2100 København Ø";
   let testBrand = "Lime";
   let testArr = ["Misplaced", "Laying Down", "Broken", "Other"];
@@ -45,7 +45,7 @@ const ReportView = (props) => {
           marginTop: -15,
         }}
       >
-        📌 {testAdress}
+        📌 {address}
       </Text>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 0.3 }}>

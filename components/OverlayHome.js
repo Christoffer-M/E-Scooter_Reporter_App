@@ -32,7 +32,9 @@ const OverlayHome = ({ transform, navigation, animate }) => {
   function fillreports() {
     console.log("GOING!");
     const temparr = [];
+    console.log(storage.userReports);
     storage.getUserReports().forEach((obj) => {
+      console.log("GOING123");
       const address = obj.address;
       const imageURI = obj.imageURL;
       const date = obj.timestamp.seconds;
@@ -40,6 +42,8 @@ const OverlayHome = ({ transform, navigation, animate }) => {
       var time = new Date(1970, 0, 1); // Epoch
       time.setSeconds(date);
       const key = obj.uuid;
+
+      console.log(obj);
       temparr.push(
         <OverlayReport
           address={address}
@@ -82,6 +86,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
             paddingBottom: 5,
           }}
           onPress={() => {
+            fillreports();
             animate();
           }}
         >
