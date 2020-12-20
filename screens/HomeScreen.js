@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import {
   StyleSheet,
   View,
@@ -21,6 +21,7 @@ import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
 import OverlayReport from "../components/OverlayReport";
 import ReportView from "../components/ReportView";
+import { Store } from "@material-ui/icons";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(
@@ -34,11 +35,16 @@ const HomeScreen = ({ navigation }) => {
   const [reports, setReports] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalReport, setModalReport] = useState();
+  //const [markers, setMarkers] = useState([]);
+  const markers = [];
+  const coords = {};
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
+
       setLocation(await Location.getLastKnownPositionAsync());
+
       console.log(location);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
@@ -92,6 +98,29 @@ const HomeScreen = ({ navigation }) => {
     return true;
   }
 
+  // function createMarkers() {
+  //   let arr = [];
+  //   console.log(storage.userReports.length);
+  //   for (let index = 0; index < 1; index++) {
+  //     arr.push(
+  //       <Marker
+  //         coordinate={{
+  //           latitude: location.coords.latitude,
+  //           longitude: location.coords.longitude,
+  //         }}
+  //         key={index}
+  //       >
+  //         <View>
+  //           <Image source={require("../assets/map/map_marker_icon.png")} />
+  //         </View>
+  //       </Marker>
+  //     );
+  //   }
+  //   console.log("Arr is: ", arr);
+
+  //   markers = arr;
+  // }
+
   function animate() {
     const width = Dimensions.get("window").width;
     if (isPress) {
@@ -121,6 +150,7 @@ const HomeScreen = ({ navigation }) => {
           return <OverlayReport key={i} report={obj} openModal={openModal} />;
         })
       );
+      //createMarkers();
     }
   }
 
@@ -174,7 +204,7 @@ const HomeScreen = ({ navigation }) => {
             animate();
           }
         }}
-      />
+      ></MapView>
 
       <View style={styles.menuButton}>
         <TouchableOpacity
