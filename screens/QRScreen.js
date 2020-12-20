@@ -67,6 +67,26 @@ const QRScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={{ flex: 0.5, flexDirection: "row", display: "flex" }}>
+          <Modal
+            animationType="fade"
+            transparent
+            visible={modalVisible}
+            onRequestClose={() => {
+              console.log("Modal has been closed.");
+            }}
+          >
+            <View style={styles.modalView}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#2F4357",
+                  fontFamily: "RobotoMono_500Medium",
+                }}
+              >
+                The QR-code was succesfully scanned!
+              </Text>
+            </View>
+          </Modal>
           <View style={{ flex: 0.05 }} />
           <View
             style={{
@@ -101,26 +121,6 @@ const QRScreen = ({ navigation }) => {
           </View>
         </View>
       </Camera>
-      <Modal
-        animationType="fade"
-        transparent
-        visible={modalVisible}
-        onRequestClose={() => {
-          console.log("Modal has been closed.");
-        }}
-      >
-        <View style={styles.modalView}>
-          <Text
-            style={{
-              fontSize: 14,
-              color: "#2F4357",
-              fontFamily: "RobotoMono_500Medium",
-            }}
-          >
-            The QR-code was scanned succesfully
-          </Text>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -128,6 +128,9 @@ const QRScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   modalView: {
     flex: 0.1,
+    marginTop: 400,
+    marginHorizontal: 50,
+    padding: 20,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
