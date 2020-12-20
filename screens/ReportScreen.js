@@ -13,10 +13,14 @@ import CustomButton from "../components/CustomButton";
 import BackButton from "../components/BackButton";
 import * as FileSystem from "expo-file-system";
 import * as storage from "../data_model/Storage";
+import BrandLogos from "../data_model/BrandLogos";
 
 const ReportScreen = ({ navigation }) => {
   const [imageUri, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [brandLogo, setBrandLogo] = useState(
+    require("../assets/brand_logos/logo_unknown.png")
+  );
 
   useEffect(() => {
     if (storage.report.hasImage()) {
@@ -26,6 +30,17 @@ const ReportScreen = ({ navigation }) => {
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
       );
     }
+  }, []);
+
+  useEffect(() => {
+    Object.entries(BrandLogos).forEach((value) => {
+      if (storage.report.getBrand() === value[0]) {
+        setBrandLogo(value[1]);
+      }
+    });
+    console.log("====================================");
+    console.log(require("../assets/brand_logos/logo_wind.png"));
+    console.log("====================================");
   }, []);
 
   return (
@@ -69,7 +84,7 @@ const ReportScreen = ({ navigation }) => {
             Brand: {storage.report.getBrand()}
           </Text>
           <Image
-            source={require("../assets/brand_logos/logo_unknown.png")}
+            source={brandLogo}
             resizeMode="cover"
             style={{
               height: 35,
