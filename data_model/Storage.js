@@ -177,7 +177,9 @@ export async function syncReports() {
 export function updateUserReportsList() {
   // Filter reports by user:
   console.log("reports length before:", reports.length);
+  console.log(getUser());
   const updatedUserReports = reports.filter((r) => {
+    console.log(r.user);
     r.user == getUser();
   });
   console.log("updatedUserReports length after:", updatedUserReports.length);
@@ -196,7 +198,10 @@ export function updateUserReportsList() {
   updatedUserReports.sort(compareTime);
 
   // Use the updated user reports list
+  console.log(updatedUserReports.length);
+
   userReports = updatedUserReports;
+  console.log(userReports.length);
   //}
   //console.log("Skipped updating user reports (already updated)")
 }

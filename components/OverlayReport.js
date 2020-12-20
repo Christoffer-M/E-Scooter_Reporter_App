@@ -2,7 +2,9 @@ import React from "react";
 import { Text, StyleSheet, View, Image, Dimensions } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
-const OverlayReport = ({ date, address, imageURI }) => {
+const OverlayReport = ({ date, address, imageURI, key }) => {
+  const uuid = key;
+
   return (
     <TouchableHighlight
       style={styles.highlightContainer}
