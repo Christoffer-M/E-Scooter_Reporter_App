@@ -91,7 +91,7 @@ const CameraSceen = ({ navigation }) => {
         >
           <BackButton nav={navigation}></BackButton>
           <Text style={styles.informationText}>
-            Take a picture of the violating picture
+            Take a picture of the violating e-scooter
           </Text>
         </View>
         {!loadingPicture ? (
@@ -175,6 +175,7 @@ const CameraSceen = ({ navigation }) => {
           backgroundColor: "#2F4357",
         }}
       >
+        <BackButton nav={navigation}></BackButton>
         <Text style={styles.informationText}>Is the picture okay?</Text>
       </View>
       <Image
@@ -199,7 +200,13 @@ const CameraSceen = ({ navigation }) => {
             setLocation();
           }}
         >
-          <Text style={{ color: "white", fontFamily: "RobotoMono_500Medium" }}>
+          <Text
+            style={{
+              color: "#FBEFE8",
+              fontFamily: "RobotoMono_500Medium",
+              fontSize: 18,
+            }}
+          >
             Yes, continue
           </Text>
         </TouchableOpacity>
@@ -212,7 +219,13 @@ const CameraSceen = ({ navigation }) => {
             setImageTaken(false);
           }}
         >
-          <Text style={{ color: "white", fontFamily: "RobotoMono_500Medium" }}>
+          <Text
+            style={{
+              color: "#FBEFE8",
+              fontFamily: "RobotoMono_500Medium",
+              fontSize: 16,
+            }}
+          >
             Take a new picture
           </Text>
         </TouchableOpacity>
@@ -238,7 +251,7 @@ const styles = StyleSheet.create({
   orangeButton: {
     display: "flex",
     borderRadius: 90,
-    width: 180,
+    width: 220,
     height: 48,
     margin: 10,
     alignItems: "center",
@@ -249,7 +262,7 @@ const styles = StyleSheet.create({
   whiteButton: {
     display: "flex",
     borderRadius: 90,
-    width: 180,
+    width: 220,
     height: 48,
     margin: 10,
     alignItems: "center",
@@ -260,10 +273,10 @@ const styles = StyleSheet.create({
   informationText: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
-    fontSize: 20,
-    lineHeight: 36,
+    fontSize: 22,
+    lineHeight: 30,
     textAlign: "center",
-    paddingHorizontal: 50,
+    paddingHorizontal: 30,
   },
 });
 

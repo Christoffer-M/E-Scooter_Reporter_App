@@ -72,7 +72,7 @@ const QRScreen = ({ navigation }) => {
               top: Dimensions.get("window").height / 7,
             }}
           >
-            <CameraText text="Point camera at the QR-Code" color="#E77F64" />
+            <CameraText text="Scan the QR-Code" color="#5B7282" />
           </View>
         </View>
         <View style={{ flex: 0.5, flexDirection: "row", display: "flex" }}>
@@ -83,7 +83,7 @@ const QRScreen = ({ navigation }) => {
               borderStyle: "dashed",
               borderRadius: 15,
               borderWidth: 5,
-              borderColor: "#ffff",
+              borderColor: "#FBEFE8",
             }}
           />
           <View style={{ flex: 0.05 }} />
