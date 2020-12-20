@@ -91,14 +91,18 @@ const OverlayHome = ({ transform, navigation, animate }) => {
           }}
         >
           <SvgUri
-            width="35"
-            height="35"
+            width="25"
+            height="30"
             source={require("../assets/Icons/Group.svg")}
           ></SvgUri>
         </TouchableOpacity>
         <Headline
-          text="My Reports"
-          style={{ flex: 1, alignSelf: "flex-end", marginRight: 40 }}
+          text="Reports"
+          style={{
+            flex: 1,
+            alignSelf: "flex-end",
+            marginRight: 30,
+          }}
         />
       </View>
       <SafeAreaView
@@ -114,6 +118,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
           alignSelf: "center",
           justifyContent: "center",
           height: Dimensions.get("window").height * 0.08,
+          paddingBottom: 200,
         }}
       >
         <CustomButton
