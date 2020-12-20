@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import AppLoading from "expo-app-loading";
 import BackButton from "../components/BackButton"; // Maybe delete and don't use?
-import { storage } from "firebase";
+import * as storage from "../data_model/Storage";
+import BrandLogoImage from "../components/BrandLogoImage";
 //TODO: IF IT IS USED FOR MODAL VIEW, THERE SHOULD BE AN "X" CLOSE BUTTON
 //TODO: IF IT IS USED FOR SCREEN VIEW, THERE SHOULD BE A BACK BUTTON
 const ReportView = (props) => {
@@ -43,22 +43,23 @@ const ReportView = (props) => {
           flex: 0.1,
           alignSelf: "center",
           marginTop: -15,
+          paddingBottom: 10,
         }}
       >
         📌 {testAdress}
       </Text>
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 0.3 }}>
-          <Text style={styles.headerFont}>Brand: {testBrand}</Text>
-          <Image
-            source={require("../assets/brand_logos/logo_lime.png")}
-            resizeMode="cover"
-            style={{
-              height: 35,
-              width: 90,
-              borderRadius: 8,
-            }}
-          />
+        <View
+          style={{
+            flex: 0.15,
+            flexDirection: "row",
+            paddingTop: 10,
+            paddingBottom: 15,
+          }}
+          //TODO: INSERT BRANDLOGO DYNAMICALLY
+        >
+          <Text style={styles.headerFont}>Brand:</Text>
+          <BrandLogoImage logo={"unkown"} style={{ marginLeft: 10 }} />
         </View>
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
@@ -86,7 +87,7 @@ const ReportView = (props) => {
           </View>
         </View>
         {testArr.includes("Other") ? (
-          <View style={{ flex: 0.3 }}>
+          <View style={{ paddingBottom: 15 }}>
             <Text style={styles.headerFont}>Description:</Text>
             <Text style={{ fontSize: 16, color: "white" }}>
               {"THAT IS SUPER NICE"}
@@ -102,7 +103,6 @@ const ReportView = (props) => {
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#2F4357",
-    flex: 1,
   },
   headline: {
     fontSize: 35,
@@ -114,13 +114,11 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: Dimensions.get("window").height * 1.3,
-    width: Dimensions.get("window").width,
     backgroundColor: "#2F4357",
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    paddingTop: 30,
+    paddingTop: 35,
   },
   headerFont: {
     paddingBottom: 2,
@@ -146,9 +144,16 @@ const styles = StyleSheet.create({
     flex: 0.1,
   },
   categoriesContainer: {
-    flex: 1,
+    paddingBottom: 15,
     flexDirection: "row",
     flexWrap: "wrap",
   },
+  buttonContainer: {
+    flex: 0.1,
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingBottom: 30,
+  },
 });
+
 export default ReportView;
