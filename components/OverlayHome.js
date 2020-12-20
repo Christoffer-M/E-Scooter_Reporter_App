@@ -11,11 +11,10 @@ import SvgUri from "expo-svg-uri";
 import Headline from "./Headline";
 import * as storage from "../data_model/Storage";
 import OverlayReport from "./OverlayReport";
-import LogOutButton from "./LogOutButton";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFocusEffect } from "@react-navigation/native";
+import CustomButton from "./CustomButton";
 
-const OverlayHome = (props) => {
+const OverlayHome = ({ transform, navigation, animate }) => {
   const [reports, setReports] = useState([]);
 
   useFocusEffect(
@@ -63,21 +62,26 @@ const OverlayHome = (props) => {
         height: Dimensions.get("window").height,
         left: 0,
         flex: 1,
-        transform: [{ translateX: props.transform }],
+        transform: [{ translateX: transform }],
       }}
     >
-      <View style={{ flex: 0.5 }}>
+      <View
+        style={{
+          height: Dimensions.get("window").height * 0.12,
+          flexDirection: "row",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          paddingBottom: 10,
+        }}
+      >
         <TouchableOpacity
           style={{
-            justifyContent: "center",
-            alignItems: "center",
             alignSelf: "flex-start",
-            borderRadius: 20,
-            paddingLeft: 20,
-            paddingTop: 20,
+            paddingLeft: 10,
+            paddingBottom: 5,
           }}
           onPress={() => {
-            props.animate();
+            animate();
           }}
         >
           <SvgUri
@@ -86,11 +90,14 @@ const OverlayHome = (props) => {
             source={require("../assets/Icons/Group.svg")}
           ></SvgUri>
         </TouchableOpacity>
-        <Headline text="Reports" flex={{ flex: 1 }} />
+        <Headline
+          text="My Reports"
+          style={{ flex: 1, alignSelf: "flex-end", marginRight: 40 }}
+        />
       </View>
       <SafeAreaView
         style={{
-          height: Dimensions.get("window").height * 0.75,
+          height: Dimensions.get("window").height * 0.8,
         }}
       >
         <ScrollView>{reports}</ScrollView>
@@ -99,11 +106,19 @@ const OverlayHome = (props) => {
       <View
         style={{
           alignSelf: "center",
-          marginBottom: 20,
-          height: Dimensions.get("window").height * 0.05,
+          justifyContent: "center",
+          height: Dimensions.get("window").height * 0.08,
         }}
       >
-        <LogOutButton nav={props.nav} />
+        <CustomButton
+          text="Log out"
+          onPress={() => {
+            storage.signOut();
+            navigation.push("Welcome");
+          }}
+          style={{ width: 150, justifyContent: "center" }}
+          textStyle={{ fontSize: 20 }}
+        />
       </View>
     </Animated.View>
   );

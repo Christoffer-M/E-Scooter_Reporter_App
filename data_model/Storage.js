@@ -28,7 +28,7 @@ export function isSignedIn() {
 }
 
 export function signOut() {
-  user = "";
+  Backend.logout();
 }
 
 export function setGuest(boolean) {

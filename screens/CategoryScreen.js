@@ -102,7 +102,7 @@ const CategoryScreen = ({ navigation }) => {
       scrollEnabled={true}
     >
       <BackButton nav={navigation}></BackButton>
-      <Headline text="What is wrong?" flex={{ flex: 0.2 }} />
+      <Headline text="What is wrong?" style={{ flex: 0.2 }} />
       <Text style={styles.description}>
         Please choose one or more categories that fits the violation you wish to
         report

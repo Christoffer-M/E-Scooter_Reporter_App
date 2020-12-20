@@ -71,14 +71,6 @@ const WelcomeScreen = ({ navigation }) => {
             textStyle={{ fontSize: 18 }}
           />
         </View>
-        {/* <View style={styles.buttonview}>
-          <Button
-            onPress={onPressLearnMore}
-            title="TESTING"
-            color="#841584"
-            accessibilityLabel=""
-          />
-        </View> */}
         <StatusBar style="auto" />
       </View>
     </View>

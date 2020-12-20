@@ -192,7 +192,11 @@ const HomeScreen = ({ navigation }) => {
           text="Report"
         />
       </View>
-      <OverlayHome animate={animate} transform={transform} nav={navigation} />
+      <OverlayHome
+        animate={animate}
+        transform={transform}
+        navigation={navigation}
+      />
     </View>
   );
 };
