@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   reportButton: {
     position: "absolute",
     bottom: 0,
-    paddingBottom: 35,
+    paddingBottom: 60,
     alignItems: "center",
     justifyContent: "flex-end",
   },

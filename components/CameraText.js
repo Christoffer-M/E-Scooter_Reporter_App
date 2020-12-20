@@ -9,7 +9,7 @@ const CameraText = (props) => {
         backgroundColor: props.color,
         paddingLeft: 20,
         paddingRight: 20,
-        height: 32,
+        height: 40,
         borderRadius: 16,
         justifyContent: "center",
       }}
@@ -19,7 +19,7 @@ const CameraText = (props) => {
           color: "white",
           textAlign: "center",
           fontFamily: "RobotoMono_500Medium",
-          fontSize: 14,
+          fontSize: 16,
         }}
       >
         {props.text}
