@@ -11,9 +11,7 @@ const WelcomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={{ marginRight: 15, marginLeft: 15 }}>
         <Headline text="Welcome!" />
-        <Text style={styles.fontStyle}>
-          Would you like to sign in or continue as a guest?
-        </Text>
+        <Text style={styles.fontStyle}>How would you like to use the app?</Text>
         <TouchableOpacity
           onPress={async () => {
             const result = await firebaseDataBase.signInWithGoogleAsync();
@@ -22,7 +20,7 @@ const WelcomeScreen = ({ navigation }) => {
               storage.syncReports();
               navigation.push("Home");
             } else {
-              console.log("something went wrong!!!!");
+              console.log("Something went wrong");
             }
           }}
           style={{
@@ -32,7 +30,7 @@ const WelcomeScreen = ({ navigation }) => {
             alignItems: "center",
             borderRadius: 90,
             backgroundColor: "#E77F64",
-            width: 200,
+            width: 250,
             height: 48,
             padding: 8,
             textAlign: "center",
@@ -40,7 +38,7 @@ const WelcomeScreen = ({ navigation }) => {
         >
           <SvgUri
             source={require("../assets/brand_logos/logo_google.svg")}
-            width="35"
+            width="20"
             height="35"
             style={{ paddingLeft: 0, alignSelf: "flex-start" }}
           />
@@ -52,7 +50,7 @@ const WelcomeScreen = ({ navigation }) => {
               paddingLeft: 10,
             }}
           >
-            Google Sign In
+            Sign in with Google
           </Text>
         </TouchableOpacity>
 
@@ -60,13 +58,13 @@ const WelcomeScreen = ({ navigation }) => {
         <View style={styles.buttonview}>
           <CustomButton
             onPress={() => {
-              console.log("setting guest to true");
+              console.log("Setting guest to true");
               navigation.push("Home");
               storage.syncReports();
             }}
-            text="Guest"
+            text="Continue as guest"
             style={{ justifyContent: "center" }}
-            textStyle={{ fontSize: 18 }}
+            textStyle={{ fontSize: 16 }}
           />
         </View>
         {/* <View style={styles.buttonview}>
