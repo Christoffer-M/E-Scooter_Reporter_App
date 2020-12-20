@@ -13,6 +13,7 @@ import * as storage from "../data_model/Storage";
 import OverlayReport from "./OverlayReport";
 import { useFocusEffect } from "@react-navigation/native";
 import CustomButton from "./CustomButton";
+import BackButton from "../components/BackButton";
 
 const OverlayHome = ({ transform, navigation, animate }) => {
   const [reports, setReports] = useState([]);
@@ -92,7 +93,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
         >
           <SvgUri
             width="25"
-            height="30"
+            height="25"
             source={require("../assets/Icons/Group.svg")}
           ></SvgUri>
         </TouchableOpacity>
@@ -117,7 +118,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
         style={{
           alignSelf: "center",
           justifyContent: "center",
-          height: Dimensions.get("window").height * 0.08,
+          height: Dimensions.get("window").height * 0.07,
           paddingBottom: 200,
         }}
       >
