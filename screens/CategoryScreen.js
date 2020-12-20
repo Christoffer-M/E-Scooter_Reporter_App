@@ -30,18 +30,18 @@ const CategoryScreen = ({ navigation }) => {
       setHideInput(true);
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 200,
+        duration: 100,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 200,
+        duration: 100,
         useNativeDriver: true,
       }).start();
       setTimeout(() => {
         setHideInput(false);
-      }, 200);
+      }, 100);
     }
   });
 
@@ -104,32 +104,31 @@ const CategoryScreen = ({ navigation }) => {
       <BackButton nav={navigation}></BackButton>
       <Headline text="What is wrong?" style={{ flex: 0.2 }} />
       <Text style={styles.description}>
-        Please choose one or more categories that fits the violation you wish to
-        report
+        Please, pick the categories that fits the violation you wish to report.
       </Text>
       <View style={styles.buttons}>
         {categoryButtons}
         <Animated.View style={{ opacity: fadeAnim }}>
           {hideInput ? (
             <>
-              <Text style={styles.description}>Please Describe</Text>
+              <Text style={styles.description}>Please describe:</Text>
               <TextInput
                 style={{
-                  width: Dimensions.get("window").width / 1.3,
-                  height: 45,
+                  width: 250,
+                  height: 50,
                   borderColor: "gray",
-                  borderRadius: 90,
-                  borderWidth: 1,
+                  borderRadius: 5,
                   backgroundColor: "#fff",
                   textAlign: "left",
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  fontSize: 18,
+                  padding: 5,
+                  fontSize: 15,
                   fontFamily: "RobotoMono_500Medium",
                 }}
                 placeholder="Type here"
                 onChangeText={(text) => onChangeText(text)}
                 value={value}
+                maxLength={40}
+                multiline
               />
             </>
           ) : (
@@ -138,7 +137,7 @@ const CategoryScreen = ({ navigation }) => {
         </Animated.View>
       </View>
 
-      <View style={{ justifyContent: "flex-end" }}>
+      <View style={{ justifyContent: "flex-end", paddingBottom: 40 }}>
         {hideProcess ? (
           <CustomButton
             onPress={() => {
@@ -150,8 +149,6 @@ const CategoryScreen = ({ navigation }) => {
         ) : (
           <></>
         )}
-
-        <Text style={styles.infoText}>* Select one or more options</Text>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -174,14 +171,15 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
-    fontSize: 18,
+    fontSize: 16,
     lineHeight: 36,
+    paddingHorizontal: 30,
     textAlign: "center",
   },
   infoText: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
-    fontSize: 18,
+    fontSize: 14,
     lineHeight: 36,
     textAlign: "center",
     paddingBottom: 15,
