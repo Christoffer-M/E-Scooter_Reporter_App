@@ -168,7 +168,7 @@ export function updateUserReportsList() {
   // Filter reports by user:
   console.log("reports length before:", reports.length);
   const updatedUserReports = reports.filter((r) => {
-    r.user == this.getUser();
+    r.user == getUser();
   });
   console.log("updatedUserReports length after:", updatedUserReports.length);
 
