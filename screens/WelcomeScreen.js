@@ -30,7 +30,7 @@ const WelcomeScreen = ({ navigation }) => {
             alignItems: "center",
             borderRadius: 90,
             backgroundColor: "#E77F64",
-            width: 250,
+            width: 200,
             height: 48,
             padding: 8,
             textAlign: "center",
@@ -50,7 +50,7 @@ const WelcomeScreen = ({ navigation }) => {
               paddingLeft: 10,
             }}
           >
-            Sign in with Google
+            Google Sign-in
           </Text>
         </TouchableOpacity>
 
@@ -85,10 +85,11 @@ const styles = StyleSheet.create({
   fontStyle: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
-    fontSize: 18,
+    fontSize: 20,
     lineHeight: 36,
     textAlign: "center",
-    paddingBottom: 30,
+    paddingBottom: 80,
+    paddingHorizontal: 50,
   },
 
   fontStyleforOr: {
