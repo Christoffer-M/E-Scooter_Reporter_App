@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import MapView from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import {
   StyleSheet,
   View,
@@ -161,7 +161,7 @@ const HomeScreen = ({ navigation }) => {
         style={styles.mapStyle}
         zoomEnabled={true}
         showsUserLocation={true}
-        followsUserLocation={true}
+        provider={PROVIDER_GOOGLE}
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,

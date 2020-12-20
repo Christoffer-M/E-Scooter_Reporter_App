@@ -150,6 +150,8 @@ const ReportView = ({ report, modalVisible, setVisible }) => {
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#2F4357",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
   },
   headline: {
     fontSize: 35,
@@ -159,6 +161,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   container: {
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: "#2F4357",
