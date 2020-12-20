@@ -16,9 +16,15 @@ const WelcomeScreen = ({ navigation }) => {
           onPress={async () => {
             const result = await firebaseDataBase.signInWithGoogleAsync();
             if (result.type === "success") {
-              storage.setUser(result.user.email);
-              storage.syncReports();
+              console.log(
+                "Success logging in! Setting user to: " + result.user.user.email
+              );
+              console.log(
+                "Success logging in! Storage user is: " + result.user.user.email
+              );
+              storage.setUser(result.user.user.email);
               navigation.push("Home");
+              storage.syncReports();
             } else {
               console.log("Something went wrong");
             }
