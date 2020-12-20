@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Alert, Modal } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import CameraText from "../components/CameraText";
 import { Camera } from "expo-camera";
@@ -10,6 +10,7 @@ import * as storage from "../data_model/Storage";
 const QRScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -22,25 +23,10 @@ const QRScreen = ({ navigation }) => {
   const handleBarCodeScanned = ({ type, data }) => {
     storage.getReport().setQR(data);
     setScanned(true);
-    navigation.push("Category");
-    //   Alert.alert(
-    //     "Bar code Scanned!",
-    //     "Bar code with type " + type + " and data " + data + " has been scanned!",
-    //     [
-    //       {
-    //         text: "Scan again",
-    //         onPress: () => setScanned(false),
-    //         style: "cancel",
-    //       },
-    //       {
-    //         text: "Continue",
-    //         onPress: () => {
-    //           navigation.push("Category");
-    //         },
-    //       },
-    //     ],
-    //     { cancelable: false }
-    //   );
+    showModal();
+    setTimeout(() => {
+      navigation.push("Category");
+    }, 1500);
   };
 
   if (hasPermission === null) {
@@ -49,6 +35,13 @@ const QRScreen = ({ navigation }) => {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  const showModal = () => {
+    setModalVisible(true);
+    setTimeout(() => {
+      setModalVisible(false);
+    }, 1500);
+  };
 
   return (
     <View
@@ -72,10 +65,30 @@ const QRScreen = ({ navigation }) => {
               top: Dimensions.get("window").height / 7,
             }}
           >
-            <CameraText text="Point camera at the QR-Code" color="#E77F64" />
+            <CameraText text="Scan the QR-Code" color="#5B7282" />
           </View>
         </View>
         <View style={{ flex: 0.5, flexDirection: "row", display: "flex" }}>
+          <Modal
+            animationType="fade"
+            transparent
+            visible={modalVisible}
+            onRequestClose={() => {
+              console.log("Modal has been closed.");
+            }}
+          >
+            <View style={styles.modalView}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#2F4357",
+                  fontFamily: "RobotoMono_500Medium",
+                }}
+              >
+                The QR-code was succesfully scanned!
+              </Text>
+            </View>
+          </Modal>
           <View style={{ flex: 0.05 }} />
           <View
             style={{
@@ -83,7 +96,7 @@ const QRScreen = ({ navigation }) => {
               borderStyle: "dashed",
               borderRadius: 15,
               borderWidth: 5,
-              borderColor: "#ffff",
+              borderColor: "#FBEFE8",
             }}
           />
           <View style={{ flex: 0.05 }} />
@@ -113,5 +126,20 @@ const QRScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  modalView: {
+    flex: 0.1,
+    marginTop: 400,
+    marginHorizontal: 50,
+    padding: 20,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#EBC2AD",
+    flexDirection: "row",
+    display: "flex",
+  },
+});
 
 export default QRScreen;

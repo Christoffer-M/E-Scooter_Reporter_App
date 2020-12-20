@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
     fontSize: 16,
-    lineHeight: 36,
+    lineHeight: 25,
     paddingHorizontal: 30,
     textAlign: "center",
   },

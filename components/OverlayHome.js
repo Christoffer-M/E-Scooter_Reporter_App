@@ -11,6 +11,7 @@ import SvgUri from "expo-svg-uri";
 import Headline from "./Headline";
 import * as storage from "../data_model/Storage";
 import CustomButton from "./CustomButton";
+import BackButton from "../components/BackButton";
 
 const OverlayHome = ({ transform, navigation, animate, report }) => {
   return (
@@ -48,7 +49,7 @@ const OverlayHome = ({ transform, navigation, animate, report }) => {
         >
           <SvgUri
             width="25"
-            height="30"
+            height="25"
             source={require("../assets/Icons/Group.svg")}
           ></SvgUri>
         </TouchableOpacity>
@@ -73,7 +74,7 @@ const OverlayHome = ({ transform, navigation, animate, report }) => {
         style={{
           alignSelf: "center",
           justifyContent: "center",
-          height: Dimensions.get("window").height * 0.08,
+          height: Dimensions.get("window").height * 0.07,
           paddingBottom: 200,
         }}
       >

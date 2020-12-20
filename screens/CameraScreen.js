@@ -17,6 +17,7 @@ import * as imagehandler from "../utility/ImageHandler";
 import * as Location from "expo-location";
 import Headline from "../components/Headline";
 import BackButton from "../components/BackButton";
+import CustomButton from "../components/CustomButton";
 
 const CameraSceen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -84,12 +85,14 @@ const CameraSceen = ({ navigation }) => {
             flex: 1,
             alignItems: "center",
             justifyContent: "center",
-            paddingTop: 30,
+            paddingTop: 50,
             backgroundColor: "#2F4357",
           }}
         >
           <BackButton nav={navigation}></BackButton>
-          <CameraText text="Take a picture of the incident" color="#E77F64" />
+          <Text style={styles.informationText}>
+            Take a picture of the violating e-scooter
+          </Text>
         </View>
         {!loadingPicture ? (
           <View
@@ -150,7 +153,7 @@ const CameraSceen = ({ navigation }) => {
               }
             }}
           >
-            <SvgUri source={require("../assets/Icons/take_photo.svg")} />
+            <SvgUri source={require("../assets/Icons/camera_button.svg")} />
           </TouchableOpacity>
         </View>
       </View>
@@ -168,10 +171,11 @@ const CameraSceen = ({ navigation }) => {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          paddingTop: 30,
+          paddingTop: 50,
           backgroundColor: "#2F4357",
         }}
       >
+        <BackButton nav={navigation}></BackButton>
         <Text style={styles.informationText}>Is the picture okay?</Text>
       </View>
       <Image
@@ -190,26 +194,38 @@ const CameraSceen = ({ navigation }) => {
         }}
       >
         <TouchableOpacity
-          style={styles.pictureButton}
+          style={styles.orangeButton}
           onPress={() => {
             navigation.push("QRScreen");
             setLocation();
           }}
         >
-          <Text style={{ color: "white", fontFamily: "RobotoMono_500Medium" }}>
+          <Text
+            style={{
+              color: "#FBEFE8",
+              fontFamily: "RobotoMono_500Medium",
+              fontSize: 18,
+            }}
+          >
             Yes, continue
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.pictureButton}
+          style={styles.whiteButton}
           onPress={async () => {
             await FileSystem.deleteAsync(pictureURI);
             storage.getReport().setImageUri("");
             setImageTaken(false);
           }}
         >
-          <Text style={{ color: "white", fontFamily: "RobotoMono_500Medium" }}>
+          <Text
+            style={{
+              color: "#FBEFE8",
+              fontFamily: "RobotoMono_500Medium",
+              fontSize: 16,
+            }}
+          >
             Take a new picture
           </Text>
         </TouchableOpacity>
@@ -232,10 +248,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  pictureButton: {
+  orangeButton: {
     display: "flex",
     borderRadius: 90,
-    width: 180,
+    width: 220,
     height: 48,
     margin: 10,
     alignItems: "center",
@@ -243,13 +259,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#E77F64",
   },
 
+  whiteButton: {
+    display: "flex",
+    borderRadius: 90,
+    width: 220,
+    height: 48,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#5B7282",
+  },
+
   informationText: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
-    fontSize: 20,
-    lineHeight: 36,
+    fontSize: 22,
+    lineHeight: 30,
     textAlign: "center",
-    paddingHorizontal: 50,
+    paddingHorizontal: 30,
   },
 });
 

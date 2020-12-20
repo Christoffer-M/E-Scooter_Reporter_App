@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   container: {
     position: "absolute",
     display: "flex",
-    top: 50,
+    top: 60,
     left: 20,
   },
 });
