@@ -36,7 +36,7 @@ const CameraSceen = ({ navigation }) => {
 
   async function setLocation() {
     const location = await Location.getCurrentPositionAsync({});
-    storage.report.setGeoLocation(
+    storage.getReport().setGeoLocation(
       location.coords.latitude,
       location.coords.longitude
     );
@@ -145,8 +145,8 @@ const CameraSceen = ({ navigation }) => {
                   photo.width,
                   photo.height
                 );
-                storage.report.setImageUri(newimage.uri); // We only need the uri in the report
-                storage.report.setTimestampToNow();
+                storage.getReport().setImageUri(newimage.uri); // We only need the uri in the report
+                storage.getReport().setTimestampToNow();
                 setLoading(false);
                 setImageTaken(true);
                 //TODO: ^ NO, get the photo name from report.imageName
@@ -179,7 +179,7 @@ const CameraSceen = ({ navigation }) => {
         <CameraText text="Review the picture" />
       </View>
       <Image
-        source={{ uri: storage.report.imageURI }}
+        source={{ uri: storage.getReport().imageURI }}
         style={{
           width: Dimensions.get("window").width,
           height: Dimensions.get("window").width,
@@ -207,7 +207,7 @@ const CameraSceen = ({ navigation }) => {
           style={styles.pictureButton}
           onPress={async () => {
             await FileSystem.deleteAsync(pictureURI);
-            storage.report.setImageUri("");
+            storage.getReport().setImageUri("");
             setImageTaken(false);
           }}
         >

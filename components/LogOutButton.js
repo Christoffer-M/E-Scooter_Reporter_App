@@ -18,7 +18,7 @@ const LogOutButton = (props) => {
       onPress={() => {
         props.nav.push("Welcome");
         firebase.logout();
-        storage.setUser("guest");
+        storage.signOut();
       }}
     >
       <Text>Log out</Text>

@@ -19,8 +19,8 @@ const ReportScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (storage.report.hasImage()) {
-      setImage(storage.report.imageURI);
+    if (storage.getReport().hasImage()) {
+      setImage(storage.getReport().imageURI);
     } else {
       setImage(
         "https://i.pinimg.com/originals/8d/ef/54/8def54ebab6fc164e50a6ec426e19937.jpg"
@@ -61,12 +61,12 @@ const ReportScreen = ({ navigation }) => {
           marginTop: -15,
         }}
       >
-        📌 {storage.report.getReadableAddress()}
+        📌 {storage.getReport().getReadableAddress()}
       </Text>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 0.3 }}>
           <Text style={styles.headerFont}>
-            Brand: {storage.report.getBrand()}
+            Brand: {storage.getReport().getBrand()}
           </Text>
           <Image
             source={require("../assets/brand_logos/logo_unknown.png")}
@@ -81,7 +81,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
           <View style={styles.categoriesContainer}>
-            {storage.report.getCategories().map((item, key) => {
+            {storage.getReport().getCategories().map((item, key) => {
               return (
                 <View
                   key={key}
@@ -103,11 +103,11 @@ const ReportScreen = ({ navigation }) => {
             })}
           </View>
         </View>
-        {storage.report.getCategories().includes("Other") ? (
+        {storage.getReport().getCategories().includes("Other") ? (
           <View style={{ flex: 0.3 }}>
             <Text style={styles.headerFont}>Description:</Text>
             <Text style={{ fontSize: 16, color: "white" }}>
-              {storage.report.comment}
+              {storage.getReport().comment}
             </Text>
           </View>
         ) : (

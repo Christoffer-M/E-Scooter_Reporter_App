@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 import "react-native-get-random-values";
 
 export const newReport = (user) => {
-  return new Report(user);
-};
+  return new Report(user ? user : "guest");
+}
 
 // The report class!
 class Report {

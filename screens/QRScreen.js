@@ -20,7 +20,7 @@ const QRScreen = ({ navigation }) => {
 
   //Data variable is what needs to be stored in FireBase
   const handleBarCodeScanned = ({ type, data }) => {
-    storage.report.setQR(data);
+    storage.getReport().setQR(data);
     setScanned(true);
     Alert.alert(
       "Bar code Scanned!",

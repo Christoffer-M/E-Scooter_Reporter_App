@@ -11,7 +11,7 @@ const CategoryButton = (props) => {
 
   useEffect(() => {
     if (!firstRun) {
-      const categoryArray = storage.report.getCategories();
+      const categoryArray = storage.getReport().getCategories();
       if (categoryArray.length > 0) {
         categoryArray.forEach((element) => {
           if (element === props.text) {
@@ -34,23 +34,23 @@ const CategoryButton = (props) => {
       SetIsClicked(true);
       switch (props.text) {
         case "Misplaced":
-          storage.report.toggleMisplaced();
+          storage.getReport().toggleMisplaced();
           props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
         case "Laying Down":
-          storage.report.toggleLaying();
+          storage.getReport().toggleLaying();
           props.add(props.text);
           setText(props.text + "  🛴 ");
           break;
         case "Broken":
-          storage.report.toggleBroken();
+          storage.getReport().toggleBroken();
           props.add(props.text);
           setText(props.text + "  🛴 ");
 
           break;
         case "Other":
-          storage.report.toggleOther();
+          storage.getReport().toggleOther();
           props.setOther(true);
           props.add(props.text);
           setText(props.text + "  🛴 ");
@@ -62,22 +62,22 @@ const CategoryButton = (props) => {
       SetIsClicked(false);
       switch (props.text) {
         case "Misplaced":
-          storage.report.toggleMisplaced();
+          storage.getReport().toggleMisplaced();
           props.remove(props.text);
           setText(props.text);
           break;
         case "Laying Down":
-          storage.report.toggleLaying();
+          storage.getReport().toggleLaying();
           props.remove(props.text);
           setText(props.text);
           break;
         case "Broken":
-          storage.report.toggleBroken();
+          storage.getReport().toggleBroken();
           props.remove(props.text);
           setText(props.text);
           break;
         case "Other":
-          storage.report.toggleOther();
+          storage.getReport().toggleOther();
           props.remove(props.text);
           props.setOther(false);
           setText(props.text);
