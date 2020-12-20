@@ -58,13 +58,14 @@ const ReportScreen = ({ navigation }) => {
           flexWrap: "nowrap",
           color: "white",
           fontSize: 16,
-          alignSelf: "left",
           paddingBottom: 10,
           fontFamily: "RobotoMono_500Medium",
         }}
       >
-        📌 {storage.getReport().getReadableAddress()}
+        {storage.getReport().getReadableAddress()}
       </Text>
+      <Text style={styles.headerFont}>Brand:</Text>
+      <BrandLogoImage logo={storage.report.getBrand()} />
       <View style={{ flex: 1 }}>
         <View
           style={{
@@ -73,13 +74,7 @@ const ReportScreen = ({ navigation }) => {
             paddingTop: 10,
             paddingBottom: 15,
           }}
-        >
-          <Text style={styles.headerFont}>Brand:</Text>
-          <BrandLogoImage
-            logo={storage.report.getBrand()}
-            style={{ marginLeft: 10 }}
-          />
-        </View>
+        ></View>
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
           <View style={styles.categoriesContainer}>
@@ -184,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: "RobotoMono_700Bold",
     color: "#EBC2AD",
-    paddingTop: 15,
+    paddingTop: 25,
     textAlign: "center",
     alignSelf: "center",
   },
