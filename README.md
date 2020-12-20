@@ -20,7 +20,7 @@
 
 ## How To Run
 
-Make sure you have [Expo](https://expo.io) & [Node.js](https://nodejs.org/)installed
+Make sure you have [Expo](https://expo.io) & [Node.js](https://nodejs.org/) installed
 
 Install Modules
 
