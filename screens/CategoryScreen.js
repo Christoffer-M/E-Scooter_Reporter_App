@@ -143,7 +143,7 @@ const CategoryScreen = ({ navigation }) => {
           <CustomButton
             onPress={() => {
               navigation.push("Report");
-              storage.report.setComment(value);
+              storage.getReport().setComment(value);
             }}
             text="Proceed"
           />

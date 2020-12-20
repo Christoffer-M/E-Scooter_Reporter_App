@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
-  const isGuest = useRef(storage.guest).current;
+  const isGuest = useRef(storage.isGuest()).current;
 
   useEffect(() => {
     (async () => {
@@ -38,8 +38,8 @@ const HomeScreen = ({ navigation }) => {
         navigation.goBack();
       } else {
         let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-        storage.location = location;
+        setLocation(location); //TODO Duplicates?
+        storage.setLocation(location); //TODO Duplicates?
       }
     })();
   }, []);
@@ -50,7 +50,9 @@ const HomeScreen = ({ navigation }) => {
   });
 
   useEffect(() => {
-    if (isGuest === false) {
+    console.log("storage.isGuest()", storage.isGuest())
+    console.log("storage.getUser()", storage.getUser())
+    if (storage.isGuest() === false) {
       if (user === null) {
         firebases.auth().onAuthStateChanged((user) => {
           if (user) {

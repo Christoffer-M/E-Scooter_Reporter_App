@@ -34,7 +34,6 @@ export default function App() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged((res) => {
       if (res) {
-        storage.setGuest(false);
         storage.setUser(res.email);
         setRouteName("Home");
       } else {

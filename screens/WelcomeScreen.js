@@ -16,13 +16,10 @@ const WelcomeScreen = ({ navigation }) => {
         </Text>
         <TouchableOpacity
           onPress={async () => {
-            console.log("RUNNING");
             const result = await firebaseDataBase.signInWithGoogleAsync();
             if (result.type === "success") {
-              console.log("hello?");
               storage.setUser(result.user.email);
               storage.syncReports();
-              storage.setGuest(false);
               navigation.push("Home");
             } else {
               console.log("something went wrong!!!!");
@@ -64,7 +61,6 @@ const WelcomeScreen = ({ navigation }) => {
           <CustomButton
             onPress={() => {
               console.log("setting guest to true");
-              storage.setGuest(true);
               navigation.push("Home");
               storage.syncReports();
             }}
@@ -73,6 +69,14 @@ const WelcomeScreen = ({ navigation }) => {
             textStyle={{ fontSize: 18 }}
           />
         </View>
+        {/* <View style={styles.buttonview}>
+          <Button
+            onPress={onPressLearnMore}
+            title="TESTING"
+            color="#841584"
+            accessibilityLabel=""
+          />
+        </View> */}
         <StatusBar style="auto" />
       </View>
     </View>

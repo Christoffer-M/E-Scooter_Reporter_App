@@ -9,40 +9,63 @@ let lastUpdate = null;
 let firstTimeSyncing = true; //Will only be true once, until after first sync
 let minSecondsBetweenUpdates = 5; // Don't sync with backend more often than every X second
 
-export let user = "guest";
-export let guest = true;
+export let user = "";
 
 export let location = null;
 
-export let reports = new Map(); //Empty map to hold reports
+export let reports = []; //To hold reports
+export let userReports = []; //To hold only the logged in user's reports
 export let report = null; //Use newReport() to get a new (clean) report
 export let rep;
-
-//In case of failed internet connection:
-export let reportsNotUploaded = [];
 
 export function fillArray() {}
 
 export function isSignedIn() {
-  return user.length > 0;
+  return user.length > 0 && user != "guest";
 }
 
 export function signOut() {
   Backend.logout();
+  userReports = [];
+  user = "";
 }
 
-export function setGuest(boolean) {
-  guest = boolean;
+export function isGuest() {
+  return user == "" || user == "guest";
 }
 
 export function setUser(value) {
   user = value;
 }
 
+export function getUser() {
+  return user ? user : "guest";
+}
+
+export function getLocation() {
+  return location;
+}
+
+export function setLocation(newLocation) {
+  location = newLocation;
+}
+
+export function getReports() {
+  return reports;
+}
+
+export function getUserReports() {
+  return userReports;
+}
+
+export function getReport() {
+  return report;
+}
+
 // CREATE NEW REPORT
 // NOTE: Remember to call this first when starting on a new report!
 export function newReport() {
-  report = Report.newReport(user);
+  report = Report.newReport(getUser());
   return report;
 }
 
@@ -104,34 +127,29 @@ export async function syncReports() {
 
   if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
     lastUpdate = new Date(); // Update time since last fetch
-
+    console.log("BEFORE");
     firstTimeSyncing = false; // Only allowed once!
 
     let fetchedReports = await Backend.downloadAllReports();
     console.log("Syncing with", fetchedReports.length, "reports:");
 
     // If we have reports that are no longer on the server, remove all reports before syncing:
-    if (reports.length > fetchedReports.length) reports.clear();
+    if (reports.length > fetchedReports.length) reports = [];
 
-    // Put reports in our Map of reports:
+    // Put new reports in our reports array:
     fetchedReports.forEach((obj) => {
-      if (obj == null) {
-        console.log("Found null report:", obj);
+      if (reports.some((r) => r.uuid === obj.uuid)) {
+        console.log("Skipped adding", obj.uuid, "(already exists!)");
       } else {
-        if (!reports.has(obj.uuid)) {
-          // console.log("Adding report:")
-          // console.log(report);
-
-          const newReport = Report.newReport(obj.user);
-          Object.assign(newReport, obj);
-
-          //reports[newReport.uuid] = newReport;
-          reports.set(newReport.uuid, newReport);
-          // console.log("Report added:");
-          // console.log(newReport);
-        }
+        const newReport = Report.newReport(obj.user);
+        Object.assign(newReport, obj);
+        reports.push(newReport);
+        console.log("Downloaded report:", newReport.uuid);
       }
     });
+    console.log("AFTER");
+    // Finally, we update the users reports after syncing:
+    updateUserReportsList();
 
     return true;
   } else {
@@ -146,31 +164,31 @@ export async function syncReports() {
 
 // GET USERS REPORTS ONLY
 // The array is sorted by time
-export function getUserReportsList() {
-  console.log("GOING!");
-  const userReports = [];
-  console.log(user);
-  reports.forEach((v, k) => {
-    if (v.user == user) {
-      userReports.push(v);
-    }
+export function updateUserReportsList() {
+  // Filter reports by user:
+  console.log("reports length before:", reports.length);
+  const updatedUserReports = reports.filter((r) => {
+    r.user == this.getUser();
   });
+  console.log("updatedUserReports length after:", updatedUserReports.length);
 
+  // Only update users reports if there there are any new ones:
+  //if (userReports.length != updatedUserReports.length) {
+  console.log("Updated user report list for user:", getUser());
   function compareTime(a, b) {
     const aSec = a.timestamp.seconds;
     const bSec = b.timestamp.seconds;
-    if (aSec > bSec) {
-      return -1;
-    }
-    if (aSec < bSec) {
-      return 1;
-    }
+    if (aSec > bSec) return -1;
+    if (aSec < bSec) return 1;
     return 0;
   }
+  // Sort reports by time they where created in decending order
+  updatedUserReports.sort(compareTime);
 
-  userReports.sort(compareTime);
-
-  return userReports;
+  // Use the updated user reports list
+  userReports = updatedUserReports;
+  //}
+  //console.log("Skipped updating user reports (already updated)")
 }
 
 //PRIVATE FUNCTIONS

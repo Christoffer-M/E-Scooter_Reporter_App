@@ -31,7 +31,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
 
   function fillreports() {
     const temparr = [];
-    storage.getUserReportsList().forEach((obj) => {
+    storage.getUserReports().forEach((obj) => {
       const address = obj.address;
       const imageURI = obj.imageURL;
       const date = obj.timestamp.seconds;
