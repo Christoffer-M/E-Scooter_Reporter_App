@@ -24,7 +24,9 @@ const QRScreen = ({ navigation }) => {
     storage.getReport().setQR(data);
     setScanned(true);
     showModal();
-    navigation.push("Category");
+    setTimeout(() => {
+      navigation.push("Category");
+    }, 2000);
   };
 
   if (hasPermission === null) {
@@ -38,7 +40,7 @@ const QRScreen = ({ navigation }) => {
     setModalVisible(true);
     setTimeout(() => {
       setModalVisible(false);
-    }, 4000);
+    }, 2000);
   };
 
   return (
