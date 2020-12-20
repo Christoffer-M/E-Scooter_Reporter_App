@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
   const transform = useRef(
     new Animated.Value(-Dimensions.get("window").width * 0.8)
   ).current;
-  const [location, setLocation] = useState(storage.location);
+  const [location, setLocation] = useState(null);
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
@@ -38,11 +38,13 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
+      setLocation(await Location.getLastKnownPositionAsync());
+      console.log(location);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
         navigation.goBack();
       } else {
-        let location = await Location.getLastKnownPositionAsync({});
+        let location = await Location.getCurrentPositionAsync({});
         setLocation(location); //TODO Duplicates?
         storage.setLocation(location); //TODO Duplicates?
       }
