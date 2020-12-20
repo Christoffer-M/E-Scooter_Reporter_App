@@ -12,7 +12,7 @@ const BackButton = (props) => {
         }}
       >
         <SvgUri
-          width="30"
+          width="25"
           height="30"
           fill="#E77F64"
           source={require("../assets/Icons/arrow-left-solid.svg")}

@@ -101,9 +101,9 @@ const CategoryButton = (props) => {
 const styles = StyleSheet.create({
   orangeButton: {
     display: "flex",
-    borderRadius: 90,
     width: 250,
-    height: 58,
+    height: 50,
+    borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
   },

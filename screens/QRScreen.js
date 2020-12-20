@@ -22,24 +22,25 @@ const QRScreen = ({ navigation }) => {
   const handleBarCodeScanned = ({ type, data }) => {
     storage.getReport().setQR(data);
     setScanned(true);
-    Alert.alert(
-      "Bar code Scanned!",
-      "Bar code with type " + type + " and data " + data + " has been scanned!",
-      [
-        {
-          text: "Scan again",
-          onPress: () => setScanned(false),
-          style: "cancel",
-        },
-        {
-          text: "Continue",
-          onPress: () => {
-            navigation.push("Category");
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    navigation.push("Category");
+    //   Alert.alert(
+    //     "Bar code Scanned!",
+    //     "Bar code with type " + type + " and data " + data + " has been scanned!",
+    //     [
+    //       {
+    //         text: "Scan again",
+    //         onPress: () => setScanned(false),
+    //         style: "cancel",
+    //       },
+    //       {
+    //         text: "Continue",
+    //         onPress: () => {
+    //           navigation.push("Category");
+    //         },
+    //       },
+    //     ],
+    //     { cancelable: false }
+    //   );
   };
 
   if (hasPermission === null) {
@@ -68,7 +69,7 @@ const QRScreen = ({ navigation }) => {
               position: "absolute",
               alignSelf: "center",
               alignItems: "center",
-              top: Dimensions.get("window").height / 10,
+              top: Dimensions.get("window").height / 7,
             }}
           >
             <CameraText text="Point camera at the QR-Code" color="#E77F64" />

@@ -37,12 +37,12 @@ const ReportScreen = ({ navigation }) => {
       scrollEnabled={true}
     >
       <BackButton nav={navigation} />
-      <Text style={styles.headline}>Your report</Text>
+      <Text style={styles.headline}>Report overview</Text>
       <View style={styles.pictureContainer}>
         <Image
           style={{
-            borderColor: "orange",
-            borderWidth: 1,
+            borderColor: "#5B7282",
+            borderWidth: 2,
             width: "100%",
             height: "100%",
           }}
@@ -50,17 +50,17 @@ const ReportScreen = ({ navigation }) => {
           source={imageUri ? { uri: imageUri } : null}
         />
       </View>
+      <Text style={styles.headerFont}>Location:</Text>
       <Text
-        numberOfLines={1}
+        numberOfLines={2}
         style={{
           textTransform: "capitalize",
           flexWrap: "nowrap",
           color: "white",
-          fontSize: 20,
-          flex: 0.1,
-          alignSelf: "center",
-          marginTop: -15,
+          fontSize: 16,
+          alignSelf: "left",
           paddingBottom: 10,
+          fontFamily: "RobotoMono_500Medium",
         }}
       >
         📌 {storage.getReport().getReadableAddress()}
@@ -181,9 +181,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#2F4357",
   },
   headline: {
-    fontSize: 35,
+    fontSize: 25,
     fontFamily: "RobotoMono_700Bold",
     color: "#EBC2AD",
+    paddingTop: 15,
     textAlign: "center",
     alignSelf: "center",
   },

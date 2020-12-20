@@ -11,7 +11,7 @@ const Headline = ({ style, text }) => {
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: "RobotoMono_700Bold",
     color: "#EBC2AD",
   },

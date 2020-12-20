@@ -161,9 +161,10 @@ const HomeScreen = ({ navigation }) => {
             fontFamily: "RobotoMono_500Medium",
             fontSize: 18,
             paddingBottom: 10,
+            color: "#EBC2AD",
           }}
         >
-          Getting Current Location
+          Getting your location...
         </Text>
         <ActivityIndicator size="large" color="#E77F64" />
       </View>
@@ -173,7 +174,7 @@ const HomeScreen = ({ navigation }) => {
   if (user === null && isGuest === false) {
     return (
       <View style={[styles.loading]}>
-        <Text style={{ fontFamily: "RobotoMono_500Medium" }}>
+        <Text style={{ fontFamily: "RobotoMono_500Medium", color: "#E77F64" }}>
           User detected, please wait
         </Text>
         <ActivityIndicator size="large" color="#E77F64" />
@@ -259,7 +260,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#2F4357",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   reportButton: {
     position: "absolute",
     bottom: 0,
-    paddingBottom: 35,
+    paddingBottom: 60,
     alignItems: "center",
     justifyContent: "flex-end",
   },

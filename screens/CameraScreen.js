@@ -36,10 +36,9 @@ const CameraSceen = ({ navigation }) => {
 
   async function setLocation() {
     const location = await Location.getCurrentPositionAsync({});
-    storage.getReport().setGeoLocation(
-      location.coords.latitude,
-      location.coords.longitude
-    );
+    storage
+      .getReport()
+      .setGeoLocation(location.coords.latitude, location.coords.longitude);
   }
 
   function goBack() {
@@ -90,8 +89,7 @@ const CameraSceen = ({ navigation }) => {
           }}
         >
           <BackButton nav={navigation}></BackButton>
-          <Headline text="Picture" />
-          <CameraText text="Take a picture of the incident" />
+          <CameraText text="Take a picture of the incident" color="#E77F64" />
         </View>
         {!loadingPicture ? (
           <View
@@ -108,13 +106,12 @@ const CameraSceen = ({ navigation }) => {
             style={{
               width: Dimensions.get("window").width,
               height: Dimensions.get("window").width,
-              backgroundColor: "white",
-              opacity: 0.5,
+              backgroundColor: "#2F4357",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <ActivityIndicator size="large" color="black" />
+            <ActivityIndicator size="large" color="#E77F64" />
           </View>
         )}
 
@@ -175,8 +172,7 @@ const CameraSceen = ({ navigation }) => {
           backgroundColor: "#2F4357",
         }}
       >
-        <Headline text="Picture" />
-        <CameraText text="Review the picture" />
+        <Text style={styles.informationText}>Is the picture okay?</Text>
       </View>
       <Image
         source={{ uri: storage.getReport().imageURI }}
@@ -200,7 +196,9 @@ const CameraSceen = ({ navigation }) => {
             setLocation();
           }}
         >
-          <Text style={{ color: "white" }}>Confirm</Text>
+          <Text style={{ color: "white", fontFamily: "RobotoMono_500Medium" }}>
+            Yes, continue
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -211,7 +209,9 @@ const CameraSceen = ({ navigation }) => {
             setImageTaken(false);
           }}
         >
-          <Text style={{ color: "white" }}>Take new Picture</Text>
+          <Text style={{ color: "white", fontFamily: "RobotoMono_500Medium" }}>
+            Take a new picture
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -235,12 +235,21 @@ const styles = StyleSheet.create({
   pictureButton: {
     display: "flex",
     borderRadius: 90,
-    width: 150,
+    width: 180,
     height: 48,
     margin: 10,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#E77F64",
+  },
+
+  informationText: {
+    fontFamily: "RobotoMono_500Medium",
+    color: "#FBEFE8",
+    fontSize: 20,
+    lineHeight: 36,
+    textAlign: "center",
+    paddingHorizontal: 50,
   },
 });
 
