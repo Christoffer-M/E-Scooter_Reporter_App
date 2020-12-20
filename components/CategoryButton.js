@@ -36,24 +36,24 @@ const CategoryButton = (props) => {
         case "Misplaced":
           storage.getReport().toggleMisplaced();
           props.add(props.text);
-          setText(props.text + "  🛴 ");
+          setText(props.text);
           break;
         case "Laying Down":
           storage.getReport().toggleLaying();
           props.add(props.text);
-          setText(props.text + "  🛴 ");
+          setText(props.text);
           break;
         case "Broken":
           storage.getReport().toggleBroken();
           props.add(props.text);
-          setText(props.text + "  🛴 ");
+          setText(props.text);
 
           break;
         case "Other":
           storage.getReport().toggleOther();
           props.setOther(true);
           props.add(props.text);
-          setText(props.text + "  🛴 ");
+          setText(props.text);
           break;
       }
     } else {

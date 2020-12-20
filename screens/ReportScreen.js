@@ -50,6 +50,20 @@ const ReportScreen = ({ navigation }) => {
           source={imageUri ? { uri: imageUri } : null}
         />
       </View>
+      <Text style={styles.headerFont}>Date:</Text>
+      <Text
+        numberOfLines={2}
+        style={{
+          textTransform: "capitalize",
+          flexWrap: "nowrap",
+          color: "white",
+          fontSize: 16,
+          paddingBottom: 10,
+          fontFamily: "RobotoMono_500Medium",
+        }}
+      >
+        {storage.report.getReadableTimestamp()}
+      </Text>
       <Text style={styles.headerFont}>Location:</Text>
       <Text
         numberOfLines={2}

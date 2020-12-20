@@ -20,13 +20,7 @@
 
 ## How To Run
 
-Make sure you have [Expo](https://expo.io) installed
-
-Change directory to the project folder
-
-```Shell
-cd /e-scooter-app/
-```
+Make sure you have [Expo](https://expo.io) & [Node.js](https://nodejs.org/)installed
 
 Install Modules
 
