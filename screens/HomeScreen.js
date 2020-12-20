@@ -35,16 +35,14 @@ const HomeScreen = ({ navigation }) => {
   const [reports, setReports] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalReport, setModalReport] = useState();
-  //const [markers, setMarkers] = useState([]);
-  const markers = [];
+  const [markers, setMarkers] = useState([]);
+  //let markers = [];
   const coords = {};
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
-
       setLocation(await Location.getLastKnownPositionAsync());
-
       console.log(location);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
@@ -98,28 +96,24 @@ const HomeScreen = ({ navigation }) => {
     return true;
   }
 
-  // function createMarkers() {
-  //   let arr = [];
-  //   console.log(storage.userReports.length);
-  //   for (let index = 0; index < 1; index++) {
-  //     arr.push(
-  //       <Marker
-  //         coordinate={{
-  //           latitude: location.coords.latitude,
-  //           longitude: location.coords.longitude,
-  //         }}
-  //         key={index}
-  //       >
-  //         <View>
-  //           <Image source={require("../assets/map/map_marker_icon.png")} />
-  //         </View>
-  //       </Marker>
-  //     );
-  //   }
-  //   console.log("Arr is: ", arr);
-
-  //   markers = arr;
-  // }
+  function createMarkers() {
+    let arr = [];
+    for (let index = 0; index < storage.userReports.length; index++) {
+      arr.push(
+        <Marker
+          coordinate={{
+            latitude: storage.userReports[index].getGeoLocationLatitude(),
+            longitude: storage.userReports[index].getGeoLocationLongitude(),
+          }}
+          key={index}
+          onPress={() => {
+            openModal(storage.userReports[index]);
+          }}
+        />
+      );
+    }
+    setMarkers(arr);
+  }
 
   function animate() {
     const width = Dimensions.get("window").width;
@@ -150,7 +144,7 @@ const HomeScreen = ({ navigation }) => {
           return <OverlayReport key={i} report={obj} openModal={openModal} />;
         })
       );
-      //createMarkers();
+      createMarkers();
     }
   }
 
@@ -204,7 +198,9 @@ const HomeScreen = ({ navigation }) => {
             animate();
           }
         }}
-      ></MapView>
+      >
+        {markers}
+      </MapView>
 
       <View style={styles.menuButton}>
         <TouchableOpacity
