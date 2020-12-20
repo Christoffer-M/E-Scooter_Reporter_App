@@ -102,6 +102,12 @@ class Report {
     }
   }
 
+  getReadableTimestamp() {
+    var time = new Date(1970, 0, 1); // Epoch
+    time.setSeconds(this.timestamp.seconds);
+    return time.toLocaleString();
+  }
+
   setQR(qrCode) {
     this.qr = qrCode;
     this.setBrand(qrCode);

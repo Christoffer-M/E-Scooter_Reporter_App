@@ -8,7 +8,6 @@ import BackButton from "../components/BackButton";
 const SuccessScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <BackButton nav={navigation}></BackButton>
       <View style={{ marginRight: 15, marginLeft: 15 }}>
         <Headline text="Success!" />
         <Text style={styles.fontStyle}>

@@ -2,22 +2,20 @@ import React from "react";
 import { Text, StyleSheet, View, Image, Dimensions } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
-const OverlayReport = ({ date, address, imageURI, key }) => {
-  const uuid = key;
-
+const OverlayReport = ({ report, openModal }) => {
   return (
     <TouchableHighlight
       style={styles.highlightContainer}
       activeOpacity={1}
       underlayColor="#E77F64"
       onPress={() => {
-        console.log("YOU PRESSED ME!");
+        openModal(report);
       }}
     >
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: imageURI }}
+            source={{ uri: report.imageURL }}
             resizeMode="cover"
             style={{
               height: 55,
@@ -28,10 +26,10 @@ const OverlayReport = ({ date, address, imageURI, key }) => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text} numberOfLines={1}>
-            {date}
+            {report.getReadableTimestamp()}
           </Text>
           <Text style={styles.text} numberOfLines={1}>
-            {address}
+            {report.getReadableAddress()}
           </Text>
         </View>
       </View>

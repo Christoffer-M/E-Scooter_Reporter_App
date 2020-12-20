@@ -45,6 +45,7 @@ export function isGuest() {
 }
 
 export function setUser(value) {
+  console.log("Setting value to " + value);
   user = value;
 }
 
@@ -137,7 +138,6 @@ export async function syncReports() {
 
   if (firstTimeSyncing || secondsSinceLastSync > minSecondsBetweenUpdates) {
     lastUpdate = new Date(); // Update time since last fetch
-    console.log("BEFORE");
     firstTimeSyncing = false; // Only allowed once!
 
     let fetchedReports = await Backend.downloadAllReports();
@@ -149,61 +149,51 @@ export async function syncReports() {
     // Put new reports in our reports array:
     fetchedReports.forEach((obj) => {
       if (reports.some((r) => r.uuid === obj.uuid)) {
-        console.log("Skipped adding", obj.uuid, "(already exists!)");
+        //console.log("Skipped adding", obj.uuid, "(already exists!)");
       } else {
         const newReport = Report.newReport(obj.user);
         Object.assign(newReport, obj);
         reports.push(newReport);
-        console.log("Downloaded report:", newReport.uuid);
+        //console.log("Downloaded report:", newReport.uuid);
       }
     });
-    console.log("AFTER");
     // Finally, we update the users reports after syncing:
-    updateUserReportsList();
-
-    return true;
   } else {
     console.log(
       "Please wait",
       (minSecondsBetweenUpdates - secondsSinceLastSync).toFixed(2),
       "seconds before syncing again..."
     );
-    return false;
   }
+  updateUserReportsList();
 }
 
 // GET USERS REPORTS ONLY
 // The array is sorted by time
 export function updateUserReportsList() {
   // Filter reports by user:
-  console.log("reports length before:", reports.length);
-  console.log(getUser());
-  const updatedUserReports = reports.filter((r) => {
-    console.log(r.user);
-    r.user == getUser();
-  });
-  console.log("updatedUserReports length after:", updatedUserReports.length);
+  //console.log("reports length before:", reports.length);
+  const updatedUserReports = reports.filter((r) => r.user == getUser());
+  //console.log("updatedUserReports length after:", updatedUserReports.length);
 
   // Only update users reports if there there are any new ones:
-  //if (userReports.length != updatedUserReports.length) {
-  console.log("Updated user report list for user:", getUser());
-  function compareTime(a, b) {
-    const aSec = a.timestamp.seconds;
-    const bSec = b.timestamp.seconds;
-    if (aSec > bSec) return -1;
-    if (aSec < bSec) return 1;
-    return 0;
+  if (userReports.length != updatedUserReports.length) {
+    //console.log("Updated user report list for user:", getUser());
+    function compareTime(a, b) {
+      const aSec = a.timestamp.seconds;
+      const bSec = b.timestamp.seconds;
+      if (aSec > bSec) return -1;
+      if (aSec < bSec) return 1;
+      return 0;
+    }
+    // Sort reports by time they where created in decending order
+    updatedUserReports.sort(compareTime);
+
+    // Use the updated user reports list
+
+    userReports = updatedUserReports;
   }
-  // Sort reports by time they where created in decending order
-  updatedUserReports.sort(compareTime);
-
-  // Use the updated user reports list
-  console.log(updatedUserReports.length);
-
-  userReports = updatedUserReports;
-  console.log(userReports.length);
-  //}
-  //console.log("Skipped updating user reports (already updated)")
+  //console.log("Skipped updating user reports (already updated)");
 }
 
 //PRIVATE FUNCTIONS

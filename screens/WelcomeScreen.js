@@ -16,7 +16,7 @@ const WelcomeScreen = ({ navigation }) => {
           onPress={async () => {
             const result = await firebaseDataBase.signInWithGoogleAsync();
             if (result.type === "success") {
-              storage.setUser(result.user.email);
+              storage.setUser(result.user.user.email);
               storage.syncReports();
               navigation.push("Home");
             } else {
@@ -30,7 +30,7 @@ const WelcomeScreen = ({ navigation }) => {
             alignItems: "center",
             borderRadius: 90,
             backgroundColor: "#E77F64",
-            width: 200,
+            width: 250,
             height: 48,
             padding: 8,
             textAlign: "center",
@@ -50,7 +50,7 @@ const WelcomeScreen = ({ navigation }) => {
               paddingLeft: 10,
             }}
           >
-            Google Sign-in
+            Sign in with Google
           </Text>
         </TouchableOpacity>
 
@@ -67,14 +67,6 @@ const WelcomeScreen = ({ navigation }) => {
             textStyle={{ fontSize: 16 }}
           />
         </View>
-        {/* <View style={styles.buttonview}>
-          <Button
-            onPress={onPressLearnMore}
-            title="TESTING"
-            color="#841584"
-            accessibilityLabel=""
-          />
-        </View> */}
         <StatusBar style="auto" />
       </View>
     </View>
@@ -85,11 +77,10 @@ const styles = StyleSheet.create({
   fontStyle: {
     fontFamily: "RobotoMono_500Medium",
     color: "#FBEFE8",
-    fontSize: 20,
+    fontSize: 18,
     lineHeight: 36,
     textAlign: "center",
-    paddingBottom: 80,
-    paddingHorizontal: 50,
+    paddingBottom: 30,
   },
 
   fontStyleforOr: {

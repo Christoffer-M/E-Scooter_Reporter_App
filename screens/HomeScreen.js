@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import {
   StyleSheet,
   View,
@@ -19,20 +19,31 @@ import SvgUri from "expo-svg-uri";
 import OverlayHome from "../components/OverlayHome";
 import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
+import OverlayReport from "../components/OverlayReport";
+import ReportView from "../components/ReportView";
+import { Store } from "@material-ui/icons";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(
     new Animated.Value(-Dimensions.get("window").width * 0.8)
   ).current;
-  const [location, setLocation] = useState(storage.location);
+  const [location, setLocation] = useState(null);
   const [isPress, setIsPress] = useState(false);
   const [iconURL, setIconURL] = useState(null);
   const [user, setUser] = useState(null);
   const isGuest = useRef(storage.isGuest()).current;
+  const [reports, setReports] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalReport, setModalReport] = useState();
+  const [markers, setMarkers] = useState([]);
+  //let markers = [];
+  const coords = {};
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
+      setLocation(await Location.getLastKnownPositionAsync());
+      console.log(location);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
         navigation.goBack();
@@ -50,8 +61,6 @@ const HomeScreen = ({ navigation }) => {
   });
 
   useEffect(() => {
-    console.log("storage.isGuest()", storage.isGuest());
-    console.log("storage.getUser()", storage.getUser());
     if (storage.isGuest() === false) {
       if (user === null) {
         firebases.auth().onAuthStateChanged((user) => {
@@ -68,8 +77,6 @@ const HomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      storage.syncReports();
-
       BackHandler.addEventListener("hardwareBackPress", onbackpress);
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onbackpress);
@@ -89,6 +96,25 @@ const HomeScreen = ({ navigation }) => {
     return true;
   }
 
+  function createMarkers() {
+    let arr = [];
+    for (let index = 0; index < storage.userReports.length; index++) {
+      arr.push(
+        <Marker
+          coordinate={{
+            latitude: storage.userReports[index].getGeoLocationLatitude(),
+            longitude: storage.userReports[index].getGeoLocationLongitude(),
+          }}
+          key={index}
+          onPress={() => {
+            openModal(storage.userReports[index]);
+          }}
+        />
+      );
+    }
+    setMarkers(arr);
+  }
+
   function animate() {
     const width = Dimensions.get("window").width;
     if (isPress) {
@@ -106,6 +132,25 @@ const HomeScreen = ({ navigation }) => {
         useNativeDriver: true,
       }).start();
     }
+  }
+
+  function updateList() {
+    console.log("FOCUSING");
+    if (storage.getUserReports().length === reports.length) {
+      console.log("nothing to report...");
+    } else {
+      setReports(
+        storage.userReports.map((obj, i) => {
+          return <OverlayReport key={i} report={obj} openModal={openModal} />;
+        })
+      );
+      createMarkers();
+    }
+  }
+
+  function openModal(report) {
+    setModalReport(report);
+    setModalVisible(true);
   }
 
   if (location == null) {
@@ -143,7 +188,6 @@ const HomeScreen = ({ navigation }) => {
         style={styles.mapStyle}
         zoomEnabled={true}
         showsUserLocation={true}
-        followsUserLocation={true}
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -155,11 +199,14 @@ const HomeScreen = ({ navigation }) => {
             animate();
           }
         }}
-      />
+      >
+        {markers}
+      </MapView>
 
       <View style={styles.menuButton}>
         <TouchableOpacity
           onPress={() => {
+            updateList();
             animate();
           }}
         >
@@ -199,6 +246,12 @@ const HomeScreen = ({ navigation }) => {
         animate={animate}
         transform={transform}
         navigation={navigation}
+        report={reports}
+      />
+      <ReportView
+        report={modalReport}
+        modalVisible={modalVisible}
+        setVisible={setModalVisible}
       />
     </View>
   );

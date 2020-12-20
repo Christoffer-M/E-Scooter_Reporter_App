@@ -10,52 +10,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgUri from "expo-svg-uri";
 import Headline from "./Headline";
 import * as storage from "../data_model/Storage";
-import OverlayReport from "./OverlayReport";
-import { useFocusEffect } from "@react-navigation/native";
 import CustomButton from "./CustomButton";
 
-const OverlayHome = ({ transform, navigation, animate }) => {
-  const [reports, setReports] = useState([]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fillreports();
-      console.log("GOGO");
-    }, [])
-  );
-
-  useEffect(() => {
-    console.log();
-    fillreports();
-  }, []);
-
-  function fillreports() {
-    console.log("GOING!");
-    const temparr = [];
-    console.log(storage.userReports);
-    storage.getUserReports().forEach((obj) => {
-      console.log("GOING123");
-      const address = obj.address;
-      const imageURI = obj.imageURL;
-      const date = obj.timestamp.seconds;
-
-      var time = new Date(1970, 0, 1); // Epoch
-      time.setSeconds(date);
-      const key = obj.uuid;
-
-      console.log(obj);
-      temparr.push(
-        <OverlayReport
-          address={address}
-          imageURI={imageURI}
-          key={key}
-          date={time.toLocaleString()}
-        />
-      );
-    });
-    setReports(temparr);
-  }
-
+const OverlayHome = ({ transform, navigation, animate, report }) => {
   return (
     <Animated.View
       style={{
@@ -86,7 +43,6 @@ const OverlayHome = ({ transform, navigation, animate }) => {
             paddingBottom: 5,
           }}
           onPress={() => {
-            fillreports();
             animate();
           }}
         >
@@ -110,7 +66,7 @@ const OverlayHome = ({ transform, navigation, animate }) => {
           height: Dimensions.get("window").height * 0.8,
         }}
       >
-        <ScrollView>{reports}</ScrollView>
+        <ScrollView>{report}</ScrollView>
       </SafeAreaView>
 
       <View

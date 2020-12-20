@@ -54,7 +54,6 @@ export async function signInWithGoogleAsync() {
       var credentials = firebase.auth.GoogleAuthProvider.credential(
         result.idToken
       );
-      console.log(credentials);
 
       // Sign in with credential from the Google user.
       const user = await firebase
