@@ -20,6 +20,7 @@ import OverlayHome from "../components/OverlayHome";
 import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
 import OverlayReport from "../components/OverlayReport";
+import ReportView from "../components/ReportView";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(
@@ -31,6 +32,8 @@ const HomeScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
   const isGuest = useRef(storage.isGuest()).current;
   const [reports, setReports] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalReport, setModalReport] = useState();
 
   useEffect(() => {
     (async () => {
@@ -113,10 +116,15 @@ const HomeScreen = ({ navigation }) => {
     } else {
       setReports(
         storage.userReports.map((obj, i) => {
-          return <OverlayReport key={i} report={obj} />;
+          return <OverlayReport key={i} report={obj} openModal={openModal} />;
         })
       );
     }
+  }
+
+  function openModal(report) {
+    setModalReport(report);
+    setModalVisible(true);
   }
 
   if (location == null) {
@@ -211,6 +219,11 @@ const HomeScreen = ({ navigation }) => {
         transform={transform}
         navigation={navigation}
         report={reports}
+      />
+      <ReportView
+        report={modalReport}
+        modalVisible={modalVisible}
+        setVisible={setModalVisible}
       />
     </View>
   );

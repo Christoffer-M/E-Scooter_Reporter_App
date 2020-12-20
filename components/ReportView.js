@@ -1,103 +1,150 @@
-import React from "react";
-import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
+import SvgUri from "expo-svg-uri";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Dimensions,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import BackButton from "../components/BackButton"; // Maybe delete and don't use?
-import * as storage from "../data_model/Storage";
 import BrandLogoImage from "../components/BrandLogoImage";
 //TODO: IF IT IS USED FOR MODAL VIEW, THERE SHOULD BE AN "X" CLOSE BUTTON
-//TODO: IF IT IS USED FOR SCREEN VIEW, THERE SHOULD BE A BACK BUTTON
-const ReportView = ({ randomId, address }) => {
-  let testAdress = "Herninggade 9, 2100 København Ø";
-  let testBrand = "Lime";
-  let testArr = ["Misplaced", "Laying Down", "Broken", "Other"];
-  let randomId = Math.floor(Math.random() * Date.now());
+const ReportView = ({ report, modalVisible, setVisible }) => {
+  const [uuid, setUUID] = useState("");
+  const [address, setAddress] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [imageURI, setImageURI] = useState();
+  const [brand, setBrand] = useState("Unknown");
+
+  useEffect(() => {
+    if (report !== undefined) {
+      if (report.uuid !== uuid) {
+        setUUID(report.uuid);
+        setAddress(report.address);
+        setCategories(report.getCategories());
+        setImageURI(report.imageURL);
+        setBrand(report.getBrand());
+        console.log(report.brand);
+      }
+    }
+  });
 
   return (
-    <KeyboardAwareScrollView
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      style={styles.scrollView}
-      contentContainerStyle={styles.container}
-      scrollEnabled={true}
-      // MAYBE ADD BACKBUTTON?
+    <Modal
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => {
+        setVisible(false);
+      }}
+      visible={modalVisible}
     >
-      <Text style={styles.headline}>Report ID: {randomId}</Text>
-      <View style={styles.pictureContainer}>
-        <Image
-          style={{
-            borderColor: "orange",
-            borderWidth: 1,
-            width: "100%",
-            height: "100%",
-          }}
-          resizeMode="contain"
-          source={require("../assets/scoot_crash.png")}
-        />
-      </View>
-      <Text
-        numberOfLines={1}
-        style={{
-          textTransform: "capitalize",
-          flexWrap: "nowrap",
-          color: "white",
-          fontSize: 20,
-          flex: 0.1,
-          alignSelf: "center",
-          marginTop: -15,
-          paddingBottom: 10,
-        }}
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}
+        scrollEnabled={true}
+        // MAYBE ADD BACKBUTTON?
       >
-        📌 {address}
-      </Text>
-      <View style={{ flex: 1 }}>
+        <TouchableOpacity
+          onPress={() => {
+            setVisible(false);
+          }}
+        >
+          <SvgUri source={require("../assets/cross.svg")}></SvgUri>
+        </TouchableOpacity>
         <View
           style={{
-            flex: 0.15,
-            flexDirection: "row",
-            paddingTop: 10,
-            paddingBottom: 15,
+            justifyContent: "center",
+            alignItems: "center",
+            alignSelf: "stretch",
           }}
-          //TODO: INSERT BRANDLOGO DYNAMICALLY
         >
-          <Text style={styles.headerFont}>Brand:</Text>
-          <BrandLogoImage logo={"unkown"} style={{ marginLeft: 10 }} />
+          <Text style={styles.headline}>Report ID: </Text>
+          <Text style={styles.normalFont}>{uuid}</Text>
         </View>
-        <View style={{ flex: 0.4, display: "flex" }}>
-          <Text style={styles.headerFont}>Violations:</Text>
-          <View style={styles.categoriesContainer}>
-            {testArr.map((item, key) => {
-              return (
-                <View
-                  key={key}
-                  style={{
-                    backgroundColor: "#FBEFE8",
-                    padding: 6,
-                    marginRight: 6,
-                    marginBottom: 6,
-                    borderRadius: 8,
-                  }}
-                >
-                  <Text
-                    style={{ fontSize: 18, fontFamily: "RobotoMono_500Medium" }}
+        <View style={styles.pictureContainer}>
+          <Image
+            style={{
+              borderColor: "orange",
+              borderWidth: 1,
+              width: "100%",
+              height: "100%",
+            }}
+            resizeMode="contain"
+            source={{ uri: imageURI }}
+          />
+        </View>
+        <Text
+          numberOfLines={1}
+          style={{
+            textTransform: "capitalize",
+            flexWrap: "nowrap",
+            color: "white",
+            fontSize: 20,
+            flex: 0.1,
+            alignSelf: "center",
+            marginTop: -15,
+            paddingBottom: 10,
+          }}
+        >
+          📌 {address}
+        </Text>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 0.15,
+              flexDirection: "row",
+              paddingTop: 10,
+              paddingBottom: 15,
+            }}
+          >
+            <Text style={styles.headerFont}>Brand:</Text>
+            <BrandLogoImage logo={brand} style={{ marginLeft: 10 }} />
+          </View>
+          <View style={{ flex: 0.4, display: "flex" }}>
+            <Text style={styles.headerFont}>Violations:</Text>
+            <View style={styles.categoriesContainer}>
+              {categories.map((item, key) => {
+                return (
+                  <View
+                    key={key}
+                    style={{
+                      backgroundColor: "#FBEFE8",
+                      padding: 6,
+                      marginRight: 6,
+                      marginBottom: 6,
+                      borderRadius: 8,
+                    }}
                   >
-                    {item}
-                  </Text>
-                </View>
-              );
-            })}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "RobotoMono_500Medium",
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
           </View>
+          {categories.includes("Other") ? (
+            <View style={{ paddingBottom: 15 }}>
+              <Text style={styles.headerFont}>Description:</Text>
+              <Text style={{ fontSize: 16, color: "white" }}>
+                {report.comment}
+              </Text>
+            </View>
+          ) : (
+            <View />
+          )}
         </View>
-        {testArr.includes("Other") ? (
-          <View style={{ paddingBottom: 15 }}>
-            <Text style={styles.headerFont}>Description:</Text>
-            <Text style={{ fontSize: 16, color: "white" }}>
-              {"THAT IS SUPER NICE"}
-            </Text>
-          </View>
-        ) : (
-          <View />
-        )}
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </Modal>
   );
 };
 const styles = StyleSheet.create({
@@ -125,6 +172,13 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     color: "#EBC2AD",
     fontSize: 20,
+    fontFamily: "RobotoMono_500Medium",
+  },
+  normalFont: {
+    paddingBottom: 2,
+    alignSelf: "center",
+    color: "#fff",
+    fontSize: 16,
     fontFamily: "RobotoMono_500Medium",
   },
   pictureContainer: {
