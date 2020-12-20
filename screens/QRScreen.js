@@ -26,7 +26,7 @@ const QRScreen = ({ navigation }) => {
     showModal();
     setTimeout(() => {
       navigation.push("Category");
-    }, 2000);
+    }, 1500);
   };
 
   if (hasPermission === null) {
@@ -40,7 +40,7 @@ const QRScreen = ({ navigation }) => {
     setModalVisible(true);
     setTimeout(() => {
       setModalVisible(false);
-    }, 2000);
+    }, 1500);
   };
 
   return (
