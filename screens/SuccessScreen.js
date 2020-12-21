@@ -1,11 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, BackHandler } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import CustomButton from "../components/CustomButton";
 import Headline from "../components/Headline";
-import BackButton from "../components/BackButton";
+import { useFocusEffect } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 
 const SuccessScreen = ({ navigation }) => {
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", resetToHome);
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", resetToHome);
+      };
+    }, [])
+  );
+
+  function resetToHome() {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{ name: "Home" }],
+      })
+    );
+    return true;
+  }
   return (
     <View style={styles.container}>
       <View style={{ marginRight: 15, marginLeft: 15 }}>
@@ -15,7 +34,7 @@ const SuccessScreen = ({ navigation }) => {
         </Text>
         <CustomButton
           onPress={() => {
-            navigation.push("Home");
+            resetToHome();
           }}
           text="Done"
           color="orange"

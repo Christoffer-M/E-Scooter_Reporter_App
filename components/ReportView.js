@@ -8,16 +8,23 @@ import {
   Dimensions,
   Modal,
   TouchableOpacity,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import BrandLogoImage from "../components/BrandLogoImage";
+import CustomButton from "./CustomButton";
+import * as storage from "../data_model/Storage";
 //TODO: IF IT IS USED FOR MODAL VIEW, THERE SHOULD BE AN "X" CLOSE BUTTON
-const ReportView = ({ report, modalVisible, setVisible }) => {
+const ReportView = ({ report, modalVisible, setVisible, updateList }) => {
   const [uuid, setUUID] = useState("");
   const [address, setAddress] = useState("");
   const [categories, setCategories] = useState([]);
   const [imageURI, setImageURI] = useState();
   const [brand, setBrand] = useState("Unknown");
+  const [timeStamp, setTimeStamp] = useState("");
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (report !== undefined) {
@@ -27,6 +34,8 @@ const ReportView = ({ report, modalVisible, setVisible }) => {
         setCategories(report.getCategories());
         setImageURI(report.imageURL);
         setBrand(report.getBrand());
+        setTimeStamp(report.getReadableTimestamp());
+        setComment(report.comment);
         console.log(report.brand);
       }
     }
@@ -69,8 +78,8 @@ const ReportView = ({ report, modalVisible, setVisible }) => {
         <View style={styles.pictureContainer}>
           <Image
             style={{
-              borderColor: "orange",
-              borderWidth: 1,
+              borderColor: "#5B7282",
+              borderWidth: 2,
               width: "100%",
               height: "100%",
             }}
@@ -78,73 +87,126 @@ const ReportView = ({ report, modalVisible, setVisible }) => {
             source={{ uri: imageURI }}
           />
         </View>
-        <Text
-          numberOfLines={1}
-          style={{
-            textTransform: "capitalize",
-            flexWrap: "nowrap",
-            color: "white",
-            fontSize: 20,
-            flex: 0.1,
-            alignSelf: "center",
-            marginTop: -15,
-            paddingBottom: 10,
-          }}
-        >
-          📌 {address}
+        <Text style={styles.headerFont}>Date:</Text>
+        <Text numberOfLines={2} style={styles.infoText}>
+          {timeStamp}
         </Text>
-        <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 0.15,
-              flexDirection: "row",
-              paddingTop: 10,
-              paddingBottom: 15,
-            }}
-          >
-            <Text style={styles.headerFont}>Brand:</Text>
-            <BrandLogoImage logo={brand} style={{ marginLeft: 10 }} />
-          </View>
-          <View style={{ flex: 0.4, display: "flex" }}>
-            <Text style={styles.headerFont}>Violations:</Text>
-            <View style={styles.categoriesContainer}>
-              {categories.map((item, key) => {
-                return (
-                  <View
-                    key={key}
+        <Text style={styles.headerFont}>Location:</Text>
+        <Text numberOfLines={2} style={styles.infoText}>
+          {address}
+        </Text>
+
+        <View>
+          <Text style={styles.headerFont}>Brand:</Text>
+          <BrandLogoImage style={{ marginBottom: 15 }} logo={brand} />
+        </View>
+        <View style={{ flex: 0.4, display: "flex" }}>
+          <Text style={styles.headerFont}>Violations:</Text>
+          <View style={styles.categoriesContainer}>
+            {categories.map((item, key) => {
+              return (
+                <View
+                  key={key}
+                  style={{
+                    backgroundColor: "#FBEFE8",
+                    padding: 6,
+                    marginRight: 6,
+                    marginBottom: 6,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text
                     style={{
-                      backgroundColor: "#FBEFE8",
-                      padding: 6,
-                      marginRight: 6,
-                      marginBottom: 6,
-                      borderRadius: 8,
+                      fontSize: 18,
+                      fontFamily: "RobotoMono_500Medium",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontFamily: "RobotoMono_500Medium",
-                      }}
-                    >
-                      {item}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
+                    {item}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
-          {categories.includes("Other") ? (
-            <View style={{ paddingBottom: 15 }}>
-              <Text style={styles.headerFont}>Description:</Text>
-              <Text style={{ fontSize: 16, color: "white" }}>
-                {report.comment}
-              </Text>
-            </View>
-          ) : (
-            <View />
-          )}
+        </View>
+        {categories.includes("Other") && comment.length > 0 ? (
+          <View style={{ paddingBottom: 15 }}>
+            <Text style={styles.headerFont}>Description:</Text>
+            <Text style={{ fontSize: 16, color: "white" }}>{comment}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            marginBottom: 20,
+            alignSelf: "center",
+            marginTop: 50,
+          }}
+        >
+          <CustomButton
+            text={"Delete Report"}
+            style={{
+              backgroundColor: "#c40000",
+              width: 200,
+              justifyContent: "center",
+            }}
+            textStyle={{
+              textTransform: "capitalize",
+              flexWrap: "nowrap",
+              color: "white",
+              fontSize: 18,
+              fontFamily: "RobotoMono_500Medium",
+            }}
+            onPress={() => {
+              Alert.alert(
+                "Please confirm your choice",
+                "You are about to delete this report permanently. Are you sure you want to do this? ",
+                [
+                  {
+                    text: "No",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                      setLoading(true);
+                      storage.deleteReport(report).then(async (res) => {
+                        if (res) {
+                          setVisible(false);
+                          await updateList();
+                          setLoading(false);
+                        } else {
+                          setLoading(false);
+                          setVisible(false);
+                          console.log("FAILURE!");
+                        }
+                      });
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+          />
         </View>
       </KeyboardAwareScrollView>
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            position: "absolute",
+            height: Dimensions.get("screen").height,
+            width: Dimensions.get("screen").width,
+            backgroundColor: " rgba(0,0,0,0.5)",
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator size="large" color="#E77F64" />
+        </View>
+      ) : (
+        <></>
+      )}
     </Modal>
   );
 };
@@ -190,13 +252,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   infoText: {
+    textTransform: "capitalize",
+    flexWrap: "nowrap",
+    color: "white",
+    fontSize: 16,
+    paddingBottom: 10,
     fontFamily: "RobotoMono_500Medium",
-    color: "#FBEFE8",
-    fontSize: 18,
-    lineHeight: 36,
-    textAlign: "center",
-    alignSelf: "center",
-    flex: 0.1,
   },
   categoriesContainer: {
     paddingBottom: 15,

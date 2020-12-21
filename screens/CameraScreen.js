@@ -10,20 +10,15 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import SvgUri from "expo-svg-uri";
-import CameraText from "../components/CameraText";
 import * as storage from "../data_model/Storage";
 import * as FileSystem from "expo-file-system";
 import * as imagehandler from "../utility/ImageHandler";
 import * as Location from "expo-location";
-import Headline from "../components/Headline";
 import BackButton from "../components/BackButton";
-import CustomButton from "../components/CustomButton";
 
 const CameraSceen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [age, setAge] = useState(false);
   const [cameraRef, setCameraRef] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
   const [imageTaken, setImageTaken] = useState(false);
   const [loadingPicture, setLoading] = useState(false);
   const [pictureURI, setURI] = useState("");
@@ -68,7 +63,7 @@ const CameraSceen = ({ navigation }) => {
     <Camera
       ratio="16:9"
       style={StyleSheet.absoluteFill}
-      type={type}
+      type={Camera.Constants.Type.back}
       ref={(ref) => {
         setCameraRef(ref);
       }}
@@ -167,7 +162,6 @@ const CameraSceen = ({ navigation }) => {
     >
       <View
         style={{
-          width: Dimensions.get("window").width,
           flex: 1,
           alignItems: "center",
           justifyContent: "center",

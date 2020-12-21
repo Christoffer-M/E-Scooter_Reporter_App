@@ -32,14 +32,16 @@ export default function App() {
 
   LogBox.ignoreLogs(["Setting a timer"]);
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((res) => {
-      if (res) {
-        storage.setUser(res.email);
-        setRouteName("Home");
-      } else {
-        setRouteName("Welcome");
-      }
-    });
+    (async () => {
+      firebase.auth().onAuthStateChanged((res) => {
+        if (res) {
+          storage.setUser(res.email);
+          setRouteName("Home");
+        } else {
+          setRouteName("Welcome");
+        }
+      });
+    })();
   }, []);
 
   if (routenName === "" || !fontsLoaded) {
@@ -53,12 +55,20 @@ export default function App() {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ gestureEnabled: false }}
+        />
         <Stack.Screen name="Camera" component={CameraScreen} />
         <Stack.Screen name="QRScreen" component={QRScreen} />
         <Stack.Screen name="Category" component={CategoryScreen} />
         <Stack.Screen name="Report" component={ReportScreen} />
-        <Stack.Screen name="Success" component={SuccessScreen} />
+        <Stack.Screen
+          name="Success"
+          component={SuccessScreen}
+          options={{ gestureEnabled: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

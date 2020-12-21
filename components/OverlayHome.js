@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Animated,
   Dimensions,
@@ -11,14 +11,13 @@ import SvgUri from "expo-svg-uri";
 import Headline from "./Headline";
 import * as storage from "../data_model/Storage";
 import CustomButton from "./CustomButton";
-import BackButton from "../components/BackButton";
+import { CommonActions } from "@react-navigation/native";
 
 const OverlayHome = ({ transform, navigation, animate, report }) => {
   return (
     <Animated.View
       style={{
         position: "absolute",
-        justifyContent: "space-between",
         width: Dimensions.get("window").width * 0.8,
         backgroundColor: "rgba(47, 67, 87, 0.9)",
         alignSelf: "stretch",
@@ -30,7 +29,7 @@ const OverlayHome = ({ transform, navigation, animate, report }) => {
     >
       <View
         style={{
-          height: Dimensions.get("window").height * 0.12,
+          flex: 0.1,
           flexDirection: "row",
           alignItems: "flex-end",
           justifyContent: "center",
@@ -64,27 +63,33 @@ const OverlayHome = ({ transform, navigation, animate, report }) => {
       </View>
       <SafeAreaView
         style={{
-          height: Dimensions.get("window").height * 0.8,
+          flex: 0.8,
         }}
       >
-        <ScrollView>{report}</ScrollView>
+        <ScrollView fadingEdgeLength={50} indicatorStyle={'"white"'}>
+          {report}
+        </ScrollView>
       </SafeAreaView>
 
       <View
         style={{
-          alignSelf: "center",
-          justifyContent: "center",
-          height: Dimensions.get("window").height * 0.07,
-          paddingBottom: 200,
+          alignSelf: "stretch",
+          justifyContent: "flex-start",
+          flex: 0.1,
         }}
       >
         <CustomButton
           text="Log out"
           onPress={() => {
             storage.signOut();
-            navigation.push("Welcome");
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "Welcome" }],
+              })
+            );
           }}
-          style={{ width: 150, justifyContent: "center" }}
+          style={{ width: 150, justifyContent: "center", height: 50 }}
           textStyle={{ fontSize: 20 }}
         />
       </View>

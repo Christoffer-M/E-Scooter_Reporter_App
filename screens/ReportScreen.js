@@ -51,44 +51,19 @@ const ReportScreen = ({ navigation }) => {
         />
       </View>
       <Text style={styles.headerFont}>Date:</Text>
-      <Text
-        numberOfLines={2}
-        style={{
-          textTransform: "capitalize",
-          flexWrap: "nowrap",
-          color: "white",
-          fontSize: 16,
-          paddingBottom: 10,
-          fontFamily: "RobotoMono_500Medium",
-        }}
-      >
-        {storage.report.getReadableTimestamp()}
+      <Text numberOfLines={2} style={styles.infoText}>
+        {storage.getReport().getReadableTimestamp()}
       </Text>
       <Text style={styles.headerFont}>Location:</Text>
-      <Text
-        numberOfLines={2}
-        style={{
-          textTransform: "capitalize",
-          flexWrap: "nowrap",
-          color: "white",
-          fontSize: 16,
-          paddingBottom: 10,
-          fontFamily: "RobotoMono_500Medium",
-        }}
-      >
+      <Text numberOfLines={2} style={styles.infoText}>
         {storage.getReport().getReadableAddress()}
       </Text>
       <Text style={styles.headerFont}>Brand:</Text>
-      <BrandLogoImage logo={storage.report.getBrand()} />
+      <BrandLogoImage
+        style={{ marginBottom: 15 }}
+        logo={storage.report.getBrand()}
+      />
       <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flex: 0.15,
-            flexDirection: "row",
-            paddingTop: 10,
-            paddingBottom: 15,
-          }}
-        ></View>
         <View style={{ flex: 0.4, display: "flex" }}>
           <Text style={styles.headerFont}>Violations:</Text>
           <View style={styles.categoriesContainer}>
@@ -120,7 +95,8 @@ const ReportScreen = ({ navigation }) => {
               })}
           </View>
         </View>
-        {storage.getReport().getCategories().includes("Other") ? (
+        {storage.getReport().getCategories().includes("Other") &&
+        storage.getReport().comment.length > 0 ? (
           <View style={{ paddingBottom: 15 }}>
             <Text style={styles.headerFont}>Description:</Text>
             <Text style={{ fontSize: 16, color: "white" }}>
@@ -169,9 +145,8 @@ const ReportScreen = ({ navigation }) => {
       {loading ? (
         <View
           style={{
-            flex: 1,
             position: "absolute",
-            height: Dimensions.get("window").height * 1.2,
+            height: "100%",
             width: Dimensions.get("window").width,
             backgroundColor: " rgba(0,0,0,0.5)",
             justifyContent: "center",
@@ -180,7 +155,7 @@ const ReportScreen = ({ navigation }) => {
           <ActivityIndicator size="large" color="#E77F64" />
         </View>
       ) : (
-        <View></View>
+        <></>
       )}
     </KeyboardAwareScrollView>
   );
@@ -188,6 +163,7 @@ const ReportScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#2F4357",
+    flex: 1,
   },
   headline: {
     fontSize: 25,
@@ -221,13 +197,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   infoText: {
+    textTransform: "capitalize",
+    flexWrap: "nowrap",
+    color: "white",
+    fontSize: 16,
+    paddingBottom: 10,
     fontFamily: "RobotoMono_500Medium",
-    color: "#FBEFE8",
-    fontSize: 18,
-    lineHeight: 36,
-    textAlign: "center",
-    alignSelf: "center",
-    flex: 0.1,
   },
   categoriesContainer: {
     paddingBottom: 15,

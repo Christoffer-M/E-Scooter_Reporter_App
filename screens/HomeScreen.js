@@ -21,7 +21,6 @@ import * as storage from "../data_model/Storage";
 import * as firebases from "firebase/app";
 import OverlayReport from "../components/OverlayReport";
 import ReportView from "../components/ReportView";
-import { Store } from "@material-ui/icons";
 
 const HomeScreen = ({ navigation }) => {
   const transform = useRef(
@@ -36,29 +35,26 @@ const HomeScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalReport, setModalReport] = useState();
   const [markers, setMarkers] = useState([]);
-  //let markers = [];
-  const coords = {};
+  let startup = true;
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       setLocation(await Location.getLastKnownPositionAsync());
-      console.log(location);
+      await storage.syncReports();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
         navigation.goBack();
       } else {
+        const newMarkers = await createMarkers();
+        setMarkers(newMarkers);
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location); //TODO Duplicates?
         storage.setLocation(location); //TODO Duplicates?
+        startup = false;
       }
     })();
   }, []);
-
-  useEffect(() => {
-    console.log("Trying to sync reports...");
-    storage.syncReports();
-  });
 
   useEffect(() => {
     if (storage.isGuest() === false) {
@@ -78,6 +74,14 @@ const HomeScreen = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       BackHandler.addEventListener("hardwareBackPress", onbackpress);
+      (async () => {
+        if (!startup) {
+          await storage.syncReports();
+          const newMarkers = await createMarkers();
+          setMarkers(newMarkers);
+        }
+      })();
+
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onbackpress);
       };
@@ -96,23 +100,37 @@ const HomeScreen = ({ navigation }) => {
     return true;
   }
 
-  function createMarkers() {
+  async function createMarkers() {
     let arr = [];
-    for (let index = 0; index < storage.userReports.length; index++) {
-      arr.push(
-        <Marker
-          coordinate={{
-            latitude: storage.userReports[index].getGeoLocationLatitude(),
-            longitude: storage.userReports[index].getGeoLocationLongitude(),
-          }}
-          key={index}
-          onPress={() => {
-            openModal(storage.userReports[index]);
-          }}
-        />
-      );
-    }
-    setMarkers(arr);
+    const res = await new Promise((resolve) => {
+      for (let index = 0; index < storage.userReports.length; index++) {
+        arr.push(
+          <Marker
+            coordinate={{
+              latitude: storage.userReports[index].getGeoLocationLatitude(),
+              longitude: storage.userReports[index].getGeoLocationLongitude(),
+            }}
+            key={
+              index + "_" + storage.userReports[index].getReadableTimestamp()
+            }
+            onPress={() => {
+              openModal(storage.userReports[index]);
+            }}
+            image={require("../assets/map/map_marker_icon.png")}
+          />
+        );
+      }
+      if (arr.length === storage.userReports.length) {
+        resolve();
+      }
+    })
+      .then(() => {
+        return arr;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return res;
   }
 
   function animate() {
@@ -134,8 +152,8 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  function updateList() {
-    console.log("FOCUSING");
+  async function updateList() {
+    await storage.syncReports();
     if (storage.getUserReports().length === reports.length) {
       console.log("nothing to report...");
     } else {
@@ -144,7 +162,8 @@ const HomeScreen = ({ navigation }) => {
           return <OverlayReport key={i} report={obj} openModal={openModal} />;
         })
       );
-      createMarkers();
+      const newMarkers = await createMarkers();
+      setMarkers(newMarkers);
     }
   }
 
@@ -188,7 +207,7 @@ const HomeScreen = ({ navigation }) => {
         style={styles.mapStyle}
         zoomEnabled={true}
         showsUserLocation={true}
-        region={{
+        initialRegion={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           latitudeDelta: 0.01,
@@ -252,6 +271,7 @@ const HomeScreen = ({ navigation }) => {
         report={modalReport}
         modalVisible={modalVisible}
         setVisible={setModalVisible}
+        updateList={updateList}
       />
     </View>
   );
