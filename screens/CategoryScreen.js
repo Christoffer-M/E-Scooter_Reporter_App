@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, Text, TextInput, Animated } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Animated,
+  Dimensions,
+} from "react-native";
 import Headline from "../components/Headline";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CategoryButton from "../components/CategoryButton";
@@ -130,9 +137,7 @@ const CategoryScreen = ({ navigation }) => {
         </Animated.View>
       </View>
 
-      <View
-        style={{ justifyContent: "flex-end", paddingBottom: 40, flex: 0.1 }}
-      >
+      <View style={{ justifyContent: "flex-end", paddingBottom: 40 }}>
         {hideProcess ? (
           <CustomButton
             onPress={() => {
@@ -158,7 +163,8 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     backgroundColor: "#2F4357",
     paddingTop: 50,
-    flex: 1,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 
   description: {

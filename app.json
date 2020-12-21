@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -23,6 +21,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/app_icon/app_icon_android.png",
         "backgroundColor": "#2F4357"
+      },
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyCPIDdDhUQU1CcpQrOfJFAgVs5rcfrxSSQ",
+          "certificateHash": "C6:B1:9C:AF:14:52:7F:8C:8C:36:2D:D0:CC:AA:0E:10:3A:A2:67:A9"
+        }
       },
       "package": "com.chrismouritzen.escooterapp"
     },

@@ -42,13 +42,20 @@ const scooterPhotosPath = storage.child(scooterFolderPath);
 //TODO: FIND A WAY TO UPLOAD AND AUTHENTICATE THE USER WITH FIREBASE. fire.base.auth().currentUser; ??
 export async function signInWithGoogleAsync() {
   try {
-    const result = await google.logInAsync({
-      androidClientId:
-        "423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
-      iosClientId:
-        "423566385353-kbvdqmr2s6sca20cca1q30sq8ctk7s35.apps.googleusercontent.com",
-      scopes: ["profile", "email"],
-    });
+    const result = await google
+      .logInAsync({
+        androidStandaloneAppClientId:
+          "423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
+        androidClientId:
+          "423566385353-44d6uehk11b0u68gocjk0cad9q2ke0mv.apps.googleusercontent.com",
+        iosClientId:
+          "423566385353-kbvdqmr2s6sca20cca1q30sq8ctk7s35.apps.googleusercontent.com",
+
+        scopes: ["profile", "email"],
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 
     if (result.type === "success") {
       var credentials = firebase.auth.GoogleAuthProvider.credential(
