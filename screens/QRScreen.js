@@ -6,6 +6,7 @@ import { Camera } from "expo-camera";
 import BackButton from "../components/BackButton";
 import CustomButton from "../components/CustomButton";
 import * as storage from "../data_model/Storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const QRScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -18,6 +19,12 @@ const QRScreen = ({ navigation }) => {
       setHasPermission(status === "granted");
     })();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setScanned(false);
+    }, [])
+  );
 
   //Data variable is what needs to be stored in FireBase
   const handleBarCodeScanned = ({ type, data }) => {

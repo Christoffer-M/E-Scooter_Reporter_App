@@ -7,7 +7,7 @@ import * as Report from "./Report";
 
 let lastUpdate = null;
 let firstTimeSyncing = true; //Will only be true once, until after first sync
-let minSecondsBetweenUpdates = 5; // Don't sync with backend more often than every X second
+let minSecondsBetweenUpdates = 1; // Don't sync with backend more often than every X second
 
 export let user = "";
 
@@ -105,21 +105,24 @@ export async function submitReport() {
 }
 
 // Delete reports from Firebase and Storage
-export function deleteReport(report) {
+export async function deleteReport(report) {
   // Delete report photo on backend
-  if (!Backend.deleteReportPhoto(report)) {
+  const deletePhotoResult = await Backend.deleteReportPhoto(report);
+  if (!deletePhotoResult) {
     console.error("ERROR: Report photo was not deleted from backend");
     return false;
   }
 
   // Delete report on backend
-  if (!Backend.deleteReport(report)) {
+  const deleteReportResult = await Backend.deleteReport(report);
+  if (!deleteReportResult) {
     console.error("ERROR: Report was not deleted from backend");
     return false;
   }
 
   // Delete report locally
-  if (!removeReport(report)) {
+  const removeReportResult = removeReport(report);
+  if (!removeReportResult) {
     console.error("ERROR: Report was not deleted locally");
     return false;
   }
@@ -147,17 +150,10 @@ export async function syncReports() {
     if (reports.length > fetchedReports.length) reports = [];
 
     // Put new reports in our reports array:
-    fetchedReports.forEach((obj) => {
-      if (reports.some((r) => r.uuid === obj.uuid)) {
-        //console.log("Skipped adding", obj.uuid, "(already exists!)");
-      } else {
-        const newReport = Report.newReport(obj.user);
-        Object.assign(newReport, obj);
-        reports.push(newReport);
-        //console.log("Downloaded report:", newReport.uuid);
-      }
-    });
+    await setReports(fetchedReports);
+
     // Finally, we update the users reports after syncing:
+    updateUserReportsList();
   } else {
     console.log(
       "Please wait",
@@ -165,7 +161,23 @@ export async function syncReports() {
       "seconds before syncing again..."
     );
   }
-  updateUserReportsList();
+}
+
+async function setReports(fetchedReports) {
+  let counter = 0;
+  await fetchedReports.forEach((obj) => {
+    counter++;
+    if (reports.some((r) => r.uuid === obj.uuid)) {
+      //console.log("Skipped adding", obj.uuid, "(already exists!)");
+    } else {
+      const newReport = Report.newReport(obj.user);
+      Object.assign(newReport, obj);
+      reports.push(newReport);
+      //console.log("Downloaded report:", newReport.uuid);
+    }
+    if (counter === fetchedReports.length) {
+    }
+  });
 }
 
 // GET USERS REPORTS ONLY
@@ -214,14 +226,17 @@ function addReport(report) {
 
 //Remove report from local storage
 function removeReport(report) {
-  if (reports.delete(report.uuid)) {
+  console.log("Before Remove: " + reports.length);
+  const res = reports.filter(function (ele) {
+    return ele.uuid != report.uuid;
+  });
+  reports = res;
+  console.log("After Remove: " + reports.length);
+  if (reports === res) {
     console.log("Report deleted from Storage with uuid", report.uuid);
     return true;
   } else {
-    console.error(
-      "Report could not be found and deleted from Storage with uuid",
-      report.uuid
-    );
+    console.error("Report could not be deleted from Storage", report.uuid);
     return false;
   }
 }

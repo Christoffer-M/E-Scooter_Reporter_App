@@ -12,7 +12,6 @@ const BrandLogoImage = ({ logo, style }) => {
     if (logoString !== logo) {
       setLogoString(logo);
       Object.entries(storage.BrandLogos).forEach((prop) => {
-        console.log(logo);
         if (logo === prop[0]) {
           setLogo(prop[1]);
           console.log("setting logo to: " + prop[0]);

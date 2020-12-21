@@ -94,6 +94,7 @@ export function logout() {
     .signOut()
     .then(function () {
       console.log("Signed out");
+      console.log("=============================");
     })
     .catch(function (error) {
       console.log(error);
@@ -258,9 +259,10 @@ export async function uploadReportPhoto(report) {
 
 //DELETE REPORT DOCUMENT
 //Deletes the report document in Firebase FireStore
-function deleteReport(report) {
+export async function deleteReport(report) {
   const uuidToDelete = report.uuid;
-  db.collection("reports")
+  await db
+    .collection("reports")
     .doc(uuidToDelete)
     .delete()
     .then(function () {
@@ -275,20 +277,22 @@ function deleteReport(report) {
 
 // DELETE REPORT PHOTO
 // Deletes a report photo from Firebase Storage
-function deleteReportPhoto(report) {
+export async function deleteReportPhoto(report) {
   // Create a reference to the file to delete
+  console.log("Attempting to remove reportPhoto: " + report.imageName);
   let photoRef = scooterPhotosPath.child(report.imageName);
 
   // Delete the photo
-  photoRef
+  const res = await photoRef
     .delete()
-    .then(function () {
+    .then(() => {
       console.log(
         report.imageName,
         "successfully delete from Firebase Storage!"
       );
+      return true;
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.error(
         "ERROR: File",
         report.imageName,
@@ -296,5 +300,5 @@ function deleteReportPhoto(report) {
       );
       return false;
     });
-  return true;
+  return res;
 }
