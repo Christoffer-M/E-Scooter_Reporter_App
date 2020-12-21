@@ -1,12 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  Dimensions,
-  Animated,
-} from "react-native";
+import { View, StyleSheet, Text, TextInput, Animated } from "react-native";
 import Headline from "../components/Headline";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CategoryButton from "../components/CategoryButton";
@@ -101,8 +94,8 @@ const CategoryScreen = ({ navigation }) => {
       contentContainerStyle={styles.container}
       scrollEnabled={true}
     >
-      <BackButton nav={navigation}></BackButton>
       <Headline text="What is wrong?" style={{ flex: 0.2 }} />
+      <BackButton nav={navigation}></BackButton>
       <Text style={styles.description}>
         Please, pick the categories that fits the violation you wish to report.
       </Text>
@@ -137,7 +130,9 @@ const CategoryScreen = ({ navigation }) => {
         </Animated.View>
       </View>
 
-      <View style={{ justifyContent: "flex-end", paddingBottom: 40 }}>
+      <View
+        style={{ justifyContent: "flex-end", paddingBottom: 40, flex: 0.1 }}
+      >
         {hideProcess ? (
           <CustomButton
             onPress={() => {
@@ -156,7 +151,6 @@ const CategoryScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#2F4357",
-    flex: 1,
   },
 
   container: {
@@ -164,8 +158,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     backgroundColor: "#2F4357",
     paddingTop: 50,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
+    flex: 1,
   },
 
   description: {

@@ -62,8 +62,8 @@ const QRScreen = ({ navigation }) => {
         ratio="16:9"
         style={StyleSheet.absoluteFill}
       >
-        <BackButton nav={navigation}></BackButton>
         <View style={{ flex: 0.25 }}>
+          <BackButton nav={navigation}></BackButton>
           <View
             style={{
               position: "absolute",
@@ -75,6 +75,7 @@ const QRScreen = ({ navigation }) => {
             <CameraText text="Scan the QR-Code" color="#5B7282" />
           </View>
         </View>
+
         <View style={{ flex: 0.5, flexDirection: "row", display: "flex" }}>
           <Modal
             animationType="fade"

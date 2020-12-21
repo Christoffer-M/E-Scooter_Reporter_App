@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     paddingTop: 35,
   },
   headerFont: {
-    paddingBottom: 2,
+    paddingBottom: 5,
     alignSelf: "flex-start",
     color: "#EBC2AD",
     fontSize: 20,
